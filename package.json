@@ -1,0 +1,40 @@
+{
+  "name": "web-home",
+  "version": "1.0.0",
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve -o",
+    "build": "ng build -c development",
+    "build:prod": "ng build -c production",
+    "build:both": "npm run build && npm run build:prod",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "~19.1.7",
+    "@angular/common": "~19.1.7",
+    "@angular/compiler": "~19.1.7",
+    "@angular/core": "~19.1.7",
+    "@angular/forms": "~19.1.7",
+    "@angular/platform-browser": "~19.1.7",
+    "@angular/platform-browser-dynamic": "~19.1.7",
+    "@angular/router": "~19.1.7",
+    "@babylonjs/core": "^7.50.0",
+    "@babylonjs/materials": "^7.50.0",
+    "bootstrap": "^5.3.3",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.4.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^19.1.8",
+    "@angular/cli": "~19.1.8",
+    "@angular/compiler-cli": "~19.1.7",
+    "@angular/language-service": "~19.1.7",
+    "@types/node": "^18.17.5",
+    "typescript": "~5.7.3"
+  }
+}
