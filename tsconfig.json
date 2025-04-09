@@ -20,6 +20,9 @@
       "ES2022",
       "dom"
     ],
+    "types": [
+        "babylonjs"
+    ],
     "resolveJsonModule": true,
     "esModuleInterop": true
   },

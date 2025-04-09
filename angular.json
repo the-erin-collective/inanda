@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ng-babylon-template": {
+    "web-home": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -82,14 +82,14 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "options": {
-            "buildTarget": "ng-babylon-template:build"
+            "buildTarget": "web-home:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "ng-babylon-template:build:production"
+              "buildTarget": "web-home:build:production"
             },
             "development": {
-              "buildTarget": "ng-babylon-template:build:development"
+              "buildTarget": "web-home:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -97,7 +97,7 @@
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n",
           "options": {
-            "buildTarget": "ng-babylon-template:build"
+            "buildTarget": "web-home:build"
           }
         },
         "test": {
