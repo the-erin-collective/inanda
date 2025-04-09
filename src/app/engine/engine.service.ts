@@ -4,10 +4,13 @@ import {
   Color4,
   DynamicTexture,
   Engine,
-  FreeCamera,
+  ArcRotateCamera,
   HemisphericLight,
   Light,
-  Mesh,
+  Mesh,  
+  MeshBuilder,
+  AssetContainer,
+  TransformNode,
   Scene,
   Space,
   StandardMaterial,
@@ -15,15 +18,17 @@ import {
   Vector3
 } from '@babylonjs/core';
 import { WindowRefService } from '../services/window-ref.service';
+import * as honeycomb from 'honeycomb-grid';
+import * as earcut from 'earcut';
 
 @Injectable({ providedIn: 'root' })
 export class EngineService {
   private canvas: HTMLCanvasElement;
   private engine: Engine;
-  private camera: FreeCamera;
+  private camera: ArcRotateCamera;
   private scene: Scene;
   private light: Light;
-
+  private sphereMaterial: StandardMaterial;
   private sphere: Mesh;
 
   public constructor(
@@ -40,10 +45,10 @@ export class EngineService {
 
     // create a basic BJS Scene object
     this.scene = new Scene(this.engine);
-    this.scene.clearColor = new Color4(0, 0, 0, 0);
+    this.scene.clearColor = new Color4(0.7, 0.7, 0.7, 0);
 
     // create a FreeCamera, and set its position to (x:5, y:10, z:-20 )
-    this.camera = new FreeCamera('camera1', new Vector3(5, 10, -20), this.scene);
+    this.camera = new ArcRotateCamera('camera1', 180, 0, 200, new Vector3(0, 5, -10), this.scene);
 
     // target the camera to scene origin
     this.camera.setTarget(Vector3.Zero());
@@ -52,30 +57,30 @@ export class EngineService {
     this.camera.attachControl(this.canvas, false);
 
     // create a basic light, aiming 0,1,0 - meaning, to the sky
-    this.light = new HemisphericLight('light1', new Vector3(0, 1, 0), this.scene);
-
-    // create a built-in "sphere" shape; its constructor takes 4 params: name, subdivisions, radius, scene
-    this.sphere = Mesh.CreateSphere('sphere1', 16, 2, this.scene);
+    this.light = new HemisphericLight('light1', new Vector3(0, 0.5, 0), this.scene);
 
     // create the material with its texture for the sphere and assign it to the sphere
-    const spherMaterial = new StandardMaterial('sun_surface', this.scene);
-    spherMaterial.diffuseTexture = new Texture('assets/textures/sun.jpg', this.scene);
-    this.sphere.material = spherMaterial;
+    this.sphereMaterial = new StandardMaterial('hex_surface', this.scene);
+    this.sphereMaterial.specularPower = 100000000;
+    this.sphereMaterial.diffuseTexture = new Texture('assets/textures/abstract-gray-background.jpg', this.scene);
 
-    // move the sphere upward 1/2 of its height
-    this.sphere.position.y = 1;
+   const hexTileMeshContainer = new AssetContainer(this.scene);
 
-    // simple rotation along the y axis
-    this.scene.registerAfterRender(() => {
-      this.sphere.rotate (
-        new Vector3(0, 1, 0),
-        0.02,
-        Space.LOCAL
-      );
-    });
+        const grid = this.createGrid(); 
+    
+        let hexTemplate = grid.getHex([0, 0]);
+        if(hexTemplate == null){
+          throw('no hexes');
+        };
+    
+        let hexTileMesh = this.createHexTileMesh(hexTemplate, this.scene);
+        
+        let hexIndex = 0;
+        grid.forEach(hex => {
+          hexIndex++;
 
-    // generates the world x-y-z axis for better understanding
-    this.showWorldAxis(8);
+          this.createHexTerrain(hexTileMesh, hexTileMeshContainer, hex, this.scene);
+        });
   }
 
   public animate(): void {
@@ -165,5 +170,49 @@ export class EngineService {
     axisZ.color = new Color3(0, 0, 1);
     const zChar = makeTextPlane('Z', 'blue', size / 10);
     zChar.position = new Vector3(0, 0.05 * size, 0.9 * size);
+  }
+  
+   public createGrid(): honeycomb.Grid<honeycomb.Hex> {
+    //The math and properties for creating the hex grid.
+    let gridSize = 1;
+    let gridDimensions = 30;
+
+    const defaultHexSettings: honeycomb.HexSettings = {
+      dimensions: { xRadius: gridDimensions, yRadius: gridDimensions }, // these make for tiny hexes
+      orientation: honeycomb.Orientation.FLAT, // flat top
+      origin: { x: 0, y: 0 }, // the center of the hex
+      offset: -1 // how rows or columns of hexes are placed relative to each other
+    }
+
+    let tile = honeycomb.defineHex(defaultHexSettings);
+
+    return new honeycomb.Grid(tile, honeycomb.spiral({ start: [0, 0], radius:  gridSize}));
+  }
+
+  public createHexTileMesh(hex: honeycomb.Hex, scene: Scene){
+    const shape = [ new Vector3(hex.corners[0].x, 0, hex.corners[0].y), new Vector3(hex.corners[1].x, 0, hex.corners[1].y), new Vector3(hex.corners[2].x, 0, hex.corners[2].y), new Vector3(hex.corners[3].x, 0, hex.corners[3].y), new Vector3(hex.corners[4].x, 0, hex.corners[4].y), new Vector3(hex.corners[5].x, 0, hex.corners[5].y) ];   
+    
+    return MeshBuilder.CreatePolygon("hex", {shape: shape, sideOrientation: Mesh.DOUBLESIDE }, scene, earcut.default);
+  }
+
+  public createHexTerrain(hexTileMesh: Mesh, hexTileMeshContainer: AssetContainer, hex: honeycomb.Hex, scene: Scene): void {
+
+      hexTileMeshContainer.meshes.splice(0);
+
+      hexTileMesh.material = this.sphereMaterial;
+      hexTileMeshContainer.meshes.push(hexTileMesh);
+      
+      let hexTile = hexTileMeshContainer.instantiateModelsToScene(name => hex.q.toString() + "-" + hex.r.toString() + "_" + name, false );
+      
+      let hexTileRoot = <TransformNode>hexTile.rootNodes[0];
+      hexTileRoot.name = "hexTile" + hex.q + hex.r;
+      hexTileRoot.position.x = hex.x;
+      hexTileRoot.position.z = hex.y;
+  
+      let hexChildren = hexTileRoot.getDescendants();
+      for (let k = 0; k < hexChildren.length; k++) {
+        hexChildren[k].name = hexChildren[k].name.slice(9);
+      }
+   
   }
 }

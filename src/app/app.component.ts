@@ -5,6 +5,7 @@ import { UiComponent } from './ui/ui.component';
 
 @Component({
     selector: 'app-root',
+    styleUrl: './app.component.scss',
     templateUrl: './app.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -13,4 +14,7 @@ import { UiComponent } from './ui/ui.component';
         UiComponent,
     ]
 })
-export class AppComponent {}
+export class AppComponent {
+  title = 'web-home';
+}
+

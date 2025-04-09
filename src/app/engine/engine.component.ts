@@ -6,7 +6,8 @@ import { EngineService } from './engine.service';
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './engine.component.html'
+  templateUrl: './engine.component.html',
+  styleUrl: './engine.component.scss'
 })
 export class EngineComponent implements OnInit {
 
