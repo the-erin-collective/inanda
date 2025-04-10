@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { UiInfobarBottomComponent } from './ui-infobar-bottom/ui-infobar-bottom.component';
 import { UiInfobarTopComponent } from './ui-infobar-top/ui-infobar-top.component';
@@ -14,7 +15,8 @@ import { UiSidebarRightComponent } from './ui-sidebar-right/ui-sidebar-right.com
         UiInfobarBottomComponent,
         UiInfobarTopComponent,
         UiSidebarLeftComponent,
-        UiSidebarRightComponent
+        UiSidebarRightComponent,
+        CommonModule
     ]
 })
 export class UiComponent implements OnInit {

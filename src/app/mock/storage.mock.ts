@@ -1,8 +1,27 @@
 export class StorageMock implements Storage {
-  public length = 0;
-  public clear(): void { return null; }
-  public getItem(key: string): string { return null; }
-  public key(index: number): string { return null; }
-  public removeItem(key: string): void { return null; }
-  public setItem(key: string, value: string): void { return null; }
+  private store: { [key: string]: string } = {};
+
+  get length(): number {
+    return Object.keys(this.store).length;
+  }
+
+  clear(): void {
+    this.store = {};
+  }
+
+  getItem(key: string): string | null {
+    return this.store[key] ?? null;
+  }
+
+  key(index: number): string | null {
+    return Object.keys(this.store)[index] ?? null;
+  }
+
+  removeItem(key: string): void {
+    delete this.store[key];
+  }
+
+  setItem(key: string, value: string): void {
+    this.store[key] = value;
+  }
 }

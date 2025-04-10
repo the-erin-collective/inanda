@@ -1,15 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 import { WindowMock } from '../mock/window.mock';
-
-const getWindow = (): Window => window != null ? window : new WindowMock();
 
 @Injectable({ providedIn: 'root' })
 export class WindowRefService {
   private readonly windowObject: Window;
+  private readonly isBrowser: boolean;
 
-  public constructor() {
-    this.windowObject = getWindow();
+  public constructor(@Inject(PLATFORM_ID) platformId: Object) {
+    this.isBrowser = isPlatformBrowser(platformId);
+    this.windowObject = this.isBrowser ? window : new WindowMock() as unknown as Window;
   }
 
   public get window(): Window {
@@ -17,14 +18,14 @@ export class WindowRefService {
   }
 
   public get document(): Document {
-    return this.window.document;
+    return this.isBrowser ? this.window.document : {} as Document;
   }
 
   public get localStore(): Storage {
-    return this.window.localStorage;
+    return this.isBrowser ? this.window.localStorage : {} as Storage;
   }
 
   public get sessionStorage(): Storage {
-    return this.window.sessionStorage;
+    return this.isBrowser ? this.window.sessionStorage : {} as Storage;
   }
 }
