@@ -1,6 +1,5 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-
 import { WindowMock } from '../mock/window.mock';
 
 @Injectable({ providedIn: 'root' })
@@ -8,7 +7,7 @@ export class WindowRefService {
   private readonly windowObject: Window;
   private readonly isBrowser: boolean;
 
-  public constructor(@Inject(PLATFORM_ID) platformId: Object) {
+  public constructor(@Inject(PLATFORM_ID) platformId: object) {
     this.isBrowser = isPlatformBrowser(platformId);
     this.windowObject = this.isBrowser ? window : new WindowMock() as unknown as Window;
   }

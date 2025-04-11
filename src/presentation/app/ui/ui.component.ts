@@ -21,9 +21,12 @@ import { UiSidebarRightComponent } from './ui-sidebar-right/ui-sidebar-right.com
 })
 export class UiComponent implements OnInit {
 
-  public constructor() { }
+  public constructor() { 
+    console.debug('UiComponent constructor called');
+  }
 
   public ngOnInit(): void {
+    console.debug('UiComponent ngOnInit called');
   }
 
 }

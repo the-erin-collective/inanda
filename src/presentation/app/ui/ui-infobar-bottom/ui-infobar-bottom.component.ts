@@ -9,9 +9,12 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@
 })
 export class UiInfobarBottomComponent implements OnInit {
 
-  public constructor() { }
+  public constructor() { 
+    console.debug('UiInfobarBottomComponent constructor called');
+  }
 
   public ngOnInit(): void {
+    console.debug('UiInfobarBottomComponent ngOnInit called');
   }
 
 }

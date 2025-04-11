@@ -12,7 +12,6 @@ import {
   AssetContainer,
   TransformNode,
   Scene,
-  Space,
   StandardMaterial,
   Texture,
   Vector3
@@ -68,18 +67,18 @@ export class EngineService {
 
         const grid = this.createGrid(); 
     
-        let hexTemplate = grid.getHex([0, 0]);
+        const hexTemplate = grid.getHex([0, 0]);
         if(hexTemplate == null){
           throw('no hexes');
         };
     
-        let hexTileMesh = this.createHexTileMesh(hexTemplate, this.scene);
+        const hexTileMesh = this.createHexTileMesh(hexTemplate, this.scene);
         
-        let hexIndex = 0;
+     //   let hexIndex = 0;
         grid.forEach(hex => {
-          hexIndex++;
+        //  hexIndex++;
 
-          this.createHexTerrain(hexTileMesh, hexTileMeshContainer, hex, this.scene);
+          this.createHexTerrain(hexTileMesh, hexTileMeshContainer, hex);
         });
   }
 
@@ -174,8 +173,8 @@ export class EngineService {
   
    public createGrid(): honeycomb.Grid<honeycomb.Hex> {
     //The math and properties for creating the hex grid.
-    let gridSize = 1;
-    let gridDimensions = 30;
+    const gridSize = 1;
+    const gridDimensions = 30;
 
     const defaultHexSettings: honeycomb.HexSettings = {
       dimensions: { xRadius: gridDimensions, yRadius: gridDimensions }, // these make for tiny hexes
@@ -184,7 +183,7 @@ export class EngineService {
       offset: -1 // how rows or columns of hexes are placed relative to each other
     }
 
-    let tile = honeycomb.defineHex(defaultHexSettings);
+    const tile = honeycomb.defineHex(defaultHexSettings);
 
     return new honeycomb.Grid(tile, honeycomb.spiral({ start: [0, 0], radius:  gridSize}));
   }
@@ -195,24 +194,23 @@ export class EngineService {
     return MeshBuilder.CreatePolygon("hex", {shape: shape, sideOrientation: Mesh.DOUBLESIDE }, scene, earcut.default);
   }
 
-  public createHexTerrain(hexTileMesh: Mesh, hexTileMeshContainer: AssetContainer, hex: honeycomb.Hex, scene: Scene): void {
+  public createHexTerrain(hexTileMesh: Mesh, hexTileMeshContainer: AssetContainer, hex: honeycomb.Hex): void {
 
       hexTileMeshContainer.meshes.splice(0);
 
       hexTileMesh.material = this.sphereMaterial;
       hexTileMeshContainer.meshes.push(hexTileMesh);
       
-      let hexTile = hexTileMeshContainer.instantiateModelsToScene(name => hex.q.toString() + "-" + hex.r.toString() + "_" + name, false );
+      const hexTile = hexTileMeshContainer.instantiateModelsToScene(name => hex.q.toString() + "-" + hex.r.toString() + "_" + name, false );
       
-      let hexTileRoot = <TransformNode>hexTile.rootNodes[0];
+      const hexTileRoot = hexTile.rootNodes[0] as TransformNode;
       hexTileRoot.name = "hexTile" + hex.q + hex.r;
       hexTileRoot.position.x = hex.x;
       hexTileRoot.position.z = hex.y;
   
-      let hexChildren = hexTileRoot.getDescendants();
-      for (let k = 0; k < hexChildren.length; k++) {
-        hexChildren[k].name = hexChildren[k].name.slice(9);
+      const hexChildren = hexTileRoot.getDescendants();
+      for (const hexChild of hexChildren) {
+        hexChild.name = hexChild.name.slice(9);
       }
-   
   }
 }

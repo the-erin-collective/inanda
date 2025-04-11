@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Inject, PLATFORM_ID  } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Inject, PLATFORM_ID, AfterViewInit  } from '@angular/core';
 import { EngineService } from './engine.service';
 import { isPlatformBrowser, CommonModule} from '@angular/common';
 
@@ -11,14 +11,14 @@ import { isPlatformBrowser, CommonModule} from '@angular/common';
   styleUrl: './engine.component.scss',
   imports: [CommonModule]
 })
-export class EngineComponent implements OnInit {
+export class EngineComponent implements OnInit, AfterViewInit {
 
   @ViewChild('rendererCanvas', { static: false })
   public rendererCanvas: ElementRef<HTMLCanvasElement>;
 
-  public isBabylonJsAvailable: boolean = false;
+  public isBabylonJsAvailable = false;
 
-  public constructor(private engServ: EngineService, @Inject(PLATFORM_ID) private platformId: Object) { }
+  public constructor(private engServ: EngineService, @Inject(PLATFORM_ID) private platformId: object) { }
 
   public ngOnInit(): void {
     this.isBabylonJsAvailable = isPlatformBrowser(this.platformId); 

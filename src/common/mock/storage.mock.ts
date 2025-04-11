@@ -1,5 +1,5 @@
 export class StorageMock implements Storage {
-  private store: { [key: string]: string } = {};
+  private store: Record<string, string> = {};
 
   get length(): number {
     return Object.keys(this.store).length;

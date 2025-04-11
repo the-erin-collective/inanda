@@ -9,9 +9,12 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@
 })
 export class UiSidebarLeftComponent implements OnInit {
 
-  public constructor() { }
+  public constructor() {
+    console.debug('UiSidebarLeftComponent constructor called');
+   }
 
   public ngOnInit(): void {
+    console.debug('UiSidebarLeftComponent ngOnInit called');
   }
 
 }
