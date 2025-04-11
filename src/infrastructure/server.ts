@@ -4,6 +4,7 @@ import express from 'express';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runBootstrap } from '../enactment/bootstrap';
+import { MongooseService } from './repository/mongoose.service';
 
 const bootstrap = () => runBootstrap();
 
@@ -13,6 +14,17 @@ const indexHtml = join(serverDistFolder, 'index.server.html');
 
 const app = express();
 const commonEngine = new CommonEngine();
+const mongooseService = new MongooseService();
+
+mongooseService.connect()
+  .then(() => {
+    console.log('Connected to MongoDB');
+    // Continue to configure the server
+  })
+  .catch((err) => {
+    console.error('Error connecting to MongoDB', err);
+    process.exit(1); // Exit if the connection fails
+  });
 
 /**
  * Example Express Rest API endpoints can be defined here.
