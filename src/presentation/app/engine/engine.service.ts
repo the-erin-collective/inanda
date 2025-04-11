@@ -17,7 +17,7 @@ import {
   Texture,
   Vector3
 } from '@babylonjs/core';
-import { WindowRefService } from '../services/window-ref.service';
+import { WindowRefService } from './../../../common/services/window-ref.service';
 import * as honeycomb from 'honeycomb-grid';
 import * as earcut from 'earcut';
 
@@ -62,7 +62,7 @@ export class EngineService {
     // create the material with its texture for the sphere and assign it to the sphere
     this.sphereMaterial = new StandardMaterial('hex_surface', this.scene);
     this.sphereMaterial.specularPower = 100000000;
-    this.sphereMaterial.diffuseTexture = new Texture('assets/textures/abstract-gray-background.jpg', this.scene);
+    this.sphereMaterial.diffuseTexture = new Texture('presentation/assets/textures/abstract-gray-background.jpg', this.scene);
 
    const hexTileMeshContainer = new AssetContainer(this.scene);
 
