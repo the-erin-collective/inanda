@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PageRepository } from '../../domain/repository/page.repository.interface';
 import { PageModel } from '../../infrastructure/repository/models/page.model'; // Mongoose model
-import { Page } from '../../domain/entities/page.entity';
+import { Page } from '../../domain/entities/page/page.entity';
 
 @Injectable({
   providedIn: 'root',

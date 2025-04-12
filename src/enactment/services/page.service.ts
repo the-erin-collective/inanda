@@ -1,12 +1,20 @@
-import { inject } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Page } from './../../domain/entities/page/page.entity';
 
-import { PAGE_REPOSITORY, PageRepository } from '../../domain/repository/page.repository.interface';
-
+@Injectable({
+  providedIn: 'root'
+})
 export class PageService {
-  constructor(private readonly repo: PageRepository = inject(PAGE_REPOSITORY)) {}
+  loadFromJson(json: unknown): Page {
+    if (!this.isValidPageJson(json)) {
+      throw new Error('Invalid Page JSON structure.');
+    }
 
-  async doSomethingWithPage(id: string) {
-    const page = await this.repo.findById(id);
-    console.debug(page);
+    return Page.fromJSON(json);
+  }
+
+  private isValidPageJson(json: unknown): json is Parameters<typeof Page.fromJSON>[0] {
+    return typeof json === 'object' && json !== null &&
+      'id' in json && 'title' in json && 'root' in json && 'siteId' in json;
   }
 }

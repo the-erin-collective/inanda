@@ -1,4 +1,4 @@
-import { Page } from '../entities/page.entity';
+import { Page } from '../entities/page/page.entity';
 import { InjectionToken } from '@angular/core';
 
 export interface PageRepository {
