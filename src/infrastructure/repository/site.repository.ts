@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SiteRepository } from '../../domain/repository/site.repository.interface';
-import { SiteModel } from '../../infrastructure/repository/models/site.model';
+import { SiteModel } from './models/site.model';
 import { Site } from '../../domain/entities/site/site.entity';
 import { AppPageRepository } from './page.repository'; 
 

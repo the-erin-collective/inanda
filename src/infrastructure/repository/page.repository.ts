@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PageRepository } from '../../domain/repository/page.repository.interface';
-import { PageModel } from '../../infrastructure/repository/models/page.model';
+import { PageModel } from './models/page.model';
 import { Page } from '../../domain/entities/page/page.entity';
 
 @Injectable({
@@ -41,5 +41,17 @@ export class AppPageRepository implements PageRepository {
 
   async delete(id: string): Promise<void> {
     await PageModel.findByIdAndDelete(id).exec();
+  }
+
+  async findByIds(ids: string[]): Promise<Page[]> {
+    const docs = await PageModel.find({ _id: { $in: ids } }).exec();
+    return docs.map(doc =>
+      Page.fromJSON({
+        id: doc._id.toString(),
+        title: doc.title,
+        root: doc.root,
+        siteId: doc.siteId,
+      })
+    );
   }
 }
