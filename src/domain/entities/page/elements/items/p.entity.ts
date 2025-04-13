@@ -2,7 +2,7 @@ import { ItemNode } from '../item.entity';
 
 export class PNode extends ItemNode {
   constructor(public text: string) {
-    super('h1');
+    super('p');
   }
 
   override toJSON(): Record<string, unknown> {
