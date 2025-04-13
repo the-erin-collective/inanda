@@ -3,7 +3,7 @@ import { CommonEngine, isMainModule } from '@angular/ssr/node';
 import express from 'express';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { runBootstrap } from '../enactment/bootstrap';
+import { runBootstrap } from './bootstrap/bootstrap';
 import { MongooseService } from './repository/mongoose.service';
 
 const bootstrap = () => runBootstrap();
