@@ -2,10 +2,10 @@ import { Page } from '../entities/page/page.entity';
 import { InjectionToken } from '@angular/core';
 
 export interface PageRepository {
-  findById(id: string): Promise<Page | null>;
-  save(page: Page): Promise<Page>;
   delete(id: string): Promise<void>;
+  findById(id: string): Promise<Page | null>;
   findByIds(ids: string[]): Promise<Page[]>;
+  save(page: Page): Promise<Page>;
 }
 
 

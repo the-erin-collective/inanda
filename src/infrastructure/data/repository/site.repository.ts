@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { SiteRepository } from '../../domain/repository/site.repository.interface';
-import { SiteModel } from './models/site.model';
-import { Site } from '../../domain/entities/site/site.entity';
+import { SiteRepository } from '../../../domain/repository/site.repository.interface';
+import { SiteModel } from '../models/site.model';
+import { Site } from '../../../domain/entities/site/site.entity';
+import { SiteContent } from '../../../domain/aggregates/site-content.model';
 import { AppPageRepository } from './page.repository'; 
 
 @Injectable({
@@ -25,13 +26,15 @@ export class AppSiteRepository implements SiteRepository {
     });
   }
 
-  async findByIdWithPages(id: string): Promise<Site | null> {
+  async findByIdWithPages(id: string): Promise<SiteContent | null> {
     const site = await this.findById(id);
     if (!site) return null;
 
+    // Fetch pages based on the pageOrder array from the Site
     const pages = await this.pageRepository.findByIds(site.pageOrder);
-    site.pages = pages;
-    return site;
+    
+    // Create and return the SiteContent aggregate
+    return new SiteContent(site, pages);
   }
 
   async save(site: Site): Promise<Site> {

@@ -4,7 +4,7 @@ import express from 'express';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runBootstrap } from './bootstrap/bootstrap';
-import { MongooseService } from './repository/mongoose.service';
+import { MongooseService } from './data/mongoose.service';
 
 const bootstrap = () => runBootstrap();
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { PageRepository } from '../../domain/repository/page.repository.interface';
-import { PageModel } from './models/page.model';
-import { Page } from '../../domain/entities/page/page.entity';
+import { PageRepository } from '../../../domain/repository/page.repository.interface';
+import { PageModel } from '../models/page.model';
+import { Page } from '../../../domain/entities/page/page.entity';
 
 @Injectable({
   providedIn: 'root',
