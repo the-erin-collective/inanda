@@ -21,7 +21,8 @@
       "dom"
     ],
     "types": [
-        "babylonjs"
+        "babylonjs",
+        "node"
     ],
     "resolveJsonModule": true,
     "esModuleInterop": true
