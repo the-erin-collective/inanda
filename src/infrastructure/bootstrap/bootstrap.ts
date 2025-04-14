@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv';
+dotenv.config({ path: './.env' });
+
 import type { ApplicationRef } from '@angular/core';
 
 export type BootstrapFn = () => Promise<ApplicationRef>;

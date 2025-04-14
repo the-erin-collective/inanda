@@ -1,8 +1,8 @@
 import { Provider } from '@angular/core';
 import { PAGE_REPOSITORY } from '../../domain/repository/page.repository.interface';
-import { AppPageRepository } from '../repository/page.repository';
+import { AppPageRepository } from '../data/repository/page.repository';
 import { SITE_REPOSITORY } from '../../domain/repository/site.repository.interface';
-import { AppSiteRepository } from '../repository/site.repository';
+import { AppSiteRepository } from '../data/repository/site.repository';
 
 export const repositoryProviders: Provider[] = [
   {

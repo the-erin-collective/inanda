@@ -1,6 +1,6 @@
 import { Site } from '../entities/site/site.entity';
 import { InjectionToken } from '@angular/core';
-import { SiteContent } from '../../domain/aggregates/site-content.model';
+import { SiteContent } from '../aggregates/site-content.aggregate';
 
 export interface SiteRepository {
   delete(id: string): Promise<void>;

@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { SiteContent } from '../../domain/aggregates/site-content.model';
+import { SiteContent } from '../../domain/aggregates/site-content.aggregate';
 import { SITE_REPOSITORY, SiteRepository } from '../../domain/repository/site.repository.interface';
 import { PAGE_REPOSITORY, PageRepository } from '../../domain/repository/page.repository.interface';
 
