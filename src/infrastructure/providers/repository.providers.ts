@@ -1,16 +1,16 @@
-import { Provider } from '@angular/core';
+import { Provider, StaticProvider } from '@angular/core';
 import { PAGE_REPOSITORY } from '../../domain/repository/page.repository.interface';
-import { AppPageRepository } from '../data/repository/page.repository';
+import { AppPageRepository } from '../repository/page.repository';
 import { SITE_REPOSITORY } from '../../domain/repository/site.repository.interface';
-import { AppSiteRepository } from '../data/repository/site.repository';
+import { AppSiteRepository } from '../repository/site.repository';
 
-export const repositoryProviders: Provider[] = [
+export const repositoryProviders: StaticProvider[] = [
   {
     provide: PAGE_REPOSITORY,
-    useClass: AppPageRepository,
+    useValue: new AppPageRepository(),
   },
   {
     provide: SITE_REPOSITORY,
-    useClass: AppSiteRepository,
+    useValue: new AppSiteRepository(new AppPageRepository()),
   },
 ];

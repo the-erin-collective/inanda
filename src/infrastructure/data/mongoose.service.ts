@@ -1,21 +1,19 @@
 import mongoose from 'mongoose';
-import { Injectable } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root',
-})
 export class MongooseService {
-  private dbUri = process.env['MONGO_URI'];
+  async connect(): Promise<void> {
+    const connectionString = process.env['MONGO_URI'];
+    console.log('Attempting to connect to MongoDB:', connectionString);
 
-  connect() {
-    console.log(this.dbUri);
-
-    if (!this.dbUri) {
-        throw new Error('MONGO_URI environment variable is not defined');
-      }
-
-    return mongoose.connect(this.dbUri, {
-        autoCreate: true,
-    });
+    try {
+      await mongoose.connect(connectionString, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
+      console.log('Successfully connected to MongoDB');
+    } catch (error) {
+      console.error('Error connecting to MongoDB:', error);
+      throw error; // Ensure the error propagates
+    }
   }
 }

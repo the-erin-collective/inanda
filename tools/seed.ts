@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 
 import { Site } from '../src/domain/entities/site/site.entity';
@@ -23,14 +23,14 @@ if (!MONGODB_URI) {
 
 // 1. Define Mongoose schemas
 const siteSchema = new mongoose.Schema({
-  id: String,
+  _id: String,
   name: String,
   description: String,
   pageOrder: [String],
 });
 
 const pageSchema = new mongoose.Schema({
-  id: String,
+  _id: String,
   title: String,
   siteId: String,
   root: mongoose.Schema.Types.Mixed,

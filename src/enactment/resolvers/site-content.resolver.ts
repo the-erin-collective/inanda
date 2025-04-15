@@ -11,6 +11,14 @@ export class SiteContentResolver implements Resolve<Promise<SiteContent | null>>
 
   resolve(route: ActivatedRouteSnapshot): Promise<SiteContent | null> {
     const siteId = route.paramMap.get('siteId') ?? 'site-001';
-    return this.siteContentService.getSiteContent(siteId);
+    console.log('Resolving site content for siteId:', siteId);
+
+    return this.siteContentService.getSiteContent(siteId).then((data) => {
+      console.log('Resolved site content:', data);
+      return data;
+    }).catch((err) => {
+      console.error('Error resolving site content:', err);
+      return null;
+    });
   }
 }

@@ -1,8 +1,8 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, models, Document } from 'mongoose';
 import { ItemNode } from '../../../domain/entities/page/elements/item.entity';
 
 export interface PageDocument extends Document {
-  path: string;
+  _id: string; // Explicitly define _id as a string
   title?: string;
   root: {
     base: { children?: ItemNode[] };
@@ -13,7 +13,7 @@ export interface PageDocument extends Document {
 }
 
 const PageSchema = new Schema<PageDocument>({
-  path: { type: String, required: true, unique: true },
+  _id: { type: String, required: true }, // Explicitly define _id as a String
   title: { type: String },
   siteId: { type: String, required: true },
   root: {
@@ -23,4 +23,7 @@ const PageSchema = new Schema<PageDocument>({
   },
 });
 
-export const PageModel = model<PageDocument>('Page', PageSchema);
+console.log('Mongoose models:', models);
+
+// Check if the model already exists before defining it
+export const PageModel = models['Page'] || model<PageDocument>('Page', PageSchema);

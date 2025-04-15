@@ -11,7 +11,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "serve:ssr:web-home": "node dist/dev/server/server.mjs"
+    "serve:ssr:web-home": "node dist/dev/server/server.mjs",
+    "postinstall": "patch-package"
   },
   "private": true,
   "dependencies": {
@@ -29,11 +30,12 @@
     "@babylonjs/materials": "^7.54.3",
     "@nguniversal/express-engine": "^7.0.2",
     "bootstrap": "^5.3.3",
+    "core-js": "^3.41.0",
     "dotenv": "^16.5.0",
     "earcut": "^3.0.1",
     "express": "^4.18.2",
     "honeycomb-grid": "^4.1.5",
-    "mongoose": "^8.13.2",
+    "mongoose": "^5.13.23",
     "rxjs": "~7.8.0",
     "tslib": "^2.4.0",
     "zone.js": "~0.15.0"
@@ -51,6 +53,8 @@
     "eslint-import-resolver-typescript": "^4.3.2",
     "eslint-plugin-import": "^2.31.0",
     "globals": "^16.0.0",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "8.27.0"
   }

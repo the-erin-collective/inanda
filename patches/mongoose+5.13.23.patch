@@ -1,0 +1,23 @@
+diff --git a/node_modules/mongoose/lib/helpers/populate/assignVals.js b/node_modules/mongoose/lib/helpers/populate/assignVals.js
+index 81ccf61..08020c5 100644
+--- a/node_modules/mongoose/lib/helpers/populate/assignVals.js
++++ b/node_modules/mongoose/lib/helpers/populate/assignVals.js
+@@ -205,7 +205,7 @@ function numDocs(v) {
+ 
+ function valueFilter(val, assignmentOpts, populateOptions, allIds) {
+   const userSpecifiedTransform = typeof populateOptions.transform === 'function';
+-  const transform = userSpecifiedTransform ? populateOptions.transform : noop;
++  const transform = userSpecifiedTransform ? populateOptions.transform : v => v;
+   if (Array.isArray(val)) {
+     // find logic
+     const ret = [];
+@@ -282,7 +282,3 @@ function isPopulatedObject(obj) {
+     obj.$__ != null ||
+     leanPopulateMap.has(obj);
+ }
+\ No newline at end of file
+-
+-function noop(v) {
+-  return v;
+-}
+\ No newline at end of file

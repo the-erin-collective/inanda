@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { SiteContent } from '../../domain/aggregates/site-content.aggregate';
 import { EngineComponent } from './engine/engine.component';
@@ -17,19 +16,15 @@ import { UiComponent } from './ui/ui.component';
 export class AppComponent implements OnInit {
   site: SiteContent | null = null;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      const siteId = params['id'];
-      this.http.get<SiteContent>(`/api/site/${siteId}`).subscribe({
-        next: (data) => {
-          this.site = data;
-        },
-        error: (err) => {
-          console.error('Error fetching site data:', err);
-        },
-      });
+    console.log('AppComponent initialized');
+
+    this.route.data.subscribe((data) => {
+      console.log('data', data);
+
+      this.site = data['siteContent']; // 'siteContent' is the key used in the resolver
     });
   }
 }

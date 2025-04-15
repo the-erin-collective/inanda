@@ -20,7 +20,7 @@ export class Page {
 
   toJSON(): Record<string, unknown> {
     return {
-      id: this.id,
+      _id: this.id,
       title: this.title,
       root: this.root.toJSON(),
       siteId: this.siteId
