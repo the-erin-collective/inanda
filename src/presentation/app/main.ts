@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 import { environment } from './../../infrastructure/environments/environment';
 import { provideRouter } from '@angular/router';
 import { routes } from '../app/bootstrap/app.routes';
-import { repositoryProviders } from './../../infrastructure/providers/repository.providers'; // Import repositoryProviders
+import { repositoryProviders } from '../../infrastructure/providers/repository/client-repository.providers'; 
 
 if (environment.production) {
   enableProdMode();
@@ -14,6 +14,6 @@ bootstrapApplication(AppComponent, {
   providers: [
     provideClientHydration(withEventReplay()),
     provideRouter(routes),
-    ...repositoryProviders, // Register repository providers here
+    ...repositoryProviders, 
   ],
 }).catch(err => console.log(err));

@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
-import { SiteRepository } from '../../domain/repository/site.repository.interface';
-import { Site } from '../../domain/entities/site/site.entity';
-import { SiteContent } from '../../domain/aggregates/site-content.aggregate';
-import { AppPageRepository } from './page.repository';
-import { SiteModel } from '../data/schemas/site.schema'; // Mongoose model
-import { Types } from 'mongoose';
+import { SiteRepository } from '../../../domain/repository/site.repository.interface';
+import { Site } from '../../../domain/entities/site/site.entity';
+import { SiteContent } from '../../../domain/aggregates/site-content.aggregate';
+import { ServerPageRepository } from './page.repository.server';
+import { SiteModel } from '../../data/schemas/site.schema'; // Mongoose model
 
 @Injectable({
   providedIn: 'root',
 })
-export class AppSiteRepository implements SiteRepository {
-  constructor(private readonly pageRepository: AppPageRepository) {}
+export class ServerSiteRepository implements SiteRepository {
+  constructor(private readonly pageRepository: ServerPageRepository) {}
 
   private readonly defaultSiteId: string = 'site-001';
 

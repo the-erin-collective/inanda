@@ -8,7 +8,6 @@ import { config } from '../app/bootstrap/app.config.server';
 import { provideRouter } from '@angular/router';
 import { routes } from '../app/bootstrap/app.routes';
 import { provideHttpClient } from '@angular/common/http';
-import { repositoryProviders } from '../../infrastructure/providers/repository.providers';
 import mongoose from 'mongoose';
 
 console.log('Starting server...');
@@ -34,7 +33,6 @@ const bootstrapFn = async () => {
     ...config,
     providers: [
       ...config.providers,
-      repositoryProviders,
       provideClientHydration(),
       provideRouter(routes),
       provideHttpClient(),

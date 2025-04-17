@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { PageRepository } from '../../domain/repository/page.repository.interface';
-import { Page } from '../../domain/entities/page/page.entity';
-import { PageModel } from '../data/schemas/page.schema'; // Mongoose model
+import { PageRepository } from '../../../domain/repository/page.repository.interface';
+import { Page } from '../../../domain/entities/page/page.entity';
+import { PageModel } from '../../data/schemas/page.schema'; // Mongoose model
 import { Types } from 'mongoose';
 import { RootNode } from 'src/domain/entities/page/root.entity';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AppPageRepository implements PageRepository {
+export class ServerPageRepository implements PageRepository {
   async findById(id: string): Promise<Page | null> {
     console.log(`Finding page by ID: ${id}`);
 
