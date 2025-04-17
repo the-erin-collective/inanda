@@ -15,7 +15,7 @@ export class SiteContentResolver implements Resolve<Promise<SiteContent | null>>
   constructor(
     private siteContentService: SiteContentService,
     private transferState: TransferState,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: object
   ) {}
 
   resolve(route: ActivatedRouteSnapshot): Promise<SiteContent | null> {

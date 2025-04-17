@@ -5,9 +5,9 @@ export class ItemNode extends ElementNode {
     super('item');
   }
 
-  static override fromJSON(json: any): ItemNode {
-    console.debug('ItemNode.fromJSON called with', json);
+  static override fromJSON(_json: unknown): ItemNode {
+    console.debug('ItemNode.fromJSON called with', _json);
 
-    return new ItemNode(json.text || '');
+    return new ItemNode(_json['text'] || '');
   }
 }

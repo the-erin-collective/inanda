@@ -6,11 +6,11 @@ export class PanelNode extends ContainerNode {
     super('panel', children);
   }
 
-  static override fromJSON(json: any): PanelNode {
+  static override fromJSON(json: unknown): PanelNode {
     console.debug('PanelNode.fromJSON called with', json);
 
     return new PanelNode(
-      (json.children || []).map((child: any) => ItemNode.fromJSON(child))
+      (json['children'] || []).map((child: ItemNode) => ItemNode.fromJSON(child))
     );
   }
 }

@@ -35,11 +35,15 @@ export class ClientPageRepository implements PageRepository {
   }
 
   async save(site: Page): Promise<Page> {
+    console.debug('ClientPageRepository save called for site: ', site);
+
     console.warn('ClientSiteRepository: Save operation is not supported on the client.');
     throw new Error('Save operation is not supported on the client.');
   }
 
   async delete(id: string): Promise<void> {
+    console.debug('ClientPageRepository delete called for site id: ', id);
+    
     console.warn('ClientSiteRepository: Delete operation is not supported on the client.');
     throw new Error('Delete operation is not supported on the client.');
   } 
