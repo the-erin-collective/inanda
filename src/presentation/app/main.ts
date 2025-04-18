@@ -3,7 +3,7 @@ import { bootstrapApplication, provideClientHydration, withEventReplay } from '@
 import { AppComponent } from './app.component';
 import { environment } from './../../infrastructure/environments/environment';
 import { provideRouter } from '@angular/router';
-import { routes } from '../app/bootstrap/app.routes';
+import { routes } from '../../integration/bootstrap/app.routes';
 import { repositoryProviders } from '../../infrastructure/providers/repository/client-repository.providers'; 
 
 if (environment.production) {

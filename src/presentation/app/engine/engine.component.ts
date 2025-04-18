@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Inject, PLATFORM_ID, AfterViewInit  } from '@angular/core';
-import { EngineService } from './engine.service';
+import { EngineService } from '../../../integration/engine/engine.service';
 import { isPlatformBrowser, CommonModule} from '@angular/common';
 
 @Component({

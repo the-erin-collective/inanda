@@ -16,7 +16,7 @@ import {
   Texture,
   Vector3
 } from '@babylonjs/core';
-import { WindowRefService } from './../../../common/services/window-ref.service';
+import { WindowRefService } from '../../common/services/window-ref.service';
 import * as honeycomb from 'honeycomb-grid';
 import * as earcut from 'earcut';
 

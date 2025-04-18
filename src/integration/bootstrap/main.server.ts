@@ -3,10 +3,10 @@ import * as dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
 
 import { bootstrapApplication, provideClientHydration } from '@angular/platform-browser';
-import { AppComponent } from './app.component';
-import { config } from '../app/bootstrap/app.config.server';
+import { AppComponent } from '../../presentation/app/app.component';
+import { config } from './app.config.server';
 import { provideRouter } from '@angular/router';
-import { routes } from '../app/bootstrap/app.routes';
+import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import mongoose from 'mongoose';
 

@@ -8,7 +8,7 @@ import { UiComponent } from './ui/ui.component';
   selector: 'app-root',
   standalone: true, // Standalone component
   imports: [EngineComponent, UiComponent], // Import required components
-  styleUrls: ['./app.component.scss'],
+  styleUrls: [],
   templateUrl: './app.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

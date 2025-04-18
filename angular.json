@@ -46,7 +46,7 @@
             ],
             "scripts": [],
             "browser": "src/presentation/app/main.ts",
-            "server": "src/presentation/app/main.server.ts",
+            "server": "src/integration/bootstrap/main.server.ts",
             "prerender": true
           },
           "configurations": {

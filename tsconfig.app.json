@@ -8,7 +8,7 @@
   },
   "files": [
     "src/presentation/app/main.ts",
-    "src/presentation/app/main.server.ts"
+    "src/integration/bootstrap/main.server.ts"
   ],
   "include": [
     "src/**/*.d.ts"
