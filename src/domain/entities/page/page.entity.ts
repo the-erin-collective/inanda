@@ -1,5 +1,5 @@
 import { RootNode } from './root.entity';
-import { ItemNode } from './elements/item.entity';
+import { ContentNode } from './content.entity.interface';
 
 export class Page {
   constructor(
@@ -9,7 +9,16 @@ export class Page {
     public siteId: string
   ) {}
 
-  static fromJSON(json: { id: string, title: string, root: { base: { children?: ItemNode[] }, core: { children?: ItemNode[] }, script: { children?: ItemNode[] } }, siteId: string }): Page {
+  static fromJSON(json: {
+    id: string;
+    title: string;
+    root: {
+      base: { children?: ContentNode[] };
+      core: { children?: ContentNode[] };
+      script: { children?: ContentNode[] };
+    };
+    siteId: string;
+  }): Page {
     return new Page(
       json.id,
       json.title,
@@ -18,12 +27,21 @@ export class Page {
     );
   }
 
-  toJSON(): Record<string, unknown> {
+  toJSON(): {
+    _id: string;
+    title: string;
+    root: {
+      base: { children?: ContentNode[] };
+      core: { children?: ContentNode[] };
+      script: { children?: ContentNode[] };
+    };
+    siteId: string;
+  } {
     return {
-      _id: this.id,
+      _id: this.id, 
       title: this.title,
       root: this.root.toJSON(),
-      siteId: this.siteId
+      siteId: this.siteId,
     };
   }
 }

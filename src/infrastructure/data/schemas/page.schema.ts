@@ -1,13 +1,13 @@
 import { Schema, model, models, Document } from 'mongoose';
-import { ItemNode } from '../../../domain/entities/page/elements/item.entity';
+import { ContentNode } from 'src/domain/entities/page/content.entity.interface';
 
 export interface PageDocument extends Document {
   _id: string; // Explicitly define _id as a string
   title?: string;
   root: {
-    base: { children?: ItemNode[] };
-    core: { children?: ItemNode[] };
-    script: { children?: ItemNode[] };
+    base: { children?: ContentNode[] };
+    core: { children?: ContentNode[] };
+    script: { children?: ContentNode[] };
   };
   siteId: string;
 }

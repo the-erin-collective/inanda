@@ -1,30 +1,33 @@
-import { ElementNode } from './element.entity';
-import { BaseNode } from './elements/containers/base.entity';
-import { CoreNode } from './elements/containers/core.entity';
-import { ScriptNode } from './elements/containers/script.entity';
-import { ItemNode } from './elements/item.entity';
+import { ElementNode } from './element.entity.interface';
+import { BaseNode } from './containers/base.entity';
+import { CoreNode } from './containers/core.entity';
+import { ScriptNode } from './containers/script.entity';
+import { ContentNode } from './content.entity.interface';
 
-export class RootNode extends ElementNode {
+export class RootNode implements ElementNode {
+  type: string;
+  
   constructor(
     public base: BaseNode,
     public core: CoreNode,
     public script: ScriptNode
   ) {
-    super('root');
+    this.type = 'root';
+  }
+  
+  static fromJSON(root: { base: { children?: ContentNode[] }, core: { children?: ContentNode[] }, script: { children?: ContentNode[] } }): RootNode {
+    const base = new BaseNode(root.base.children);
+    const core = new CoreNode(root.core.children);
+    const script = new ScriptNode(root.script.children);
+
+    return new RootNode(base, core, script);
   }
 
-  override toJSON(): Record<string, unknown> {
+  toJSON(): { base: { children?: ContentNode[] }, core: { children?: ContentNode[] }, script: { children?: ContentNode[]  }}{
     return {
       base: this.base.toJSON(),
       core: this.core.toJSON(),
       script: this.script.toJSON()
     };
-  }
-
-  static override fromJSON(json: { base: { children?: ItemNode[] }; core: { children?: ItemNode[] }; script: { children?: ItemNode[] } }): RootNode {
-    const base = BaseNode.fromJSON(json.base);
-    const core = CoreNode.fromJSON(json.core);
-    const script = ScriptNode.fromJSON(json.script);
-    return new RootNode(base, core, script);
   }
 }

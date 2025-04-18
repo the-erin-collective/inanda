@@ -11,8 +11,4 @@ export class PNode extends ItemNode {
       text: this.text,
     };
   }
-
-  static override fromJSON(json: { text: string }): PNode {
-    return new PNode(json.text);
-  }
 }

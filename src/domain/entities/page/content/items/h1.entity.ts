@@ -11,8 +11,4 @@ export class H1Node extends ItemNode {
       text: this.text,
     };
   }
-
-  static override fromJSON(json: { text: string }): H1Node {
-    return new H1Node(json.text);
-  }
 }
