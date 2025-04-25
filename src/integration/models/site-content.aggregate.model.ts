@@ -1,0 +1,1 @@
+export * from '../../domain/aggregates/site-content.aggregate';

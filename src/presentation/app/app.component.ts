@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SiteContent } from '../../domain/aggregates/site-content.aggregate';
+import { SiteContent } from '../../integration/models/site-content.aggregate.model';
 import { EngineComponent } from './engine/engine.component';
 import { UiComponent } from './ui/ui.component';
 

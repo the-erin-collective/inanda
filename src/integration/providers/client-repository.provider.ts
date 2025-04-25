@@ -1,0 +1,1 @@
+export * from '../../infrastructure/providers/repository/client-repository.providers';

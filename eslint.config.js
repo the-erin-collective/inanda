@@ -97,14 +97,16 @@ module.exports = tseslint.config(
             },
             {
               target: "./src/integration",
-              from: [ // Integration can import from Infrastructure, Enactment, Domain, and Common
-                "./src/presentation",
+              from: [ // Integration can import from anywhere
               ],
               message: "Integration layer must only import from Infrastructure, Enactment, Domain, and Common.",
             },
             {
               target: "./src/presentation",
-              from: [], // Presentation can import from any other layer (no restriction)
+              from: [  
+                "./src/domain",
+                "./src/enactment",
+                "./src/infrastructure"], // Presentation can import from common and integration
               message: "Presentation layer can import from any other layer.",
             },
           ],
