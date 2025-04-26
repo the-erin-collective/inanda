@@ -1,8 +1,8 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { isPlatformServer } from '@angular/common';
-import { makeStateKey } from '@angular/core';
-import { TransferState } from '@angular/core';
+import { makeStateKey, TransferState } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { SiteContentService } from '../services/site-content.service';
 import { SiteContent } from '../../domain/aggregates/site-content.aggregate';
 
@@ -11,38 +11,50 @@ const SITE_CONTENT_KEY = makeStateKey<SiteContent | null>('siteContent');
 @Injectable({
   providedIn: 'root',
 })
-export class SiteContentResolver implements Resolve<Promise<SiteContent | null>> {
+export class SiteContentResolver implements Resolve<Promise<SiteContent>> {
+  private siteContentSubject = new BehaviorSubject<SiteContent | null>(null);
+
   constructor(
     private siteContentService: SiteContentService,
     private transferState: TransferState,
     @Inject(PLATFORM_ID) private platformId: object
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Promise<SiteContent | null> {
+  get siteContent$() {
+    return this.siteContentSubject.asObservable();
+  }
+
+  async resolve(route: ActivatedRouteSnapshot): Promise<SiteContent> {
     console.log('Resolving site content...');
-    
+
+    // Check if data is available in TransferState
     if (this.transferState.hasKey(SITE_CONTENT_KEY)) {
-      // Use preloaded data from TransferState
       const siteContent = this.transferState.get(SITE_CONTENT_KEY, null);
       console.log('Using preloaded site content:', siteContent);
-      return Promise.resolve(siteContent);
+      if (siteContent) {
+        this.siteContentSubject.next(siteContent); // Emit the data
+        return siteContent;
+      }
     }
 
-    if (isPlatformServer(this.platformId)) {
-      const siteId = route.paramMap.get('siteId') ?? 'site-001';
-      console.log('Resolving site content for siteId:', siteId);
+    // Fetch data from the service
+    const siteId = route.paramMap.get('siteId') ?? 'site-001';
+    console.log('Fetching site content for siteId:', siteId);
 
-      return this.siteContentService.getSiteContent(siteId).then((data) => {
-        console.log('Resolved site content:', data);
-        this.transferState.set(SITE_CONTENT_KEY, data); // Store data in TransferState
-        return data;
-      }).catch((err) => {
-        console.error('Error resolving site content:', err);
-        return null;
-      });
-    } else {
-      console.warn('SiteContentResolver skipped on the client.');
-      return Promise.resolve(null);
+    try {
+      const siteContent = await this.siteContentService.getSiteContent(siteId);
+      console.log('Resolved site content:', siteContent);
+
+      // Store data in TransferState for server-side rendering
+      if (isPlatformServer(this.platformId)) {
+        this.transferState.set(SITE_CONTENT_KEY, siteContent);
+      }
+
+      this.siteContentSubject.next(siteContent); // Emit the data
+      return siteContent;
+    } catch (error) {
+      console.error('Error resolving site content:', error);
+      throw error; // Ensure the resolver fails if data cannot be fetched
     }
   }
 }

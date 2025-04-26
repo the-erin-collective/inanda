@@ -19,6 +19,7 @@ import {
 import { WindowRefService } from '../../common/services/window-ref.service';
 import * as honeycomb from 'honeycomb-grid';
 import * as earcut from 'earcut';
+import { SiteContent } from '../models/site-content.aggregate.model';
 
 @Injectable({ providedIn: 'root' })
 export class EngineService {
@@ -35,7 +36,7 @@ export class EngineService {
     private windowRef: WindowRefService
   ) {}
 
-  public createScene(canvas: ElementRef<HTMLCanvasElement>): void {
+  public createScene(canvas: ElementRef<HTMLCanvasElement>, siteContent: SiteContent | null): void {
     // The first step is to get the reference of the canvas element from our HTML document
     this.canvas = canvas.nativeElement;
 

@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { SiteContentResolver } from '../../enactment/resolvers/site-content.resolver';
 import { SiteContent } from '../../integration/models/site-content.aggregate.model';
 import { EngineComponent } from './engine/engine.component';
 import { UiComponent } from './ui/ui.component';
@@ -15,17 +15,31 @@ import { UiComponent } from './ui/ui.component';
 })
 export class AppComponent implements OnInit {
   site: SiteContent | null = null;
+  siteDataReady = false;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private siteContentResolver: SiteContentResolver, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     console.log('AppComponent initialized');
 
-    this.route.data.subscribe((data) => {
-      console.log('data', data);
+    // Subscribe to the resolver's custom observable
+    this.siteContentResolver.siteContent$.subscribe((siteContent) => {
+      if (siteContent) {
+        console.log('ngOnInit - Site content resolved:', siteContent);
+        this.site = siteContent;
 
-      this.site = data['siteContent']; // 'siteContent' is the key used in the resolver
+        // Perform your logic here
+        this.onSiteContentFetched();
+      }
     });
+  }
+
+  // Method to handle logic after site content is fetched
+  private onSiteContentFetched(): void {
+    console.log('Performing logic after site content is fetched:', this.site);
+
+    this.siteDataReady = true;
+    this.cdr.markForCheck(); // Trigger change detection
   }
 }
 
