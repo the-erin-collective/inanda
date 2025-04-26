@@ -4,12 +4,13 @@ import * as dotenv from 'dotenv';
 import { Site } from '../src/domain/entities/site/site.entity';
 import { Page } from '../src/domain/entities/page/page.entity';
 import { RootNode } from '../src/domain/entities/page/root.entity';
-import { BaseNode } from '../src/domain/entities/page/elements/containers/base.entity';
-import { CoreNode } from '../src/domain/entities/page/elements/containers/core.entity';
-import { ScriptNode } from '../src/domain/entities/page/elements/containers/script.entity';
-import { PanelNode } from '../src/domain/entities/page/elements/containers/panel.entity';
-import { H1Node } from '../src/domain/entities/page/elements/items/h1.entity';
-import { PNode } from '../src/domain/entities/page/elements/items/p.entity';
+import { BaseNode } from '../src/domain/entities/page/containers/base.entity';
+import { CoreNode } from '../src/domain/entities/page/containers/core.entity';
+import { ScriptNode } from '../src/domain/entities/page/containers/script.entity';
+import { PanelNode } from '../src/domain/entities/page/content/items/panel.entity';
+import { H1Node } from '../src/domain/entities/page/content/items/h1.entity';
+import { PNode } from '../src/domain/entities/page/content/items/p.entity';
+import { PreviewNode } from '../src/domain/entities/page/containers/preview.entity';
 
 // Load .env if present
 dotenv.config();
@@ -49,6 +50,7 @@ function createPage(index: number, siteId: string): Page {
   const root = new RootNode(
     new BaseNode(),      // empty
     new CoreNode([panel]),
+    new PreviewNode([panel]),
     new ScriptNode()     // empty
   );
 
@@ -67,7 +69,7 @@ async function seed() {
     const site = new Site(siteId, 'Example Site', 'Seeded site', []);
     const pages: Page[] = [];
 
-    for (let i = 1; i <= 6; i++) {
+    for (let i = 1; i <= 7; i++) {
       const page = createPage(i, siteId);
       pages.push(page);
       site.pageOrder.push(page.id);
@@ -76,7 +78,7 @@ async function seed() {
     await SiteModel.create(site.toJSON());
     await PageModel.insertMany(pages.map(p => p.toJSON()));
 
-    console.log('✅ Seeded site and 6 pages.');
+    console.log('✅ Seeded site and 7 pages.');
   } catch (err) {
     console.error('❌ Error seeding:', err);
   } finally {

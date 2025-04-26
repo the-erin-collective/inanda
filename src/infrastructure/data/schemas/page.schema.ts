@@ -7,6 +7,7 @@ export interface PageDocument extends Document {
   root: {
     base: { children?: ContentNode[] };
     core: { children?: ContentNode[] };
+    preview: { children?: ContentNode[] };
     script: { children?: ContentNode[] };
   };
   siteId: string;
@@ -19,6 +20,7 @@ const PageSchema = new Schema<PageDocument>({
   root: {
     base: { children: { type: [Schema.Types.Mixed], default: [] } },
     core: { children: { type: [Schema.Types.Mixed], default: [] } },
+    preview: { children: { type: [Schema.Types.Mixed], default: [] } },
     script: { children: { type: [Schema.Types.Mixed], default: [] } },
   },
 });

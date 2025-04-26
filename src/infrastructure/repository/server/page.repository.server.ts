@@ -22,6 +22,7 @@ export class ServerPageRepository implements PageRepository {
       root: RootNode.fromJSON({
         base: { children: pageModel.root.base.children ?? [] },
         core: { children: pageModel.root.core.children ?? [] },
+        preview: { children: pageModel.root.preview.children ?? [] },
         script: { children: pageModel.root.script.children ?? [] },
       }), // Ensure the structure matches RootNode.fromJSON
       siteId: pageModel.siteId,
@@ -35,6 +36,7 @@ export class ServerPageRepository implements PageRepository {
       root: {
         base: { children: page.root.base.children ?? [] },
         core: { children: page.root.core.children ?? [] },
+        preview: { children: page.root.preview.children ?? [] },
         script: { children: page.root.script.children ?? [] },
       },
       siteId: page.siteId,

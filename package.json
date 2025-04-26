@@ -12,7 +12,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "serve:ssr:web-home": "node dist/dev/server/server.mjs",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "seed": "tsc tools/seed.ts && node tools/seed.js"
   },
   "private": true,
   "dependencies": {
