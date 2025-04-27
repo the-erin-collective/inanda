@@ -3,6 +3,7 @@ import { Scene, Mesh, MeshBuilder, AssetContainer, StandardMaterial, Texture, Ve
 import * as honeycomb from 'honeycomb-grid';
 import * as earcut from 'earcut';
 import { SiteContent } from '../../models/site-content.aggregate.model';
+import { Page } from 'src/domain/entities/page/page.entity';
 
 @Injectable({ providedIn: 'root' })
 export class PageLayoutService {
@@ -58,22 +59,28 @@ export class PageLayoutService {
     // Create and apply the material
     const material = this.createMaterial(scene);
 
-    grid.forEach((hex) => {
-      this.renderPageContent(hexTileMesh, hexTileMeshContainer, hex, material);
-    });
-
-    // Optionally, use siteContent to add additional content to the grid
-    if (siteContent) {
-      console.log('Rendering site content:', siteContent);
-      // Add logic to render site content on top of the hexes
+    // Ensure we have pages to render
+    const pages = siteContent?.pages || [];
+    if (pages.length === 0) {
+      console.warn('No pages available to render.');
+      return;
     }
+
+    // Map hexes to pages and render them
+    let pageIndex = 0;
+    grid.forEach((hex) => {
+      const page = pages[pageIndex % pages.length]; // Cycle through pages if there are more hexes than pages
+      this.renderPageContent(hexTileMesh, hexTileMeshContainer, hex, material, page);
+      pageIndex++;
+    });
   }
 
   renderPageContent(
     pageMesh: Mesh,
     pageMeshContainer: AssetContainer,
     hex: honeycomb.Hex,
-    material: StandardMaterial
+    material: StandardMaterial,
+    page: Page
   ): void {
     pageMeshContainer.meshes.splice(0);
 
@@ -94,5 +101,10 @@ export class PageLayoutService {
     for (const pageChild of pageChildren) {
       pageChild.name = pageChild.name.slice(9);
     }
+
+    // Add logic to display page data (e.g., title) on the hex
+    console.log(`Rendering page on hex (${hex.q}, ${hex.r}):`, page);
+    // Example: Attach metadata or create a label for the page
+    pageRoot.metadata = { page };
   }
 }

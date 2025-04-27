@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SiteContentResolver } from '../../enactment/resolvers/site-content.resolver';
 import { SiteContent } from '../../integration/models/site-content.aggregate.model';
-import { EngineComponent } from './engine/engine.component';
+import { PlatformComponent } from './platform/platform.component';
 import { UiComponent } from './ui/ui.component';
 
 @Component({
   selector: 'app-root',
   standalone: true, // Standalone component
-  imports: [EngineComponent, UiComponent], // Import required components
+  imports: [PlatformComponent, UiComponent], // Import required components
   styleUrls: [],
   templateUrl: './app.component.html',
   encapsulation: ViewEncapsulation.None,

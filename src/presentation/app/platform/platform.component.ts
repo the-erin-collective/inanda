@@ -16,15 +16,15 @@ import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { SiteContent } from '../../../integration/models/site-content.aggregate.model';
 
 @Component({
-  selector: 'app-engine',
+  selector: 'app-platform',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './engine.component.html',
-  styleUrl: './engine.component.scss',
+  templateUrl: './platform.component.html',
+  styleUrl: './platform.component.scss',
   imports: [CommonModule],
 })
-export class EngineComponent implements OnChanges {
+export class PlatformComponent implements OnChanges {
   @ViewChild('rendererCanvas', { static: false })
   public rendererCanvas: ElementRef<HTMLCanvasElement>;
 
