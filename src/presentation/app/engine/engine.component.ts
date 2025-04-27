@@ -64,8 +64,7 @@ export class EngineComponent implements OnChanges {
     this.isBabylonJsAvailable = isPlatformBrowser(this.platformId);
 
     if (this.isBabylonJsAvailable && this.rendererCanvas) {
-      this.engServ.createScene(this.rendererCanvas, this.siteContent); // Pass site content to the engine
-      this.engServ.animate();
+      this.engServ.initializeEngine(this.rendererCanvas, this.siteContent); // Pass site content to the engine
     } else {
       console.warn('EngineComponent - Renderer canvas or babylonjs is not available');
     }
