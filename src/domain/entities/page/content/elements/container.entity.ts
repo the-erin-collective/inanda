@@ -1,5 +1,5 @@
 import { ElementNode } from './../../element.entity';
-import { ItemNode } from './item.entity';
+import { ItemNode } from './../item.entity';
 
 export abstract class ContainerNode extends ElementNode {
   constructor(public type: string, public children: ItemNode[] = []) {

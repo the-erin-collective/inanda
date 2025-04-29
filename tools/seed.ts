@@ -8,8 +8,8 @@ import { BaseNode } from '../src/domain/entities/page/containers/base.entity';
 import { CoreNode } from '../src/domain/entities/page/containers/core.entity';
 import { ScriptNode } from '../src/domain/entities/page/containers/script.entity';
 import { PanelNode } from '../src/domain/entities/page/content/items/panel.entity';
-import { H1Node } from '../src/domain/entities/page/content/items/h1.entity';
-import { PNode } from '../src/domain/entities/page/content/items/p.entity';
+import { H1Node } from '../src/domain/entities/page/content/items/text/h1.entity';
+import { PNode } from '../src/domain/entities/page/content/items/text/p.entity';
 import { PreviewNode } from '../src/domain/entities/page/containers/preview.entity';
 
 // Load .env if present

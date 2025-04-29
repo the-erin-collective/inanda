@@ -1,8 +1,8 @@
 import { ItemNode } from '../item.entity';
 
-export class PNode extends ItemNode {
-  constructor(public text: string) {
-    super('p');
+export abstract class TextNode extends ItemNode {
+  constructor(type: string, public text: string) {
+    super(type);
   }
 
   override toJSON(): Record<string, unknown> {
