@@ -24,6 +24,7 @@ export class ServerPageRepository implements PageRepository {
         core: { children: pageModel.root.core.children ?? [] },
         preview: { children: pageModel.root.preview.children ?? [] },
         script: { children: pageModel.root.script.children ?? [] },
+        type: pageModel.root.type,
       }), // Ensure the structure matches RootNode.fromJSON
       siteId: pageModel.siteId,
     });
@@ -38,6 +39,7 @@ export class ServerPageRepository implements PageRepository {
         core: { children: page.root.core.children ?? [] },
         preview: { children: page.root.preview.children ?? [] },
         script: { children: page.root.script.children ?? [] },
+        type: page.root.type,
       },
       siteId: page.siteId,
     };

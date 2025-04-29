@@ -17,6 +17,7 @@ export class Page {
       core: { children?: ContentNode[] };
       preview: { children?: ContentNode[] };
       script: { children?: ContentNode[] };
+      type: string;
     };
     siteId: string;
   }): Page {
@@ -36,6 +37,7 @@ export class Page {
       core: { children?: ContentNode[] };
       preview: { children?: ContentNode[] };
       script: { children?: ContentNode[] };
+      type: string;
     };
     siteId: string;
   } {

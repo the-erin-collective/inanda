@@ -17,7 +17,7 @@ export class RootNode implements ElementNode {
     this.type = 'root';
   }
   
-  static fromJSON(root: { base: { children?: ContentNode[] }, core: { children?: ContentNode[] }, preview: { children?: ContentNode[] }, script: { children?: ContentNode[] } }): RootNode {
+  static fromJSON(root: { base: { children?: ContentNode[] }, core: { children?: ContentNode[] }, preview: { children?: ContentNode[] }, script: { children?: ContentNode[] }, type: string }): RootNode {
     const base = new BaseNode(root.base.children);
     const core = new CoreNode(root.core.children);
     const script = new ScriptNode(root.script.children);
@@ -26,12 +26,13 @@ export class RootNode implements ElementNode {
     return new RootNode(base, core, preview, script);
   }
 
-  toJSON(): { base: { children?: ContentNode[] }, core: { children?: ContentNode[] }, preview: { children?: ContentNode[] }, script: { children?: ContentNode[]  }}{
+  toJSON(): { base: { children?: ContentNode[] }, core: { children?: ContentNode[] }, preview: { children?: ContentNode[] }, script: { children?: ContentNode[]  }, type: string}{
     return {
       base: this.base.toJSON(),
       core: this.core.toJSON(),
       preview: this.preview.toJSON(),
-      script: this.script.toJSON()
+      script: this.script.toJSON(),
+      type: this.type,
     };
   }
 }
