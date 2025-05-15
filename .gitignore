@@ -47,3 +47,4 @@ package-lock.json
 tools/**/*.js
 src/**/*.js
 package-lock.json
+/cache
