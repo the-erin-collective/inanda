@@ -1,0 +1,6 @@
+'use strict'
+const path = require('path')
+// Use process.cwd() instead of __dirname as a fallback when __dirname is not available
+const dirname = typeof __dirname !== 'undefined' ? __dirname : process.cwd() + '/node_modules/classic-level'
+const binding = require('node-gyp-build')(dirname)
+module.exports = binding 
