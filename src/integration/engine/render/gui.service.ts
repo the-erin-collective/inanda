@@ -7,12 +7,13 @@ import { ContentNode } from 'src/domain/entities/page/content.entity.interface';
 import { CoreNode } from 'src/domain/entities/page/containers/core.entity';
 import { EmbeddableContainerNode } from 'src/domain/entities/page/content/embeddable-container.entity';
 import { TextNode } from 'src/domain/entities/page/content/items/text.entity';
+import { StyleService } from 'src/domain/services/style.service';
 
 @Injectable({ providedIn: 'root' })
 export class GuiService {
   private guiTexture: AdvancedDynamicTexture;
 
-  constructor() {}
+  constructor(private styleService: StyleService) {}
 
   initializeGui(scene: Scene): void {
     this.guiTexture = AdvancedDynamicTexture.CreateFullscreenUI('UI', true, scene);
@@ -31,13 +32,18 @@ export class GuiService {
     advancedTexture.rootContainer.scaleX = 0.8;
     advancedTexture.rootContainer.scaleY = 0.8;
     
+    // Preserve the existing mesh metadata
+    if (mesh.metadata) {
+      console.log(`Preserving mesh metadata for ${mesh.name}:`, mesh.metadata);
+    }
+    
     advancedTexture.addControl(guiElement);
     
     // Debug the full hierarchy
     this.logControlHierarchy(guiElement);
   }
 
-  createGuiFromJson(node: ElementNode): Control | null {
+  async createGuiFromJson(node: ElementNode): Promise<Control | null> {
     if (!node || !node.type) {
       console.warn('Invalid element node:', node);
       return null;
@@ -47,7 +53,15 @@ export class GuiService {
 
     // Special handling for RootNode which has a specific structure
     if (node.type === 'root') {
-      return this.createRootContainer(node as RootNode);
+      const rootContainer = await this.createRootContainer(node as RootNode);
+      // Store the page ID in the root container's metadata
+      if ('id' in node) {
+        rootContainer.metadata = {
+          pageId: (node as any).id
+        };
+        console.log(`Stored page ID ${(node as any).id} in root container metadata`);
+      }
+      return rootContainer;
     }
 
     // Handle other node types
@@ -65,7 +79,7 @@ export class GuiService {
     }
   }
 
-  private createRootContainer(rootNode: RootNode): Rectangle {
+  private async createRootContainer(rootNode: RootNode): Promise<Rectangle> {
     console.log('Creating root container');
     const rootContainer = new Rectangle('root');
     rootContainer.width = '100%';
@@ -80,7 +94,7 @@ export class GuiService {
     // Only process core content (similar to HTML body)
     if (rootNode.core) {
       console.log('Processing core content');
-      const coreContainer = this.createContainer(rootNode.core);
+      const coreContainer = await this.createContainer(rootNode.core);
       if (coreContainer) {
         rootContainer.addControl(coreContainer);
         console.log('Added core container to root');
@@ -90,42 +104,19 @@ export class GuiService {
     return rootContainer;
   }
 
-  private createContainer(node: ElementNode): Rectangle {
+  private async createContainer(node: ElementNode): Promise<Rectangle> {
     console.log(`Creating container for type: ${node.type}`);
     const rect = new Rectangle(node.type);
     
-    // Use default values instead of assuming properties exist
-    rect.width = '90%';
-    rect.height = '90%';
-    
-    // Set background based on container type
-    switch (node.type) {
-      case 'container':
-        rect.background = 'rgba(0, 0, 0, 0.7)'; // More visible black
-        break;
-      case 'panel':
-        rect.background = 'rgba(40, 40, 100, 0.8)'; // Bluish panel (more visible)
-        break;
-      case 'core':
-        rect.background = 'rgba(50, 50, 50, 0.5)'; // Medium gray
-        break;
-      default:
-        rect.background = 'transparent';
+    // Apply styles if they exist
+    if (node.styleIds && node.styleIds.length > 0) {
+      const styles = await Promise.all(
+        node.styleIds.map(styleId => this.styleService.loadStylesheet(styleId))
+      );
+      const flattenedStyles = styles.flat();
+      this.styleService.applyStyles(rect, flattenedStyles);
     }
     
-    rect.thickness = 1; // Add thin border to visualize containers
-    rect.color = "white";
-    
-    // Improved positioning
-    rect.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_CENTER;
-    rect.verticalAlignment = Control.VERTICAL_ALIGNMENT_CENTER;
-    
-    // Add padding
-    rect.paddingLeft = "20px";
-    rect.paddingRight = "20px";
-    rect.paddingTop = "20px"; 
-    rect.paddingBottom = "20px";
-
     // Handle children based on the node type
     let children: ContentNode[] | undefined;
     
@@ -146,11 +137,11 @@ export class GuiService {
     if (children && Array.isArray(children)) {
       // Create better layout system with more spacing
       let childTop = 10;
-      children.forEach((childNode, index) => {
+      for (const childNode of children) {
         // Check if childNode is an ElementNode before processing
         if (isElementNode(childNode)) {
-          console.log(`Processing child ${index} of type: ${childNode.type}`);
-          const childControl = this.createGuiFromJson(childNode);
+          console.log(`Processing child of type: ${childNode.type}`);
+          const childControl = await this.createGuiFromJson(childNode);
           if (childControl) {
             rect.addControl(childControl);
             console.log(`Added child control for ${childNode.type} to ${node.type}`);
@@ -170,7 +161,7 @@ export class GuiService {
         } else {
           console.warn('Child is not an ElementNode:', childNode);
         }
-      });
+      }
     } else {
       console.log(`No children found for ${node.type} node`);
     }
@@ -178,9 +169,18 @@ export class GuiService {
     return rect;
   }
 
-  private createTextBlock(node: ElementNode, fontSize: number, fontWeight: string): TextBlock {
+  private async createTextBlock(node: ElementNode, fontSize: number, fontWeight: string): Promise<TextBlock> {
     console.log(`Creating text block for type: ${node.type}`);
     const textBlock = new TextBlock(node.type);
+    
+    // Apply styles if they exist
+    if (node.styleIds && node.styleIds.length > 0) {
+      const styles = await Promise.all(
+        node.styleIds.map(styleId => this.styleService.loadStylesheet(styleId))
+      );
+      const flattenedStyles = styles.flat();
+      this.styleService.applyStyles(textBlock, flattenedStyles);
+    }
     
     // Set default text properties
     let content = '';

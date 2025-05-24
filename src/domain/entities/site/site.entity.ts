@@ -3,7 +3,9 @@ export class Site {
       public id: string,
       public name: string,
       public description?: string,
-      public pageOrder: string[] = []
+      public pageOrder: string[] = [],
+      public sitemapType: string = 'hex-flower',
+      public defaultPage?: string
     ) {}
   
     static fromJSON(json: {
@@ -11,12 +13,16 @@ export class Site {
       name: string;
       description?: string;
       pageOrder?: string[];
+      sitemapType?: string;
+      defaultPage?: string;
     }): Site {
       return new Site(
         json.id,
         json.name,
         json.description,
-        json.pageOrder ?? []
+        json.pageOrder ?? [],
+        json.sitemapType ?? 'hex-flower',
+        json.defaultPage
       );
     }
   
@@ -26,6 +32,8 @@ export class Site {
         name: this.name,
         description: this.description,
         pageOrder: this.pageOrder,
+        sitemapType: this.sitemapType,
+        defaultPage: this.defaultPage
       };
     }
   }

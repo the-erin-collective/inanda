@@ -9,8 +9,14 @@ export class Page {
     public siteId: string
   ) {}
 
+  // Add getter for _id to maintain compatibility
+  get _id(): string {
+    return this.id;
+  }
+
   static fromJSON(json: {
-    id: string;
+    id?: string;
+    _id?: string;
     title: string;
     root: {
       base: { children?: ContentNode[] };
@@ -21,8 +27,12 @@ export class Page {
     };
     siteId: string;
   }): Page {
+    const id = json.id || json._id;
+    if (!id) {
+      throw new Error('Page must have either id or _id');
+    }
     return new Page(
-      json.id,
+      id,
       json.title,
       RootNode.fromJSON(json.root),
       json.siteId
