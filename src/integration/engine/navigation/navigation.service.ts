@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Scene, Vector3, Animation, ArcRotateCamera, PointerInfo, PointerEventTypes, EasingFunction, CubicEase, AnimationGroup } from '@babylonjs/core';
 import { Page } from 'src/domain/entities/page/page.entity';
+import { DEFAULT_SITE_ID } from 'src/domain/constants/site.constants';
 
 export enum ViewMode {
   SITEMAP = 'sitemap',
@@ -225,8 +226,15 @@ export class NavigationService {
     this.currentViewMode = ViewMode.PAGE;
     this.currentPageId = page._id;
 
-    // Update browser history
-    window.history.pushState({ pageId: page._id }, '', `#${page._id}`);
+    // Get current URL path and preserve site ID
+    const currentPath = window.location.pathname;
+    const pathParts = currentPath.split('/').filter(Boolean);
+    const siteId = pathParts[0] || DEFAULT_SITE_ID;
+    
+    // Update browser history with both site ID and page ID
+    const newUrl = `/${siteId}/${page._id}`;
+    console.log('Updating URL to:', newUrl);
+    window.history.pushState({ siteId, pageId: page._id }, '', newUrl);
 
     // Calculate target position and rotation based on the mesh
     const targetPosition = new Vector3(
@@ -258,8 +266,15 @@ export class NavigationService {
     this.currentViewMode = ViewMode.SITEMAP;
     this.currentPageId = undefined;
 
-    // Update browser history
-    window.history.pushState({}, '', '#');
+    // Get current URL path and preserve site ID
+    const currentPath = window.location.pathname;
+    const pathParts = currentPath.split('/').filter(Boolean);
+    const siteId = pathParts[0] || DEFAULT_SITE_ID;
+    
+    // Update browser history to keep site ID but remove page ID
+    const newUrl = `/${siteId}`;
+    console.log('Updating URL to sitemap view:', newUrl);
+    window.history.pushState({ siteId }, '', newUrl);
 
     console.log('Animating camera to sitemap view:', {
       position: this.SITEMAP_POSITION,

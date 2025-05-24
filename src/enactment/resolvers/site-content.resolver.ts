@@ -5,6 +5,7 @@ import { makeStateKey, TransferState } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { SiteContentService } from '../services/site-content.service';
 import { SiteContent } from '../../domain/aggregates/site-content.aggregate';
+import { DEFAULT_SITE_ID } from '../../domain/constants/site.constants';
 
 const SITE_CONTENT_KEY = makeStateKey<SiteContent | null>('siteContent');
 
@@ -38,7 +39,7 @@ export class SiteContentResolver implements Resolve<Promise<SiteContent>> {
     }
 
     // Fetch data from the service
-    const siteId = route.paramMap.get('siteId') ?? 'site-001';
+    const siteId = route.paramMap.get('siteId') ?? DEFAULT_SITE_ID;
     console.log('Fetching site content for siteId:', siteId);
 
     try {

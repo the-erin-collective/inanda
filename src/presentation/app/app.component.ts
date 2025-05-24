@@ -17,7 +17,10 @@ export class AppComponent implements OnInit {
   site: SiteContent | null = null;
   siteDataReady = false;
 
-  constructor(private siteContentResolver: SiteContentResolver, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private siteContentResolver: SiteContentResolver, 
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     console.log('AppComponent initialized');
@@ -27,8 +30,6 @@ export class AppComponent implements OnInit {
       if (siteContent) {
         console.log('ngOnInit - Site content resolved:', siteContent);
         this.site = siteContent;
-
-        // Perform your logic here
         this.onSiteContentFetched();
       }
     });
@@ -37,7 +38,6 @@ export class AppComponent implements OnInit {
   // Method to handle logic after site content is fetched
   private onSiteContentFetched(): void {
     console.log('Performing logic after site content is fetched:', this.site);
-
     this.siteDataReady = true;
     this.cdr.markForCheck(); // Trigger change detection
   }
