@@ -38,7 +38,7 @@ export class PageLayoutService {
     // Create GUI elements from the page JSON
     const guiElement = this.guiService.createGuiFromJson(page.root);
     if (guiElement) {
-      this.guiService.addGuiToScene(guiElement);
+      this.guiService.attachGuiToMesh(hexMesh, guiElement);
     }
   }
 

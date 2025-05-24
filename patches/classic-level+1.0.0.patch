@@ -1,0 +1,5 @@
+'use strict'
+const path = require('path').posix
+const binding = require('./binding.node')
+ 
+module.exports = binding 

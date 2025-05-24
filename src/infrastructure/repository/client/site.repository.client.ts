@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { makeStateKey } from '@angular/core';
 import { TransferState } from '@angular/core';
 import { Site } from '../../../domain/entities/site/site.entity';
@@ -11,7 +11,7 @@ const SITE_CONTENT_KEY = makeStateKey<SiteContent>('siteContent');
   providedIn: 'root',
 })
 export class ClientSiteRepository implements SiteRepository {
-  constructor(private transferState: TransferState) {}
+  constructor(@Inject(TransferState) private transferState: TransferState) {}
 
   async findById(id: string): Promise<Site | null> {
     const siteContent = this.transferState.get(SITE_CONTENT_KEY, null);
