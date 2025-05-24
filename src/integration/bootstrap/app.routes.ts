@@ -15,5 +15,5 @@ export const routes: Routes = [
         resolve: {
           siteContent: SiteContentResolver
         }
-    }
+      }
 ];

@@ -1,18 +1,18 @@
-import { EmbeddableContainerNode } from '../embeddable-container.entity';
 import { ContentNode } from '../../content.entity.interface';
 
-export class PanelNode implements EmbeddableContainerNode {
-  type = 'panel';
+export class PanelNode implements ContentNode {
+  type: string = 'panel';
   children: ContentNode[];
 
-  constructor(children?: ContentNode[]) {
-    this.children = children || [];
+  constructor(children: ContentNode[], public _id?: string) {
+    this.children = children;
   }
 
   toJSON(): Record<string, unknown> {
     return {
       type: this.type,
       children: this.children,
+      _id: this._id
     };
   }
 }

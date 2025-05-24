@@ -14,11 +14,11 @@ export interface Style {
     marginTop?: string;
     marginBottom?: string;
     
-    // Anchor/Position
-    anchorLeft?: string;
-    anchorRight?: string;
-    anchorTop?: string;
-    anchorBottom?: string;
+    // Alignment
+    horizontalAlignment?: 'left' | 'center' | 'right';
+    verticalAlignment?: 'top' | 'center' | 'bottom';
+    textHorizontalAlignment?: 'left' | 'center' | 'right';
+    textVerticalAlignment?: 'top' | 'center' | 'bottom';
     
     // Dimensions
     height?: string;
@@ -32,5 +32,13 @@ export interface Style {
     // Colors
     foregroundColor?: string;
     backgroundColor?: string;
+    
+    // Border
+    borderWidth?: string;
+    borderColor?: string;
+    borderStyle?: string;
+    
+    // Special properties
+    fillSpace?: boolean; // For panels that should fill their container
   };
-} 
+}

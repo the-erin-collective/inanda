@@ -7,13 +7,15 @@ import { GuiService } from './gui.service';
 import { SitemapType } from 'src/domain/entities/site/sitemap-type.enum';
 import { NavigationService } from '../navigation/navigation.service';
 import { RootNode } from 'src/domain/entities/page/root.entity';
+import { BackdropService } from './backdrop.service';
 
 @Injectable({ providedIn: 'root' })
 export class PageLayoutService {
   material: StandardMaterial;
   constructor(
     private guiService: GuiService,
-    private navigationService: NavigationService
+    private navigationService: NavigationService,
+    private backdropService: BackdropService
   ) {}
 
   async renderGrid(scene: Scene, siteContent: SiteContent | null): Promise<void> {
@@ -27,6 +29,9 @@ export class PageLayoutService {
       console.warn('No pages available to render.');
       return;
     }
+
+    // Apply the site backdrop
+    this.backdropService.applyBackdrop(scene, siteContent.site.backdrop);
 
     this.material = this.createMaterial(scene);
     this.guiService.initializeGui(scene);
@@ -80,9 +85,10 @@ export class PageLayoutService {
       hexMesh.metadata = { pageId: page._id };
       console.log(`Stored page ID in mesh metadata:`, hexMesh.metadata);
       
-      const guiElement = await this.guiService.createGuiFromJson(page.root);
-      if (guiElement) {
-        this.guiService.attachGuiToMesh(hexMesh, guiElement);
+      const guiElements = await this.guiService.createGuiFromJson(page.root);
+      if (guiElements) {
+        // Store both preview and core content in the mesh's GUI
+        this.guiService.attachGuiToMesh(hexMesh, guiElements);
       }
       pageIndex++;
     }

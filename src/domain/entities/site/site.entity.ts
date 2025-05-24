@@ -1,3 +1,5 @@
+import { SiteBackdrop } from './backdrop.enum';
+
 export class Site {
     constructor(
       public id: string,
@@ -5,7 +7,8 @@ export class Site {
       public description?: string,
       public pageOrder: string[] = [],
       public sitemapType: string = 'hex-flower',
-      public defaultPage?: string
+      public defaultPage?: string,
+      public backdrop?: string
     ) {}
   
     static fromJSON(json: {
@@ -15,6 +18,7 @@ export class Site {
       pageOrder?: string[];
       sitemapType?: string;
       defaultPage?: string;
+      backdrop?: string;
     }): Site {
       return new Site(
         json.id,
@@ -22,7 +26,8 @@ export class Site {
         json.description,
         json.pageOrder ?? [],
         json.sitemapType ?? 'hex-flower',
-        json.defaultPage
+        json.defaultPage,
+        json.backdrop
       );
     }
   
@@ -33,7 +38,8 @@ export class Site {
         description: this.description,
         pageOrder: this.pageOrder,
         sitemapType: this.sitemapType,
-        defaultPage: this.defaultPage
+        defaultPage: this.defaultPage,
+        backdrop: this.backdrop
       };
     }
   }

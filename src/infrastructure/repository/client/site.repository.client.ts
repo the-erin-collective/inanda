@@ -15,6 +15,11 @@ export class ClientSiteRepository implements SiteRepository {
 
   async findById(id: string): Promise<Site | null> {
     const siteContent = this.transferState.get(SITE_CONTENT_KEY, null);
+    
+    if (!siteContent) {
+      console.warn('ClientSiteRepository: No preloaded site content found.');
+      return null;
+    }
 
     if(siteContent.site.id !== id) {
       console.warn(`ClientSiteRepository: Site ID ${id} does not match preloaded site ID ${siteContent.site.id}.`);
@@ -42,14 +47,12 @@ export class ClientSiteRepository implements SiteRepository {
 
   async save(site: Site): Promise<Site> {
     console.debug('ClientPageRepository save called for site: ', site);
-
     console.warn('ClientSiteRepository: Save operation is not supported on the client.');
     throw new Error('Save operation is not supported on the client.');
   }
 
   async delete(id: string): Promise<void> {
     console.debug('ClientPageRepository delete called for site id: ', id);
-
     console.warn('ClientSiteRepository: Delete operation is not supported on the client.');
     throw new Error('Delete operation is not supported on the client.');
   }
