@@ -136,6 +136,10 @@ export class GuiService {
     } else if (node.type === 'container' && node instanceof EmbeddableContainerNode) {
       children = node.children;
       console.log('Container node children count:', children?.length || 0);
+    } else if ('children' in node && Array.isArray((node as any).children)) {
+      // Handle any node that has children property
+      children = (node as any).children;
+      console.log(`${node.type} node children count:`, children?.length || 0);
     }
     
     // Process children if they exist
