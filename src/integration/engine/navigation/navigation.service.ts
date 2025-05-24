@@ -18,6 +18,9 @@ export class NavigationService {
   private pages: Page[] = [];
   private hexToPageMap: Map<string, Page> = new Map();
   private currentAnimationGroup: AnimationGroup | null = null;
+  private pointerDownTime: number = 0;
+  private readonly CLICK_THRESHOLD = 200; // milliseconds
+  private isPointerDown: boolean = false;
 
   // Camera positions
   private readonly SITEMAP_POSITION = new Vector3(0, 200, 0);
@@ -68,6 +71,9 @@ export class NavigationService {
         case PointerEventTypes.POINTERDOWN:
           this.handlePointerDown(pointerInfo);
           break;
+        case PointerEventTypes.POINTERUP:
+          this.handlePointerUp(pointerInfo);
+          break;
       }
     });
 
@@ -112,6 +118,9 @@ export class NavigationService {
     if (pointerInfo.type !== PointerEventTypes.POINTERDOWN) {
       return;
     }
+
+    this.isPointerDown = true;
+    this.pointerDownTime = Date.now();
 
     const pickResult = this.scene.pick(this.scene.pointerX, this.scene.pointerY);
     if (!pickResult.hit) {
@@ -161,8 +170,35 @@ export class NavigationService {
       return;
     }
 
-    // Otherwise, navigate to the page
-    this.navigateToPage(page, pickedMesh);
+    // Store the picked mesh and page for potential use in handlePointerUp
+    this.currentPickedMesh = pickedMesh;
+    this.currentPickedPage = page;
+  }
+
+  private currentPickedMesh: any = null;
+  private currentPickedPage: Page | null = null;
+
+  private handlePointerUp(pointerInfo: PointerInfo): void {
+    if (pointerInfo.type !== PointerEventTypes.POINTERUP) {
+      return;
+    }
+
+    this.isPointerDown = false;
+    const pointerUpTime = Date.now();
+    const holdDuration = pointerUpTime - this.pointerDownTime;
+
+    // If it's a quick click (less than CLICK_THRESHOLD milliseconds)
+    if (holdDuration < this.CLICK_THRESHOLD && this.currentPickedMesh && this.currentPickedPage) {
+      console.log('Quick click detected, navigating to page');
+      this.navigateToPage(this.currentPickedPage, this.currentPickedMesh);
+    } else if (holdDuration >= this.CLICK_THRESHOLD) {
+      console.log('Long press detected, duration:', holdDuration);
+      // Handle long press here if needed
+    }
+
+    // Clear the stored mesh and page
+    this.currentPickedMesh = null;
+    this.currentPickedPage = null;
   }
 
   private async navigateBetweenPages(targetPage: Page, targetMesh: any): Promise<void> {
