@@ -105,14 +105,13 @@ export function createPaintBackdrop(scene: Scene): void {
     }
       void main(void) {
       vec2 uv = vUV;
+        // Create base paint texture using noise (faster cloud movement)
+      float baseNoise = fbm(uv * 6.0 + time * 0.08);  // Increased from 0.02 to 0.08
+      float detailNoise = fbm(uv * 18.0 + time * 0.05); // Increased from 0.01 to 0.05
       
-      // Create base paint texture using noise (much slower movement)
-      float baseNoise = fbm(uv * 6.0 + time * 0.02);
-      float detailNoise = fbm(uv * 18.0 + time * 0.01);
-      
-      // Create additional noise layers for more variety
-      float coarseNoise = fbm(uv * 3.0 + time * 0.005);
-      float fineNoise = fbm(uv * 32.0 + time * 0.015);
+      // Create additional noise layers for more variety (faster cloud movement)
+      float coarseNoise = fbm(uv * 3.0 + time * 0.03);  // Increased from 0.005 to 0.03
+      float fineNoise = fbm(uv * 32.0 + time * 0.06);   // Increased from 0.015 to 0.06
       
       // Create brush strokes at different angles (slower rotation)
       float stroke1 = brushStroke(uv + vec2(sin(time * 0.08) * 0.05, cos(time * 0.06) * 0.03), time * 0.12, 0.18 * brushStrength);
@@ -122,18 +121,35 @@ export function createPaintBackdrop(scene: Scene): void {
       
       // Combine strokes with more variety
       float brushPattern = max(stroke1, max(stroke2, max(stroke3, stroke4)));
-      
-      // Create paint splatters (slower movement)
+        // Create paint splatters (slower, smoother, more varied movement)
       float splatter = 0.0;
       for (int i = 0; i < 12; i++) {
         float iFloat = float(i);
+        
+        // Create more varied and slower movement patterns for each splatter
+        float timeOffset1 = iFloat * 2.37; // Prime-like number for variety
+        float timeOffset2 = iFloat * 1.73; // Different prime-like number
+        
+        // Slower, smoother movement with individual speeds for each circle
+        float speed1 = 0.08 + sin(iFloat * 0.5) * 0.03; // Speed varies per circle: 0.05-0.11
+        float speed2 = 0.06 + cos(iFloat * 0.7) * 0.02; // Speed varies per circle: 0.04-0.08
+        
         vec2 splatterPos = vec2(
-          sin(time * 0.2 + iFloat * 0.5) * 0.4 + 0.5,
-          cos(time * 0.3 + iFloat * 0.7) * 0.4 + 0.5
+          sin(time * speed1 + timeOffset1) * 0.35 + 0.5,
+          cos(time * speed2 + timeOffset2) * 0.35 + 0.5
         );
+        
         float dist = distance(uv, splatterPos);
-        float splatterSize = 0.05 + sin(time * 0.1 + iFloat) * 0.02;
-        splatter += smoothstep(splatterSize * splatterDensity, splatterSize * 0.3 * splatterDensity, dist) * random(vec2(iFloat, time * 0.1));
+        
+        // Vary splatter size more and make it change slowly (no flickering)
+        float baseSizeVariation = 0.03 + (sin(iFloat * 1.23) * 0.02); // Base size varies per circle
+        float timeBasedSize = sin(time * 0.03 + iFloat * 0.8) * 0.015; // Slow size animation
+        float splatterSize = baseSizeVariation + timeBasedSize;
+        
+        // Smooth intensity without flickering - use consistent random value per circle
+        float intensity = random(vec2(iFloat * 12.34, iFloat * 56.78)); // Fixed random per circle
+        
+        splatter += smoothstep(splatterSize * splatterDensity, splatterSize * 0.3 * splatterDensity, dist) * intensity;
       }
       
       // Mix paint colors with more complex blending
@@ -143,20 +159,19 @@ export function createPaintBackdrop(scene: Scene): void {
       
       // Apply brush strokes with more subtle blending
       vec3 brushColor = mix(color2Mix, color3Mix, brushPattern * 0.7);
-      
-      // Apply splatters with varied intensity
-      vec3 splatterColor = mix(paintColor3 * 1.2, paintColor1 * 1.1, sin(time * 0.05));
+        // Apply splatters with varied intensity (faster color changes)
+      vec3 splatterColor = mix(paintColor3 * 1.2, paintColor1 * 1.1, sin(time * 0.15)); // Increased from 0.05 to 0.15
       vec3 finalColor = mix(brushColor, splatterColor, splatter * 0.4);
       
-      // Add multiple texture variation layers
-      float texture1 = fbm(uv * 12.0 + time * 0.008) * 0.08;
-      float texture2 = fbm(uv * 24.0 + time * 0.004) * 0.04;
+      // Add multiple texture variation layers (faster)
+      float texture1 = fbm(uv * 12.0 + time * 0.025) * 0.08; // Increased from 0.008 to 0.025
+      float texture2 = fbm(uv * 24.0 + time * 0.015) * 0.04; // Increased from 0.004 to 0.015
       finalColor += texture1 + texture2;
       
-      // Add subtle color shifts over time
-      finalColor.r += sin(time * 0.03) * 0.02;
-      finalColor.g += cos(time * 0.04) * 0.015;
-      finalColor.b += sin(time * 0.025) * 0.02;
+      // Add subtle color shifts over time (faster to match cloud speed)
+      finalColor.r += sin(time * 0.08) * 0.02; // Increased from 0.03 to 0.08
+      finalColor.g += cos(time * 0.1) * 0.015;  // Increased from 0.04 to 0.1
+      finalColor.b += sin(time * 0.06) * 0.02;  // Increased from 0.025 to 0.06
       
       // Ensure colors stay in valid range
       finalColor = clamp(finalColor, 0.0, 1.0);
