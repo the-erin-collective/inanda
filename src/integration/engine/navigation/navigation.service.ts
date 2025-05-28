@@ -252,12 +252,11 @@ export class NavigationService {
     }
     this.currentPickedMesh = null;
   }
-
   private createHexToPageMap(): void {
     // Create a mapping of hex coordinates to pages
     this.pages.forEach((page, index) => {
-      // Get all meshes in the scene
-      const meshes = this.scene.meshes;
+      // Get all meshes in the scene that have pageId metadata (excluding backdrop and other non-page meshes)
+      const meshes = this.scene.meshes.filter(mesh => mesh.metadata?.pageId);
       
       // Find the mesh that contains this page's content
       const pageMesh = meshes.find(mesh => {

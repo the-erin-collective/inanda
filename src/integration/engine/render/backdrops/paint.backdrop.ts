@@ -165,11 +165,10 @@ export function createPaintBackdrop(scene: Scene): void {
   // Position the plane behind everything
   paintPlane.position = new Vector3(0, 0, -50);
   paintPlane.rotation.x = 0;
-
   // Create the shader material
   const paintMaterial = new ShaderMaterial("paintMaterial", scene, {
-    vertex: "paint",
-    fragment: "paint"
+    vertex: "paintVertexShader",
+    fragment: "paintFragmentShader"
   }, {
     attributes: ["position", "uv"],
     uniforms: [

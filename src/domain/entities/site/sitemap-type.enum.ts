@@ -1,5 +1,5 @@
 export enum SitemapType {
-  HEX_FLOWER = 'hex-flower',
-  GRID = 'grid',
-  LIST = 'list'
-} 
+  HEX_FLOWER = 'HEX_FLOWER',
+  GRID = 'GRID',
+  LIST = 'LIST'
+}

@@ -13,19 +13,28 @@ export class BackdropService {
   constructor() {}
 
   applyBackdrop(scene: Scene, backdropValue?: string): void {
+    console.log('BackdropService.applyBackdrop called with backdropValue:', backdropValue);
+    console.log('SiteBackdrop enum values:', Object.values(SiteBackdrop));
+    
     if (!backdropValue) {
+      console.log('No backdrop value provided, using default');
       this.setBackgroundColor(scene, this.DEFAULT_BACKDROP_COLOR);
       return;
     }
 
     // Check if the backdrop value is a valid hex color
     if (this.isValidHexColor(backdropValue)) {
+      console.log('Backdrop value is a valid hex color, applying background color');
       this.setBackgroundColor(scene, backdropValue);
       return;
     }
 
     // Check if the backdrop value matches any of our predefined backdrops
+    console.log('Checking if backdrop value matches predefined backdrops...');
+    console.log('Does backdrop value match enum?', Object.values(SiteBackdrop).includes(backdropValue as SiteBackdrop));
+    
     if (Object.values(SiteBackdrop).includes(backdropValue as SiteBackdrop)) {
+      console.log('Applying predefined backdrop:', backdropValue);
       this.applyPredefinedBackdrop(scene, backdropValue as SiteBackdrop);
       return;
     }
@@ -47,11 +56,16 @@ export class BackdropService {
     
     scene.clearColor = new Color4(r, g, b, 1);
   }  private applyPredefinedBackdrop(scene: Scene, backdrop: SiteBackdrop): void {
+    console.log('BackdropService.applyPredefinedBackdrop called with backdrop:', backdrop);
+    console.log('Backdrop type:', typeof backdrop);
+    
     switch (backdrop) {
       case SiteBackdrop.SPACE:
+        console.log('Applying SPACE backdrop');
         createSpaceBackdrop(scene);
         break;
       case SiteBackdrop.PAINT:
+        console.log('Applying PAINT backdrop');
         createPaintBackdrop(scene);
         break;
       case SiteBackdrop.ABSTRACT:
@@ -63,4 +77,4 @@ export class BackdropService {
         this.setBackgroundColor(scene, this.DEFAULT_BACKDROP_COLOR);
     }
   }
-} 
+}
