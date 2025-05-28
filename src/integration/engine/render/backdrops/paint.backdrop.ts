@@ -163,9 +163,10 @@ export function createPaintBackdrop(scene: Scene): void {
       
       gl_FragColor = vec4(finalColor, 1.0);
     }
-  `;  // Create a plane to render the paint effect
+  `;  // Create a plane to render the paint effect with extended coverage
   const paintPlane = PlaneBuilder.CreatePlane("paintBackdrop", {
-    size: 800,  // Larger size to ensure visibility from greater distance
+    width: 2000,  // 2.5x wider than original 800 (800 * 2.5 = 2000)
+    height: 960,  // 20% taller than original 800 (800 * 1.2 = 960)
     updatable: false
   }, scene);
   // Position the plane much further below everything (since camera looks down from above)
