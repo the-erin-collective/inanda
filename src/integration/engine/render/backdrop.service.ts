@@ -46,15 +46,17 @@ export class BackdropService {
     const b = parseInt(hexColor.slice(5, 7), 16) / 255;
     
     scene.clearColor = new Color4(r, g, b, 1);
-  }
-
-  private applyPredefinedBackdrop(scene: Scene, backdrop: SiteBackdrop): void {
+  }  private applyPredefinedBackdrop(scene: Scene, backdrop: SiteBackdrop): void {
     switch (backdrop) {
       case SiteBackdrop.SPACE:
         createSpaceBackdrop(scene);
         break;
       case SiteBackdrop.PAINT:
         createPaintBackdrop(scene);
+        break;
+      case SiteBackdrop.ABSTRACT:
+        console.warn('Abstract backdrop not yet implemented');
+        this.setBackgroundColor(scene, this.DEFAULT_BACKDROP_COLOR);
         break;
       default:
         console.warn(`No implementation found for backdrop: ${backdrop}`);

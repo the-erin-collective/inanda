@@ -5,6 +5,9 @@ export interface Site extends Document {
   name: string;
   description?: string;
   pageOrder: string[]; // Array of page IDs
+  sitemapType?: string;
+  defaultPage?: string;
+  backdrop?: string;
 }
 
 const SiteSchema = new Schema<Site>({
@@ -12,6 +15,9 @@ const SiteSchema = new Schema<Site>({
   name: { type: String, required: true },
   description: { type: String },
   pageOrder: { type: [String], default: [] }, // Array of page IDs
+  sitemapType: { type: String },
+  defaultPage: { type: String },
+  backdrop: { type: String }
 });
 
 // Check if the model already exists before defining it

@@ -1,4 +1,5 @@
 export enum SiteBackdrop {
   SPACE = 'space',
-  PAINT = 'paint'
-} 
+  PAINT = 'paint',
+  ABSTRACT = 'abstract'
+}

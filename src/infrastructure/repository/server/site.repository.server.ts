@@ -93,13 +93,15 @@ export class ServerSiteRepository implements SiteRepository {
         console.log(`No site found in MongoDB for ID: ${siteIdToFetch}`);
         return null;
       }
-      
-      console.log(`Site found in MongoDB for ID: ${siteIdToFetch}`);
+        console.log(`Site found in MongoDB for ID: ${siteIdToFetch}`);
       const site = Site.fromJSON({
         id: siteModel._id,
         name: siteModel.name,
         description: siteModel.description ?? '',
         pageOrder: siteModel.pageOrder,
+        sitemapType: siteModel.sitemapType,
+        defaultPage: siteModel.defaultPage,
+        backdrop: siteModel.backdrop
       });
       
       return site;
@@ -197,12 +199,14 @@ export class ServerSiteRepository implements SiteRepository {
     if (!dbAvailable) {
       throw new Error('Cannot save site: MongoDB is not available');
     }
-    
-    const siteData = {
+      const siteData = {
       _id: site.id, // Use the string ID directly
       name: site.name,
       description: site.description,
       pageOrder: site.pageOrder,
+      sitemapType: site.sitemapType,
+      defaultPage: site.defaultPage,
+      backdrop: site.backdrop
     };
 
     const siteModel = site.id
@@ -211,13 +215,14 @@ export class ServerSiteRepository implements SiteRepository {
 
     // Invalidate cache after save
     await this.cache.invalidate(`site:${site.id}`);
-    await this.cache.invalidate(`site-content:${site.id}`);
-
-    return Site.fromJSON({
+    await this.cache.invalidate(`site-content:${site.id}`);    return Site.fromJSON({
       id: siteModel._id, // Use the string ID directly
       name: siteModel.name,
       description: siteModel.description ?? '',
       pageOrder: siteModel.pageOrder,
+      sitemapType: siteModel.sitemapType,
+      defaultPage: siteModel.defaultPage,
+      backdrop: siteModel.backdrop
     });
   }
 

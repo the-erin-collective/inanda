@@ -297,15 +297,14 @@ async function seed() {
     await PageModel.deleteMany({});
     await StylesheetModel.deleteMany({});
 
-    const siteId = 'site-001';
-    const site = new Site(
+    const siteId = 'site-001';    const site = new Site(
       siteId,
       'Example Site',
       'A modern web experience with 3D navigation',
       [],
       'HEX_FLOWER',
       'page-1',
-      'ABSTRACT'
+      'PAINT'
     );
     const pages: Page[] = [];
     const stylesheets: Stylesheet[] = [];
