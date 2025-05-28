@@ -12,8 +12,8 @@ import {
 } from '@babylonjs/core';
 
 export function createPaintBackdrop(scene: Scene): void {
-  // Set the background color to a neutral tone
-  scene.clearColor = new Color4(0.95, 0.95, 0.95, 1);
+  // Set the background color to transparent so the paint backdrop is visible
+  scene.clearColor = new Color4(0, 0, 0, 0);
 
   // Define paint shader vertex source
   const paintVertexShader = `
@@ -31,11 +31,10 @@ export function createPaintBackdrop(scene: Scene): void {
     void main(void) {
       vUV = uv;
       vPosition = position;
-      
-      // Add subtle vertex movement for organic feel
+        // Add very subtle vertex movement for organic feel (much slower)
       vec3 newPosition = position;
-      newPosition.x += sin(time * 0.5 + position.y * 3.0) * 0.02;
-      newPosition.y += cos(time * 0.3 + position.x * 2.0) * 0.02;
+      newPosition.x += sin(time * 0.15 + position.y * 2.0) * 0.01;
+      newPosition.y += cos(time * 0.1 + position.x * 1.5) * 0.01;
       
       gl_Position = worldViewProjection * vec4(newPosition, 1.0);
     }
@@ -104,71 +103,77 @@ export function createPaintBackdrop(scene: Scene): void {
       
       return stroke;
     }
-    
-    void main(void) {
+      void main(void) {
       vec2 uv = vUV;
       
-      // Create base paint texture using noise
-      float baseNoise = fbm(uv * 8.0 + time * 0.1);
-      float detailNoise = fbm(uv * 24.0 + time * 0.05);
+      // Create base paint texture using noise (much slower movement)
+      float baseNoise = fbm(uv * 6.0 + time * 0.02);
+      float detailNoise = fbm(uv * 18.0 + time * 0.01);
       
-      // Create brush strokes at different angles
-      float stroke1 = brushStroke(uv + vec2(sin(time * 0.3) * 0.1, 0.0), time * 0.5, 0.15 * brushStrength);
-      float stroke2 = brushStroke(uv + vec2(0.0, cos(time * 0.2) * 0.1), time * 0.3 + 1.57, 0.12 * brushStrength);
-      float stroke3 = brushStroke(uv + vec2(sin(time * 0.4) * 0.05, cos(time * 0.6) * 0.05), time * 0.7 + 3.14, 0.08 * brushStrength);
+      // Create additional noise layers for more variety
+      float coarseNoise = fbm(uv * 3.0 + time * 0.005);
+      float fineNoise = fbm(uv * 32.0 + time * 0.015);
       
-      // Combine strokes
-      float brushPattern = max(stroke1, max(stroke2, stroke3));
+      // Create brush strokes at different angles (slower rotation)
+      float stroke1 = brushStroke(uv + vec2(sin(time * 0.08) * 0.05, cos(time * 0.06) * 0.03), time * 0.12, 0.18 * brushStrength);
+      float stroke2 = brushStroke(uv + vec2(cos(time * 0.05) * 0.03, sin(time * 0.07) * 0.04), time * 0.09 + 1.57, 0.15 * brushStrength);
+      float stroke3 = brushStroke(uv + vec2(sin(time * 0.11) * 0.02, cos(time * 0.13) * 0.025), time * 0.15 + 3.14, 0.12 * brushStrength);
+      float stroke4 = brushStroke(uv + vec2(cos(time * 0.04) * 0.04, sin(time * 0.09) * 0.03), time * 0.18 + 4.71, 0.10 * brushStrength);
       
-      // Create paint splatters
+      // Combine strokes with more variety
+      float brushPattern = max(stroke1, max(stroke2, max(stroke3, stroke4)));
+      
+      // Create paint splatters (slower movement)
       float splatter = 0.0;
-      for (int i = 0; i < 8; i++) {
+      for (int i = 0; i < 12; i++) {
+        float iFloat = float(i);
         vec2 splatterPos = vec2(
-          sin(time * 0.7 + float(i) * 0.8) * 0.3 + 0.5,
-          cos(time * 0.9 + float(i) * 1.2) * 0.3 + 0.5
+          sin(time * 0.2 + iFloat * 0.5) * 0.4 + 0.5,
+          cos(time * 0.3 + iFloat * 0.7) * 0.4 + 0.5
         );
         float dist = distance(uv, splatterPos);
-        splatter += smoothstep(0.1 * splatterDensity, 0.02 * splatterDensity, dist) * random(vec2(float(i), time));
+        float splatterSize = 0.05 + sin(time * 0.1 + iFloat) * 0.02;
+        splatter += smoothstep(splatterSize * splatterDensity, splatterSize * 0.3 * splatterDensity, dist) * random(vec2(iFloat, time * 0.1));
       }
       
-      // Mix paint colors based on noise and effects
-      vec3 color1Mix = mix(paintColor1, paintColor2, baseNoise);
-      vec3 color2Mix = mix(color1Mix, paintColor3, detailNoise * 0.7);
+      // Mix paint colors with more complex blending
+      vec3 color1Mix = mix(paintColor1, paintColor2, baseNoise * 0.7 + coarseNoise * 0.3);
+      vec3 color2Mix = mix(color1Mix, paintColor3, detailNoise * 0.5 + fineNoise * 0.2);
+      vec3 color3Mix = mix(paintColor2, paintColor1 * 0.8, coarseNoise * 0.6);
       
-      // Apply brush strokes
-      vec3 brushColor = mix(color2Mix, paintColor1 * 1.2, brushPattern);
+      // Apply brush strokes with more subtle blending
+      vec3 brushColor = mix(color2Mix, color3Mix, brushPattern * 0.7);
       
-      // Apply splatters
-      vec3 finalColor = mix(brushColor, paintColor3 * 1.5, splatter * 0.6);
+      // Apply splatters with varied intensity
+      vec3 splatterColor = mix(paintColor3 * 1.2, paintColor1 * 1.1, sin(time * 0.05));
+      vec3 finalColor = mix(brushColor, splatterColor, splatter * 0.4);
       
-      // Add some texture variation
-      float texture = fbm(uv * 16.0) * 0.1;
-      finalColor += texture;
+      // Add multiple texture variation layers
+      float texture1 = fbm(uv * 12.0 + time * 0.008) * 0.08;
+      float texture2 = fbm(uv * 24.0 + time * 0.004) * 0.04;
+      finalColor += texture1 + texture2;
+      
+      // Add subtle color shifts over time
+      finalColor.r += sin(time * 0.03) * 0.02;
+      finalColor.g += cos(time * 0.04) * 0.015;
+      finalColor.b += sin(time * 0.025) * 0.02;
       
       // Ensure colors stay in valid range
       finalColor = clamp(finalColor, 0.0, 1.0);
       
       gl_FragColor = vec4(finalColor, 1.0);
     }
-  `;
-
-  // Register the shader effect
-  Effect.ShadersStore["paintVertexShader"] = paintVertexShader;
-  Effect.ShadersStore["paintFragmentShader"] = paintFragmentShader;
-
-  // Create a plane to render the paint effect
+  `;  // Create a plane to render the paint effect
   const paintPlane = PlaneBuilder.CreatePlane("paintBackdrop", {
-    size: 200,
+    size: 800,  // Larger size to ensure visibility from greater distance
     updatable: false
   }, scene);
-
-  // Position the plane behind everything
-  paintPlane.position = new Vector3(0, 0, -50);
-  paintPlane.rotation.x = 0;
-  // Create the shader material
+  // Position the plane much further below everything (since camera looks down from above)
+  paintPlane.position = new Vector3(0, -1000, 0);  // Even further below the origin
+  paintPlane.rotation.x = Math.PI / 2; // Rotate to face upward towards the camera// Create the shader material
   const paintMaterial = new ShaderMaterial("paintMaterial", scene, {
-    vertex: "paintVertexShader",
-    fragment: "paintFragmentShader"
+    vertexSource: paintVertexShader,
+    fragmentSource: paintFragmentShader
   }, {
     attributes: ["position", "uv"],
     uniforms: [
@@ -188,13 +193,14 @@ export function createPaintBackdrop(scene: Scene): void {
   paintMaterial.setVector3("paintColor3", new Vector3(0.7, 0.2, 0.6)); // Purple accent
   paintMaterial.setFloat("brushStrength", 1.0);
   paintMaterial.setFloat("splatterDensity", 0.8);
-
   // Apply material to plane
   paintPlane.material = paintMaterial;
   
-  // Ensure the plane doesn't interfere with other objects
+  // Ensure the plane renders as a backdrop
   paintPlane.isPickable = false;
   paintPlane.checkCollisions = false;
+  paintPlane.renderingGroupId = 0; // Render first
+  paintPlane.infiniteDistance = true; // Always render at maximum depth
 
   // Animate the shader with time
   let startTime = performance.now();
