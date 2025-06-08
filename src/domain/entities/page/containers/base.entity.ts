@@ -10,6 +10,7 @@ export class BaseNode implements ContainerNode {
   constructor(children: ContentNode[] = []) {
     this.type = 'base';
     this.children = children;
+    this.styleIds = [];
   }
 
   toJSON(): Record<string, unknown> {

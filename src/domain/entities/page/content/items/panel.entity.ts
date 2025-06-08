@@ -4,7 +4,7 @@ export class PanelNode implements ContentNode {
   type: string = 'panel';
   children: ContentNode[];
 
-  constructor(children: ContentNode[], public _id?: string) {
+  constructor(children: ContentNode[] = [], public _id?: string) {
     this.children = children;
   }
 

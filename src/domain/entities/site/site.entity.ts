@@ -14,11 +14,11 @@ export class Site {    constructor(
       id: string;
       name: string;
       description?: string;
-      pageOrder?: string[];
-      sitemapType?: SitemapType;
+      pageOrder?: string[];      sitemapType?: SitemapType;
       defaultPage?: string;
       backdrop?: string;
-    }): Site {      return new Site(
+    }): Site {
+      return new Site(
         json.id,
         json.name,
         json.description,

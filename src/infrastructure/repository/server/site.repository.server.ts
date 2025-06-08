@@ -89,11 +89,12 @@ export class ServerSiteRepository implements SiteRepository {
     try {
       console.log(`Fetching site from MongoDB: ${siteIdToFetch}`);
       const siteModel = await SiteModel.findById(siteIdToFetch).exec();
-      
-      if (!siteModel) {
+        if (!siteModel) {
         console.log(`No site found in MongoDB for ID: ${siteIdToFetch}`);
         return null;
-      }        console.log(`Site found in MongoDB for ID: ${siteIdToFetch}`);
+      }
+      
+      console.log(`Site found in MongoDB for ID: ${siteIdToFetch}`);
       const site = Site.fromJSON({
         id: siteModel._id,
         name: siteModel.name,
@@ -206,12 +207,13 @@ export class ServerSiteRepository implements SiteRepository {
       sitemapType: site.sitemapType.toString(), // Convert enum to string for storage
       defaultPage: site.defaultPage,
       backdrop: site.backdrop
-    };
-
-    const siteModel = site.id
+    };    const siteModel = site.id
       ? await SiteModel.findByIdAndUpdate(site.id, siteData, { new: true, upsert: true }).exec()
-      : await new SiteModel(siteData).save();    // Invalidate cache after save
-    await this.cache.invalidate(`site:${site.id}`);    await this.cache.invalidate(`site-content:${site.id}`);
+      : await new SiteModel(siteData).save();
+    
+    // Invalidate cache after save
+    await this.cache.invalidate(`site:${site.id}`);
+    await this.cache.invalidate(`site-content:${site.id}`);
     
     return Site.fromJSON({
       id: siteModel._id, // Use the string ID directly
