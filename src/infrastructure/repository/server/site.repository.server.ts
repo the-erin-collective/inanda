@@ -7,6 +7,7 @@ import { SiteModel } from '../../data/schemas/site.schema'; // Mongoose model
 import { CACHE_PROVIDER } from '../../providers/cache/cache.tokens';
 import { CacheData } from '../../../domain/data/cache.interface';
 import { MONGO_CONNECTION_FACTORY, MongoConnectionFactory } from '../../data/db/mongo.factory';
+import { SitemapType } from '../../../domain/entities/site/sitemap-type.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -88,8 +89,7 @@ export class ServerSiteRepository implements SiteRepository {
     try {
       console.log(`Fetching site from MongoDB: ${siteIdToFetch}`);
       const siteModel = await SiteModel.findById(siteIdToFetch).exec();
-      
-      if (!siteModel) {
+        if (!siteModel) {
         console.log(`No site found in MongoDB for ID: ${siteIdToFetch}`);
         return null;
       }
@@ -100,6 +100,9 @@ export class ServerSiteRepository implements SiteRepository {
         name: siteModel.name,
         description: siteModel.description ?? '',
         pageOrder: siteModel.pageOrder,
+        sitemapType: this.convertSitemapType(siteModel.sitemapType),
+        defaultPage: siteModel.defaultPage,
+        backdrop: siteModel.backdrop
       });
       
       return site;
@@ -196,28 +199,32 @@ export class ServerSiteRepository implements SiteRepository {
     const dbAvailable = await this.ensureMongoConnection();
     if (!dbAvailable) {
       throw new Error('Cannot save site: MongoDB is not available');
-    }
-    
+    }      
     const siteData = {
       _id: site.id, // Use the string ID directly
       name: site.name,
       description: site.description,
       pageOrder: site.pageOrder,
-    };
-
+      sitemapType: site.sitemapType.toString(), // Convert enum to string for storage
+      defaultPage: site.defaultPage,
+      backdrop: site.backdrop
+    };    
     const siteModel = site.id
       ? await SiteModel.findByIdAndUpdate(site.id, siteData, { new: true, upsert: true }).exec()
       : await new SiteModel(siteData).save();
-
+    
     // Invalidate cache after save
     await this.cache.invalidate(`site:${site.id}`);
     await this.cache.invalidate(`site-content:${site.id}`);
-
+    
     return Site.fromJSON({
       id: siteModel._id, // Use the string ID directly
       name: siteModel.name,
       description: siteModel.description ?? '',
       pageOrder: siteModel.pageOrder,
+      sitemapType: this.convertSitemapType(siteModel.sitemapType),
+      defaultPage: siteModel.defaultPage,
+      backdrop: siteModel.backdrop
     });
   }
 
@@ -232,5 +239,24 @@ export class ServerSiteRepository implements SiteRepository {
     // Invalidate cache after delete
     await this.cache.invalidate(`site:${id}`);
     await this.cache.invalidate(`site-content:${id}`);
+  }
+
+  // Helper method to convert string sitemapType to SitemapType enum
+  private convertSitemapType(sitemapType?: string): SitemapType {
+    if (!sitemapType) return SitemapType.HEX_FLOWER;
+    
+    // Handle both enum values and legacy string values
+    switch (sitemapType.toUpperCase()) {
+      case 'HEX_FLOWER':
+      case 'HEX-FLOWER':
+        return SitemapType.HEX_FLOWER;
+      case 'GRID':
+        return SitemapType.GRID;
+      case 'LIST':
+        return SitemapType.LIST;
+      default:
+        console.warn(`Unknown sitemapType: ${sitemapType}, defaulting to HEX_FLOWER`);
+        return SitemapType.HEX_FLOWER;
+    }
   }
 }

@@ -21,15 +21,14 @@ export class ClientPageRepository implements PageRepository {
       return Promise.resolve(null);
     }
 
-    const page = siteContent.pages.find((page) => page.id === id) || null;
+    const page = siteContent.pages.find((page) => page._id === id) || null;
     return Promise.resolve(page);
   }
-
   findByIds(ids: string[]): Promise<Page[]> {
     const siteContent = this.transferState.get(SITE_CONTENT_KEY, null);
-    console.log('ClientSiteRepository: Returning preloaded site content:', siteContent);
+    console.log('ClientPageRepository: Returning preloaded site content:', siteContent);
 
-    const pages = siteContent.pages.filter((page) => ids.includes(page.id));
+    const pages = siteContent.pages.filter((page) => ids.includes(page._id));
 
     return Promise.resolve(pages);
   }
