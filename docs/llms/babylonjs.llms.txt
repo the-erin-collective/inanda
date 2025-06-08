@@ -1,0 +1,982 @@
+TITLE: Enabling Depth Sensing Feature with Babylon.js WebXR (TypeScript)
+DESCRIPTION: This TypeScript example demonstrates enabling the Depth Sensing feature via featureManager with strict option typing. Type assertions help ensure the options object conforms to BABYLON.IWebXRDepthSensingOptions and that the resulting feature is treated as BABYLON.WebXRDepthSensing. Developers gain type safety and code completion for configuration parameters, such as usage and data format preferences.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/webXR/webXRARFeatures.md#2025-04-23_snippet_27
+
+LANGUAGE: typescript
+CODE:
+```
+// featuresManager from the base webxr experience helper\nconst depthSensing = featureManager.enableFeature(BABYLON.WebXRFeatureName.DEPTH_SENSING, \"latest\", {\n  dataFormatPreference: [\"ushort\", \"float\"],\n  usagePreference: [\"cpu\", \"gpu\"],\n} as BABYLON.IWebXRDepthSensingOptions) as BABYLON.WebXRDepthSensing;
+```
+
+----------------------------------------
+
+TITLE: Accessing and Using Depth Sensing Data in Babylon.js WebXR (TypeScript)
+DESCRIPTION: This TypeScript code illustrates how to consume runtime depth sensing data after enabling the feature. It demonstrates registering an XR frame observer to read depth properties and buffer data, and how to access the getDepthInMeters callback for retrieving depth at screen coordinates. Key dependencies include the session manager and material handling; outputs include updated material textures and console logs for measured depth.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/webXR/webXRARFeatures.md#2025-04-23_snippet_29
+
+LANGUAGE: typescript
+CODE:
+```
+sessionManager.onXRFrameObservable.add(() => {\n  const {\n    depthUsage, // \"cpu\" or \"gpu\"\n    depthDataFormat, // \"ushort\" or \"float\"\n\n    width, // depth image width\n    height, // depth image height\n\n    rawValueToMeters, // operator of obtain depth value in meters\n\n    normDepthBufferFromNormView, // An XRRigidTransform\n\n    latestDepthImageTexture, // RawTexture for depth image\n    latestDepthBuffer, // depth value array (cpu only)\n    latestInternalTexture, // InternalTexture of depth image (gpu only)\n  } = depthSensing;\n\n  // apply depth texture to a material\n  material.diffuseTexture = latestDepthImageTexture;\n});\n\n// observe `getDepthInMeters` is available\ndepthSensing.onGetDepthInMetersAvailable.add((getDepthInMeters) => {\n  // depth value of center point of the screen\n  const meters = getDepthInMeters(0.5, 0.5);\n  console.log(meters);\n});
+```
+
+----------------------------------------
+
+TITLE: Basic WebXR Setup with Single Line of Code
+DESCRIPTION: This snippet demonstrates the simplest way to enable WebXR in a Babylon.js scene using a single line of code. This creates a default VR immersive experience with session initialization, input sources, camera setup, and teleportation capabilities.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/webXR/introToWebXR.md#2025-04-23_snippet_2
+
+LANGUAGE: javascript
+CODE:
+```
+const xr = scene.createDefaultXRExperienceAsync();
+```
+
+----------------------------------------
+
+TITLE: Applying Clear Coat over a Bump Map in Babylon.js PBR Material
+DESCRIPTION: This JavaScript code shows how to use a clear coat effect on top of a bump map in a Babylon.js PBR material. It sets up the material, forces irradiance computation per fragment (`forceIrradianceInFragment`) to ensure the bump map is visible under the clear coat, applies a bump texture (`bumpTexture`), and then enables the clear coat (`clearCoat.isEnabled = true`). Requires `BABYLON.PBRMaterial`, `BABYLON.Texture`, and a `scene`. The `forceIrradianceInFragment` setting is crucial for the intended effect.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/materials/using/masterPBR.md#2025-04-23_snippet_16
+
+LANGUAGE: javascript
+CODE:
+```
+const pbr = new BABYLON.PBRMaterial("pbr", scene);
+// Ensures irradiance is computed per fragment to make the
+// Bump visible
+pbr.forceIrradianceInFragment = true;
+pbr.bumpTexture = new BABYLON.Texture("textures/floor_bump.png", scene);
+pbr.metallic = 0.0;
+pbr.roughness = 1.0;
+
+pbr.clearCoat.isEnabled = true;
+```
+
+----------------------------------------
+
+TITLE: Attaching an Anchor to a Mesh - JavaScript
+DESCRIPTION: Illustrates how to attach a mesh to an anchor by assigning the mesh to the anchor's attachedNode property in the observable callback. Ensures the mesh is updated in world space as the anchor moves/updates in the AR scene. The implementation relies on the anchor's observable event when added.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/webXR/webXRARFeatures.md#2025-04-23_snippet_12
+
+LANGUAGE: javascript
+CODE:
+```
+const mesh = anchorSystem.onAnchorAddedObservable.add((anchor) => {\n  //...\n  anchor.attachedNode = mesh;\n});
+```
+
+----------------------------------------
+
+TITLE: Creating Meshes using MeshBuilder in Babylon.js
+DESCRIPTION: This snippet demonstrates the current recommended way to create a mesh in Babylon.js using the MeshBuilder class. It takes a mesh type, name, options object, and an optional scene parameter.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/mesh/creation.md#2025-04-23_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+const mesh = BABYLON.MeshBuilder.Create<MeshType>(name, options, scene);
+```
+
+----------------------------------------
+
+TITLE: Babylon.js Model Import Example
+DESCRIPTION: Complete example showing how to import a 3D model into a Babylon.js scene with camera and lighting setup.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/introductionToFeatures/chap1/first_app.md#2025-04-23_snippet_2
+
+LANGUAGE: html
+CODE:
+```
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Babylon Template</title>
+
+    <style>
+      html,
+      body {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #renderCanvas {
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+      }
+    </style>
+
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+  </head>
+
+  <body>
+    <canvas id="renderCanvas" touch-action="none"></canvas>
+    <!-- touch-action="none" for best results from PEP -->
+
+    <script>
+      const canvas = document.getElementById("renderCanvas"); // Get the canvas element
+      const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
+
+      // Add your code here matching the playground format
+      const createScene = function () {
+        const scene = new BABYLON.Scene(engine);
+
+        BABYLON.ImportMeshAsync("https://assets.babylonjs.com/meshes/box.babylon");
+
+        const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 15, new BABYLON.Vector3(0, 0, 0));
+        camera.attachControl(canvas, true);
+        const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0));
+
+        return scene;
+      };
+
+      const scene = createScene(); //Call the createScene function
+
+      // Register a render loop to repeatedly render the scene
+      engine.runRenderLoop(function () {
+        scene.render();
+      });
+
+      // Watch for browser/canvas resize events
+      window.addEventListener("resize", function () {
+        engine.resize();
+      });
+    </script>
+  </body>
+</html>
+```
+
+----------------------------------------
+
+TITLE: Complete Shadow Setup in Babylon.js
+DESCRIPTION: Demonstrates the complete setup for shadows in a scene, including creating the shadow generator, adding a shadow caster (dude), and setting the ground as a shadow receiver.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/introductionToFeatures/chap7/shadows.md#2025-04-23_snippet_5
+
+LANGUAGE: javascript
+CODE:
+```
+const shadowGenerator = new BABYLON.ShadowGenerator(1024, light);
+
+shadowGenerator.addShadowCaster(dude, true);
+
+ground.receiveShadows = true;
+```
+
+----------------------------------------
+
+TITLE: Asynchronous WebGPU Engine Creation in Babylon.js (JavaScript)
+DESCRIPTION: Demonstrates how to asynchronously create a Babylon.js WebGPU engine if supported by the browser, falling back to a WebGL engine otherwise. It checks for WebGPU support using `BABYLON.WebGPUEngine.IsSupportedAsync`, creates a `WebGPUEngine` instance for the specified canvas, and initializes it asynchronously with `engine.initAsync()`. If WebGPU is not supported, it creates a standard WebGL `BABYLON.Engine`.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/setup/support/webGPU/webGPUBreakingChanges.md#2025-04-23_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+async function createEngine() {
+  const webGPUSupported = await BABYLON.WebGPUEngine.IsSupportedAsync;
+  if (webGPUSupported) {
+    const engine = new BABYLON.WebGPUEngine(document.getElementById("renderCanvas"));
+    await engine.initAsync();
+    return engine;
+  }
+  return new BABYLON.Engine(document.getElementById("renderCanvas"), true);
+}
+```
+
+----------------------------------------
+
+TITLE: Using a Texture to Control Iridescence Thickness Directly in Babylon.js
+DESCRIPTION: This JavaScript code shows how to use a separate texture to directly control the iridescence thickness on a Babylon.js PBR material. After enabling iridescence, a `thicknessTexture` is assigned to `iridescence.thicknessTexture`. The texture's G channel value is read as a percentage to interpolate between the material's `minimumThickness` and `maximumThickness`, providing precise spatial control over the effect. Requires `BABYLON.PBRMaterial` and a `BABYLON.Texture` instance (`thicknessTexture`).
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/materials/using/masterPBR.md#2025-04-23_snippet_24
+
+LANGUAGE: javascript
+CODE:
+```
+const pbr = new BABYLON.PBRMaterial("pbr", scene);
+pbr.albedoColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+pbr.metallic = 1.0;
+pbr.roughness = 0.0;
+
+pbr.iridescence.isEnabled = true;
+pbr.iridescence.thicknessTexture = thicknessTexture;
+```
+
+----------------------------------------
+
+TITLE: Setting Texture Inputs for a Compute Shader in Babylon.js (JavaScript)
+DESCRIPTION: Illustrates assigning texture resources to compute shader input variables after creating the `ComputeShader` instance. Use `setTexture` for regular (read-only) textures and `setStorageTexture` for storage textures (writable). The string arguments ("src", "dest") must correspond to the keys provided in the `bindingsMapping` during instantiation.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/materials/shaders/computeShader.md#2025-04-23_snippet_2
+
+LANGUAGE: javascript
+CODE:
+```
+cs1.setTexture("src", src);
+cs1.setStorageTexture("dest", dest);
+```
+
+----------------------------------------
+
+TITLE: Creating Height Field Shape in BabylonJS
+DESCRIPTION: Creates a height field shape from a height map, useful for terrain collision. Provides efficient terrain physics simulation.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/physics/v2/shapes.md#2025-04-23_snippet_7
+
+LANGUAGE: javascript
+CODE:
+```
+var ground = BABYLON.MeshBuilder.CreateGroundFromHeightMap("g", "https://image.jpeg", {
+        subdivisions,
+        width: size,
+        height: size,
+        maxHeight: 5,
+        passHeightBufferInCallback: true,
+        onReady: (mesh, heightBuffer) => {
+            var shape = new BABYLON.PhysicsShapeHeightField(
+                    size,
+                    size,
+                    subdivisions+1,
+                    subdivisions+1,
+                    heightBuffer
+                , scene);
+        }
+    });
+```
+
+----------------------------------------
+
+TITLE: Testing Particle-Mesh Intersection with AABB in Babylon.js - JavaScript
+DESCRIPTION: This example checks if a particle intersects a given mesh using its axis-aligned bounding box (AABB). The intersectsMesh method returns a boolean, allowing developers to trigger property changes or reactions when a collision occurs. The check runs per particle and is appropriate when collision detection is needed within a point cloud system. This operation may have performance implications and should only be used when necessary.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/particles/point_cloud_system/pcs_manage_particles.md#2025-04-23_snippet_6
+
+LANGUAGE: JavaScript
+CODE:
+```
+if (particle.intersectsMesh(anyMesh)) { 
+  // change properties of particle
+}
+```
+
+----------------------------------------
+
+TITLE: Enabling Near Interactions for WebXR Hand Tracking
+DESCRIPTION: Shows how to enable near-field interactions for meshes or GUI elements in WebXR hand tracking. This allows for direct interaction with objects close to the hands.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/webXR/WebXRHandTracking.md#2025-04-23_snippet_8
+
+LANGUAGE: javascript
+CODE:
+```
+sphere.isNearPickable = true;
+```
+
+----------------------------------------
+
+TITLE: Using Custom Attributes and Texture Arrays in Babylon.js Material Plugins (TypeScript/GLSL/WGSL)
+DESCRIPTION: Illustrates how to use a custom vertex attribute (`texIndices`) and a texture array (`sampler2DArray`) within a material plugin. It implements `getSamplers` for the texture array, `getAttributes` to register the custom attribute, and `getCustomCode` for both vertex and fragment shaders in WGSL and GLSL. The vertex shader defines the attribute and passes it to the fragment shader via a varying. The fragment shader defines the texture array sampler and uses the varying (`texIndex`) to sample the correct texture slice, replacing the standard diffuse texture lookup.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/materials/using/materialPlugins.md#2025-04-23_snippet_5
+
+LANGUAGE: typescript
+CODE:
+```
+getSamplers(samplers) {
+    samplers.push("arrayTex");
+}
+
+getAttributes(attributes) {
+    attributes.push('texIndices');
+}
+
+getCustomCode(shaderType, shaderLanguage) {
+  if (shaderLanguage === BABYLON.ShaderLanguage.WGSL) {
+    if (shaderType === "vertex") return {
+      "CUSTOM_VERTEX_DEFINITIONS": `
+          attribute texIndices: f32;
+          varying texIndex: f32;
+      `,
+
+      "CUSTOM_VERTEX_MAIN_BEGIN": `
+          vertexOutputs.texIndex = input.texIndices;
+      `,
+    }
+    if (shaderType === "fragment") return {
+        "CUSTOM_FRAGMENT_DEFINITIONS": `
+            uniform highp sampler2DArray arrayTex;
+            varying texIndex: f32;
+        `,
+
+        "!baseColor\\=texture2D\\(diffuseSampler,vDiffuseUV\\+uvOffset\\);":
+            `baseColor = texture(arrayTex, vec3(vDiffuseUV, texIndex));`,
+    }
+  }
+
+  if (shaderType === "vertex") return {
+      "CUSTOM_VERTEX_DEFINITIONS": `
+          attribute float texIndices;
+          varying float texIndex;
+      `,
+
+      "CUSTOM_VERTEX_MAIN_BEGIN": `
+          texIndex = texIndices;
+      `,
+  }
+  if (shaderType === "fragment") return {
+      "CUSTOM_FRAGMENT_DEFINITIONS": `
+          uniform highp sampler2DArray arrayTex;
+          varying float texIndex;
+      `,
+
+      "!baseColor\\=texture2D\\(diffuseSampler,vDiffuseUV\\+uvOffset\\);":
+          `baseColor = texture(arrayTex, vec3(vDiffuseUV, texIndex));`,
+  }
+  return null
+}
+```
+
+----------------------------------------
+
+TITLE: Model Import Options in Babylon.js
+DESCRIPTION: Different ways to import models with specific mesh selection options, demonstrating how to load all meshes or select specific ones by name.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/introductionToFeatures/chap1/first_import.md#2025-04-23_snippet_1
+
+LANGUAGE: javascript
+CODE:
+```
+BABYLON.ImportMeshAsync("/relative path/myFile"); //Empty string loads all meshes
+BABYLON.ImportMeshAsync("/relative path/myFile", scene, { meshNames: "model1" }); //Name of the model loads one model
+BABYLON.ImportMeshAsync("/relative path/myFile", scene, { meshNames: ["model1", "model2"] }); //Array of model names
+```
+
+----------------------------------------
+
+TITLE: Creating a PBR Metallic Roughness Material in Babylon.js
+DESCRIPTION: This snippet shows how to initialize a basic PBRMetallicRoughnessMaterial instance and assign it to an object in the scene.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/materials/using/introToPBR.md#2025-04-23_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+const pbr = new BABYLON.PBRMetallicRoughnessMaterial("pbr", scene);
+```
+
+----------------------------------------
+
+TITLE: Initializing WebGPU Engine in Babylon.js
+DESCRIPTION: This code snippet demonstrates how to initialize a WebGPU engine in Babylon.js. It creates a new WebGPUEngine instance and asynchronously initializes it. This initialization process is the main difference when migrating existing WebGL applications to WebGPU.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/setup/support/webGPU.md#2025-04-23_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+const engine = new BABYLON.WebGPUEngine(canvas);
+await engine.initAsync();
+```
+
+----------------------------------------
+
+TITLE: Custom Input Implementation Template in Babylon.js
+DESCRIPTION: Template showing required methods for implementing a custom camera input mechanism.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/cameras/customizingCameraInputs.md#2025-04-23_snippet_6
+
+LANGUAGE: javascript
+CODE:
+```
+// This function must return the class name of the camera, it could be used for serializing your scene
+getClassName();
+
+// This function must return the simple name that will be injected in the input manager as short hand
+// for example "mouse" will turn into camera.inputs.attached.mouse
+getSimpleName();
+
+//T his function must activate your input event.  Even if your input does not need a DOM element
+// element and noPreventDefault must be present and used as parameter names.
+// Return void.
+attachControl(noPreventDefault);
+
+// Detach control must deactivate your input and release all pointers, closures or event listeners
+// element must be present as a parameter name.
+// Return void.
+detachControl();
+
+// This optional function will get called for each rendered frame, if you want to synchronize your
+// input to rendering, no need to use requestAnimationFrame. It's a good place for applying
+// calculations if you have to.
+// Return void.
+checkInputs();
+```
+
+----------------------------------------
+
+TITLE: Instantiating GUI3DManager in Babylon.js (JavaScript)
+DESCRIPTION: This snippet shows how to create an instance of the GUI3DManager, which manages all 3D GUI controls in a Babylon.js scene. It requires Babylon.js, the GUI extension, and a scene object. The 'manager' object connects GUI controls and manages their utility layer, handling their addition to the scene and providing access to utility functions for layout and scaling.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/gui/gui3D.md#2025-04-23_snippet_0
+
+LANGUAGE: JavaScript
+CODE:
+```
+const manager = new BABYLON.GUI.GUI3DManager(scene);
+```
+
+----------------------------------------
+
+TITLE: Creating a Minimal Babylon.js HTML Template
+DESCRIPTION: This HTML snippet demonstrates the basic structure for a Babylon.js application. It includes essential HTML boilerplate, CSS to make the canvas fill the viewport, inclusion of the Babylon.js library via CDN, and inline JavaScript to initialize the engine, create a simple scene with a camera, light, sphere, and ground, and set up the render loop and resize handling. It relies on the Babylon.js library being accessible.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/setup/starterHTML.md#2025-04-23_snippet_0
+
+LANGUAGE: html
+CODE:
+```
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>Babylon Template</title>
+
+        <style>
+            html, body {
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            #renderCanvas {
+                width: 100%;
+                height: 100%;
+                touch-action: none;
+            }
+        </style>
+
+        <script src="https://cdn.babylonjs.com/babylon.js"></script>
+
+    </head>
+
+   <body>
+
+	<canvas id="renderCanvas"></canvas>
+
+	<script>
+        const canvas = document.getElementById("renderCanvas"); // Get the canvas element
+        const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
+        const createScene = function () {
+            // Creates a basic Babylon Scene object
+            const scene = new BABYLON.Scene(engine);
+            // Creates and positions a free camera
+            const camera = new BABYLON.FreeCamera("camera1", 
+                new BABYLON.Vector3(0, 5, -10), scene);
+            // Targets the camera to scene origin
+            camera.setTarget(BABYLON.Vector3.Zero());
+            // This attaches the camera to the canvas
+            camera.attachControl(canvas, true);
+            // Creates a light, aiming 0,1,0 - to the sky
+            const light = new BABYLON.HemisphericLight("light", 
+                new BABYLON.Vector3(0, 1, 0), scene);
+            // Dim the light a small amount - 0 to 1
+            light.intensity = 0.7;
+            // Built-in 'sphere' shape.
+            const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", 
+                {diameter: 2, segments: 32}, scene);
+            // Move the sphere upward 1/2 its height
+            sphere.position.y = 1;
+            // Built-in 'ground' shape.
+            const ground = BABYLON.MeshBuilder.CreateGround("ground", 
+                {width: 6, height: 6}, scene);
+            return scene;
+        };
+        const scene = createScene(); //Call the createScene function
+        // Register a render loop to repeatedly render the scene
+        engine.runRenderLoop(function () {
+                scene.render();
+        });
+        // Watch for browser/canvas resize events
+        window.addEventListener("resize", function () {
+                engine.resize();
+        });
+	</script>
+
+   </body>
+
+</html>
+```
+
+----------------------------------------
+
+TITLE: Importing Babylon.js GUI Module - JavaScript
+DESCRIPTION: This snippet shows how to import the Babylon.js GUI module into a JavaScript project after installing it via NPM. Importing '* as GUI' from '@babylonjs/gui' provides access to all GUI components and controls for subsequent usage within your application scripts. Dependencies: '@babylonjs/gui' (installed via NPM). The import should be placed at the top of your JavaScript or TypeScript file.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/gui/gui.md#2025-04-23_snippet_1
+
+LANGUAGE: javascript
+CODE:
+```
+import * as GUI from '@babylonjs/gui'
+```
+
+----------------------------------------
+
+TITLE: Importing and Initializing Babylon.js ES6 Packages - JavaScript
+DESCRIPTION: Demonstrates ES6-style import for Babylon.js Engine from the ES6 module namespace and setup of a rendering engine using a canvas HTML element. Requires @babylonjs/core to be installed via npm. This approach enables tree-shaking and other ES module benefits, but should not be mixed with legacy package imports.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/setup/frameworkPackages/npmSupport.md#2025-04-23_snippet_11
+
+LANGUAGE: javascript
+CODE:
+```
+import { Engine } from '@babylonjs/core/Engines/engine'
+
+const canvas = document.getElementById("canvas");
+
+const engine = new Engine(canvas, true);
+
+// code continues....
+```
+
+----------------------------------------
+
+TITLE: Adding Targeted Animations to Animation Groups in Babylon.js (JavaScript)
+DESCRIPTION: Shows how to add specific animation/mesh pairs into AnimationGroups using addTargetedAnimation, thereby linking which animation affects which mesh within each group. Requires previously created Animation, Mesh, and AnimationGroup objects. Inputs: animation and mesh references; Outputs: animations linked to groups for batch control.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/animation/groupAnimations.md#2025-04-23_snippet_1
+
+LANGUAGE: javascript
+CODE:
+```
+animationGroup1.addTargetedAnimation(animation1, mesh1);
+animationGroup1.addTargetedAnimation(animation3, mesh1);
+animationGroup1.addTargetedAnimation(animation2, mesh2);
+
+animationGroup2.addTargetedAnimation(animation2, mesh3);
+animationGroup2.addTargetedAnimation(animation1, mesh4);
+animationGroup2.addTargetedAnimation(animation2, mesh4);
+animationGroup2.addTargetedAnimation(animation3, mesh4);
+```
+
+----------------------------------------
+
+TITLE: Implementing a SprayParticleEmitter Custom Emitter Class in Babylon.js (JavaScript)
+DESCRIPTION: Implements a custom SprayParticleEmitter class, defining both the start direction and start position logic for complex emission patterns. Designed for use as a particleEmitterType, it handles directional randomization inside a cylindrical volume, using Babylon.js math utilities and Vector3 transformation helpers. Input parameters include emission geometry (radius, height, randomization factor); outputs are world-space direction and position for each particle initiated by the emitter. Can be extended for advanced use cases by modifying its methods.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/particles/particle_system/customizingParticles.md#2025-04-23_snippet_7
+
+LANGUAGE: javascript
+CODE:
+```
+var SprayParticleEmitter = (function () {
+  function SprayParticleEmitter(radius, height, directionRandomizer) {
+    if (radius === void 0) {
+      radius = 0.5;
+    }
+    if (height === void 0) {
+      height = 1;
+    }
+    if (directionRandomizer === void 0) {
+      directionRandomizer = 0;
+    }
+    this.height = height;
+    this.directionRandomizer = directionRandomizer;
+    this.radius = radius;
+  }
+
+  SprayParticleEmitter.prototype.startDirectionFunction = function (worldMatrix, directionToUpdate, particle) {
+    var direction = particle.position.subtract(worldMatrix.getTranslation()).normalize();
+    var randX = BABYLON.Scalar.RandomRange(0, this.directionRandomizer);
+    var randY = BABYLON.Scalar.RandomRange(0, this.directionRandomizer);
+    var randZ = BABYLON.Scalar.RandomRange(0, this.directionRandomizer);
+    if (direction.x * direction.x + direction.z * direction.z > 0.1 * this.radius && Math.abs(direction.y) > (0.1 * this.height) / 2) {
+      direction.x += randX;
+      direction.y = randY;
+      direction.z += randZ;
+    } else {
+      direction.x += randX;
+      direction.y += randY;
+      direction.z += randZ;
+    }
+    direction.normalize();
+    BABYLON.Vector3.TransformNormalFromFloatsToRef(direction.x, direction.y, direction.z, worldMatrix, directionToUpdate);
+  };
+
+  SprayParticleEmitter.prototype.startPositionFunction = function (worldMatrix, positionToUpdate, particle) {
+    var s = BABYLON.Scalar.RandomRange(0, Math.PI * 2);
+    var h = BABYLON.Scalar.RandomRange(-0.5, 0.5);
+    var radius = BABYLON.Scalar.RandomRange(0, this.radius);
+    var randX = radius * Math.sin(s);
+    var randZ = radius * Math.cos(s);
+    var randY = h * this.height;
+    BABYLON.Vector3.TransformCoordinatesFromFloatsToRef(randX, randY, randZ, worldMatrix, positionToUpdate);
+  };
+  return SprayParticleEmitter;
+})();
+BABYLON.SprayParticleEmitter = SprayParticleEmitter;
+```
+
+----------------------------------------
+
+TITLE: Configuring Iridescence Parameters in Babylon.js PBR Material
+DESCRIPTION: This JavaScript code shows how to configure the iridescence effect on a Babylon.js PBR material by setting its specific physical properties. It enables iridescence and then sets the `indexOfRefraction`, `minimumThickness`, and `maximumThickness` (in nanometers) to control the appearance of the thin-film effect. Requires an initialized `BABYLON.PBRMaterial` instance (`pbr`).
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/materials/using/masterPBR.md#2025-04-23_snippet_22
+
+LANGUAGE: javascript
+CODE:
+```
+const pbr = new BABYLON.PBRMaterial("pbr", scene);
+pbr.albedoColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+pbr.metallic = 1.0;
+pbr.roughness = 0.0;
+
+pbr.iridescence.isEnabled = true;
+pbr.iridescence.indexOfRefraction = 1.3;
+pbr.iridescence.minimumThickness = 100; // in nanometers
+pbr.iridescence.maximumThickness = 400; // in nanometers
+```
+
+----------------------------------------
+
+TITLE: Event-Based Sound Playback in Babylon.js
+DESCRIPTION: Implements sound playback triggered by mouse clicks and keyboard events.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/audio/v1/playingSoundsMusic.md#2025-04-23_snippet_2
+
+LANGUAGE: javascript
+CODE:
+```
+const gunshot = new BABYLON.Sound("gunshot", "sounds/gunshot.wav", scene);
+
+window.addEventListener("mousedown", function (evt) {
+  // left click to fire
+  if (evt.button === 0) {
+    gunshot.play();
+  }
+});
+
+window.addEventListener("keydown", function (evt) {
+  // Press space key to fire
+  if (evt.keyCode === 32) {
+    gunshot.play();
+  }
+});
+```
+
+----------------------------------------
+
+TITLE: Creating and Reusing Physics Shapes in Babylon.js
+DESCRIPTION: Demonstrates how to create a physics shape (sphere) and reuse it for multiple bodies. This approach improves performance when multiple bodies share similar geometry.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/physics/v2/rigidBodies.md#2025-04-23_snippet_5
+
+LANGUAGE: javascript
+CODE:
+```
+const shape = new BABYLON.PhysicsShapeSphere(
+  new BABYLON.Vector3(0,0,0), // center of the sphere in local space
+  0.5, // radius of the sphere
+  scene // containing scene
+);
+body.shape = shape;
+body2.shape = shape;
+body3.shape = shape;
+// ...
+```
+
+----------------------------------------
+
+TITLE: Applying Forces to Specific Thin Instances in Babylon.js
+DESCRIPTION: Shows how to apply forces to specific instances when a physics body's transform node contains Thin Instances. By providing an instance index parameter, forces can be applied to individual instances rather than all instances.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/physics/v2/forces.md#2025-04-23_snippet_1
+
+LANGUAGE: javascript
+CODE:
+```
+// Apply a force to the first instance ONLY
+body.applyForce(new BABYLON.Vector3(100, 0, 0), new BABYLON.Vector3(0, 0, 0), 0);
+```
+
+----------------------------------------
+
+TITLE: Attaching Custom Keyboard Rotate Input to Babylon.js Camera (JavaScript)
+DESCRIPTION: Instantiates the FreeCameraKeyboardRotateInput and adds it to the camera's input manager, activating the custom keyboard-based rotation controls. This step is performed after the input object is fully defined and signals to Babylon.js that it should use this new input alongside (or instead of) existing inputs. The camera variable must reference an initialized FreeCamera.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/cameras/customizingCameraInputs.md#2025-04-23_snippet_13
+
+LANGUAGE: javascript
+CODE:
+```
+camera.inputs.add(new FreeCameraKeyboardRotateInput());
+```
+
+----------------------------------------
+
+TITLE: Retrieving Controller Components by ID and Type
+DESCRIPTION: Shows different methods for retrieving controller components using either their ID or type, including getting single or multiple components.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/webXR/webXRInputControllerSupport.md#2025-04-23_snippet_3
+
+LANGUAGE: javascript
+CODE:
+```
+const triggerComponent = motionController.getComponent("xr-standard-trigger");
+if (triggerComponent) {
+  // found, do something with it.
+}
+
+const squeezeComponent = motionController.getComponentOfType("squeeze");
+
+// get the first registered button component
+const buttonComponent = motionController.getComponentOfType("button");
+
+// get all button components
+const buttonComponents = motionController.getAllComponentsOfType("button");
+if (buttonComponents.length) {
+  // some were found
+}
+
+const mainComponent = motionController.getMainComponent();
+// mainComponent always exists!
+```
+
+----------------------------------------
+
+TITLE: Chaining Audio Buses for Advanced Routing - Babylon.js (JavaScript)
+DESCRIPTION: This snippet demonstrates how to use an intermediate audio bus in Babylon.js by creating a spatially enabled audio bus, attaching it to a mesh, and routing a sound's output through it. Dependencies include the Babylon.js library, a valid mesh, and accessible sound resources. The 'outBus' property reroutes sound output, supporting additional effects such as 3D spatialization; the code avoids cyclic routing and plays the sound in a loop after unlocking the audio engine. The output is spatialized sound managed via an intermediate bus, allowing scalable audio graphs.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/audio/v2/playingSoundsMusic.md#2025-04-23_snippet_8
+
+LANGUAGE: javascript
+CODE:
+```
+const bus = await BABYLON.CreateAudioBusAsync("bus",
+    { spatialEnabled: true }
+);
+
+bus.spatial.attach(mesh);
+
+const bounce = await BABYLON.CreateSoundAsync("bounce",
+    "sounds/bounce.wav",
+);
+
+bounce.outBus = bus;
+
+// Wait until audio engine is ready to play sounds.
+await audioEngine.unlockAsync();
+
+bounce.play({ loop: true });
+```
+
+----------------------------------------
+
+TITLE: Constructing a Flow Graph with Blocks and Connections in Babylon.js
+DESCRIPTION: Illustrates the process of creating various blocks (data and execution), connecting them with data and signal connections, and adding an event block to start the graph execution. This example uses a cooking process as an analogy.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/flowGraph/flowGraphBasicConcepts.md#2025-04-23_snippet_10
+
+LANGUAGE: javascript
+CODE:
+```
+// data blocks
+const getVegetableBlock = new GetVariableBlock({ variableName: "vegetable" });
+const getCutTypeBlock = new GetVariableBlock({ variableName: "cutType" });
+
+// execution blocks
+const rinseBlock = new RinseBlock();
+rinseBlock.vegetableToRinse.connectTo(getVegetableBlock);
+// using a value directly, on each of the contexts
+rinseBlock.useSoap.setValue(true, potatoContext);
+rinseBlock.useSoap.setValue(false, carrotContext);
+
+const cutBlock = new CutBlock();
+cutBlock.rinsedVegetable.connectTo(rinseBlock.rinsedVegetable); // connect the two blocks using a data connection
+cutBlock.cutType.connectTo(getCutTypeBlock);
+// trigger cut when done rinsing
+rinseBlock.doneRinsing.connectTo(cutBlock.startCutting);
+
+const fryBlock = new FryBlock();
+fryBlock.cutVegetable.connectTo(cutBlock.cutVegetable); // connect the two blocks using a data connection
+
+// now the event block
+const startCookingBlock = new StartCookingBlock();
+graph.addEventBlock(startCookingBlock);
+
+graph.start();
+```
+
+----------------------------------------
+
+TITLE: Client-Side Physics Authority Management
+DESCRIPTION: Client-side implementation that handles physics authority transitions and updates box position/rotation based on server messages. Includes smooth interpolation for non-authoritative clients.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/guidedLearning/networking/Colyseus_ammojs.md#2025-04-23_snippet_7
+
+LANGUAGE: javascript
+CODE:
+```
+let isUpdateBox=false;
+
+ room.onMessage("boxUpdate", (message) => {
+    if(message.targetId==null||message.targetId==sessionId){
+        isUpdateBox=true
+        box.material.diffuseColor. = new BABYLON.Color3(1, 0, 0);
+    }else{
+        isUpdateBox=false
+        box.material.diffuseColor = new BABYLON.Color3(0, 1, 0);
+        box.position= BABYLON.Vector3.Lerp(
+          box.position,
+          new BABYLON.Vector3(
+            message.position.x,
+            message.position.y,
+            message.position.z
+          ),
+          0.5)
+        box.rotationQuaternion=BABYLON.Quaternion.Slerp(
+          box.rotationQuaternion,
+          new BABYLON.Quaternion(
+            message.quaternion.x,
+            message.quaternion.y,
+            message.quaternion.z,
+            message.quaternion.w
+          ),
+          0.4)
+    }
+});
+
+ engine.runRenderLoop(function() {
+    if(room&&playerViews[sessionId]){
+        // ...
+        if(isUpdateBox){
+            room.send('boxUpdate', {
+                targetId:sessionId,
+                position:{
+                  x: box.position.x,
+                  y: box.position.y,
+                  z:box.position.z
+                },
+                quaternion:{
+                  x:box.rotationQuaternion.x,
+                  y:box.rotationQuaternion.y,
+                  z:box.rotationQuaternion.z,
+                  w:box.rotationQuaternion.w
+                }
+            });
+        }
+    }
+});
+```
+
+----------------------------------------
+
+TITLE: Customizing Model Instantiation in AssetContainer with Naming and Material Options (JavaScript)
+DESCRIPTION: Shows how to use instantiateModelsToScene with custom parameters: a naming function for generated entities, and a cloneMaterials boolean toggle. When nameFunction is provided, all cloned models' names are determined by it, and when cloneMaterials is true, materials are duplicated rather than shared. Requires an AssetContainer with assets and functions for optional customization.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/importers/assetContainers.md#2025-04-23_snippet_4
+
+LANGUAGE: javascript
+CODE:
+```
+const entries = container.instantiateModelsToScene((name) => "p" + name, true);
+```
+
+----------------------------------------
+
+TITLE: Customizing Joint Meshes in WebXR Hand Tracking
+DESCRIPTION: Demonstrates how to customize the meshes used for each joint in WebXR hand tracking. This example uses a box instead of the default sphere for joint representation.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/webXR/WebXRHandTracking.md#2025-04-23_snippet_4
+
+LANGUAGE: javascript
+CODE:
+```
+const featureManager = xrHelper.baseExperience.featuresManager;
+
+featureManager.enableFeature(BABYLON.WebXRFeatureName.HAND_TRACKING, "latest", {
+  xrInput: xrHelper.input,
+  jointMeshes: {
+    sourceMesh: BoxBuilder.CreateBox("jointParent", { size: 1 }),
+  },
+});
+```
+
+----------------------------------------
+
+TITLE: Enabling Depth Sorting for SPS Transparency in Babylon.js
+DESCRIPTION: This code demonstrates how to create a Solid Particle System with depth sorting enabled to handle transparency issues. The snippet shows how to initialize an SPS with enableDepthSort, and how to toggle depth sorting on or off using the depthSortParticles property.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/particles/solid_particle_system/sps_transparency.md#2025-04-23_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+// create a particle depth sort enabled SPS
+var sps = new BABYLON.SolidParticleSystem("sps", scene, {
+  enableDepthSort: true
+});
+
+// then later, only do ...
+sps.setParticles(); // and the particle are depth sorted each call
+
+// We can skip the sorting at any time (or reactive it) : sps and camera not moving anymore
+sps.depthSortParticles = false; // true by default when enableDepthSort is set to true
+```
+
+----------------------------------------
+
+TITLE: Creating ShaderMaterial from .fx Files in Babylon.js (JavaScript)
+DESCRIPTION: Demonstrates creating a `BABYLON.ShaderMaterial` by loading shader code from external '.fx' files. The constructor takes the base name ('COMMON_NAME') of the shader files (expected to be COMMON_NAME.vertex.fx and COMMON_NAME.fragment.fx located relative to the HTML page or at a specified URL). The `./` prefix indicates a relative path. Attributes and uniforms are declared as usual.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/materials/shaders/shaderCodeInBjs.md#2025-04-23_snippet_7
+
+LANGUAGE: javascript
+CODE:
+```
+const shaderMaterial = new BABYLON.ShaderMaterial("shader", scene, "./COMMON_NAME", {
+  attributes: ["position", "normal", "uv"],
+  uniforms: ["world", "worldView", "worldViewProjection", "view", "projection"],
+});
+```
+
+----------------------------------------
+
+TITLE: Setting Snap Points Only Mode After WebXR Teleportation Initialization
+DESCRIPTION: Enables the snap points only mode after teleportation feature initialization, restricting user movement to only the defined hotspots without reinitializing the feature.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/webXR/WebXRTeleportation.md#2025-04-23_snippet_20
+
+LANGUAGE: javascript
+CODE:
+```
+teleportation.snapPointsOnly = true;
+```
+
+----------------------------------------
+
+TITLE: Creating a Standalone ShadowDepthWrapper for Optimization in JavaScript
+DESCRIPTION: Creates a `ShadowDepthWrapper` instance with the `standalone: true` option. This indicates that the wrapper manages a dedicated `ShaderMaterial` used exclusively for depth rendering, rather than modifying a copy of the mesh's main material. This approach optimizes performance by using a potentially much simpler shader for depth passes, avoiding the overhead (uniforms, samplers, code complexity) of the main material (like `CustomMaterial` or `PBRMaterial`) and reducing JavaScript-side checks.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/lights/shadows.md#2025-04-23_snippet_27
+
+LANGUAGE: javascript
+CODE:
+```
+const shadowDepthWrapper = new BABYLON.ShadowDepthWrapper(shaderMaterial, scene, {
+  standalone: true,
+});
+```
+
+----------------------------------------
+
+TITLE: Initializing GPU Picker and Picking Async - JavaScript
+DESCRIPTION: This code initializes a `GPUPicker`, defines a list of pickable meshes using `setPickingList`, and then uses `pickAsync` to perform the picking operation when a pointer event occurs. The result of the picking operation is a `pickingInfo` object, which contains information about the picked mesh.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/mesh/interactions/picking_collisions.md#_snippet_9
+
+LANGUAGE: javascript
+CODE:
+```
+var picker = new BABYLON.GPUPicker();
+picker.setPickingList(myMeshes);
+
+scene.onPointerObservable.add(() => {
+  if (picker.pickingInProgress) {
+    return;
+  }
+  picker.pickAsync(scene.pointerX, scene.pointerY, scene, false).then((pickingInfo) => {
+    if (pickingInfo) {
+      console.log(pickingInfo.mesh.name);
+    }
+  });
+});
+```
+
+----------------------------------------
+
+TITLE: Handling Canvas Resize in Main Thread for Offscreen Canvas
+DESCRIPTION: This code adds a resize event listener to the window in the main thread. It sends the new canvas dimensions to the worker when the window is resized.
+SOURCE: https://github.com/babylonjs/documentation/blob/master/content/features/featuresDeepDive/scene/offscreenCanvas.md#2025-04-23_snippet_3
+
+LANGUAGE: javascript
+CODE:
+```
+window.addEventListener("resize", () => {
+  worker.postMessage({ width: canvas.clientWidth, height: canvas.clientHeight });
+});
+```

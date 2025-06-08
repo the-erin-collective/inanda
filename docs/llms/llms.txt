@@ -1,0 +1,96 @@
+
+# LLM AGENT PROJECT GUIDE
+
+This is the central context file for LLM agents working on this Angular + Babylon.js web application project.
+
+## CONTEXT SYSTEM
+- This project uses specialized .llms.txt files to provide library-specific context
+- ALL LLM context files are located in: /docs/llms/
+- When working with specific libraries, reference their respective .llms.txt files
+- **CRITICAL**: When any document in the /docs/llms/ folder references another document in the /docs/llms/ folder, IMMEDIATELY read that referenced document if the linked context would be useful
+- Do NOT just acknowledge the existence of linked documents in the /docs/llms/ folder - actively retrieve and read their content when the linked context would be useful
+
+### Available Context Files:
+- `angular.llms.txt` - Angular framework patterns, components, and modern features
+- `babylonjs.llms.txt` - Babylon.js 3D rendering, WebXR, materials, and compute shaders
+
+## PROJECT ARCHITECTURE
+- Type: Angular application with Babylon.js 3D engine
+- Structure: Clean Architecture with domain-driven design
+- Key folders:  src/common/, src/domain/, src/enactment/, src/infrastructure/, src/integration/, src/presentation/
+- Server-side rendering: Angular Universal enabled
+- Technology Philosophy: Prioritize latest versions and cutting-edge features over stability when possible
+
+## ENVIRONMENT & COMMANDS
+- OS: Windows
+- Shell: PowerShell
+- Command separator: `;` (not `&&`)
+
+### Common Commands:
+```powershell
+# Development server
+ng serve
+
+# Build
+ng build
+
+# Run multiple commands
+npm install; ng serve
+
+# Test
+ng test
+```
+
+## PROJECT REQUIREMENTS DOCUMENT (PRD)
+- The PRD contains project specifications with checkboxes for task tracking
+- The PRD includes detailed implementation specifications and describes how the app should work
+- When completing tasks, check off corresponding boxes in the PRD
+- Use the PRD as the source of truth for project requirements and implementation details
+
+## PROBLEM TRACKING
+- Reference: `frequently-encountered-problems.md` in /docs/llms/
+- Document recurring issues and their solutions
+- Before solving a problem, check if solution already exists
+- After solving new recurring problems, document them for future reference
+
+## WORKING PRINCIPLES
+1. Use semantic_search to find relevant code before making changes
+2. Check existing patterns in the codebase before implementing new features
+3. Reference library-specific .llms.txt files for modern API usage
+4. Use PowerShell syntax for terminal commands
+5. Update PRD checkboxes when completing tasks
+6. Document new recurring problem solutions in frequently-encountered-problems.md
+7. **ALWAYS follow document links**: When any .llms.txt file or documentation references another file, immediately read that file's content using read_file tool
+
+## QUICK REFERENCE CHECKLIST
+**Before Starting Any Task:**
+- [ ] Read relevant library-specific .llms.txt files
+- [ ] Check PRD for implementation requirements
+- [ ] Search frequently-encountered-problems.md for known solutions
+- [ ] Use semantic_search to understand existing code patterns
+
+**When Implementing:**
+- [ ] Follow PowerShell command syntax (use `;` not `&&`)
+- [ ] Update PRD checkboxes as tasks complete
+- [ ] Document new recurring problems if encountered
+
+## ERROR HANDLING
+- If referenced .llms.txt files don't exist, note this and continue with available context
+- If PRD is not found, ask user for location or proceed with general best practices
+- If frequently-encountered-problems.md is missing, create it using the template structure
+
+## VERSION INFORMATION
+- Last Updated: June 8, 2025
+- Angular Version: 20
+- Babylon.js Version: 8.4
+- Target Environment: Windows PowerShell
+
+## FILE STRUCTURE CONTEXT
+- Shared generics: src/common/
+- Domain logic: src/domain/
+- Business rules: src/enactment/
+- Infrastructure: src/infrastructure/
+- Project Configuration: src/integration/
+- UI components: src/presentation/
+- Build artifacts: Ignored in version control
+- Compiler Configuration: Root level config files

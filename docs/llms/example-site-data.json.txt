@@ -1,0 +1,1218 @@
+{
+    "site": {
+        "_id": "site-001",
+        "name": "Example Site",
+        "description": "A modern web experience with 3D navigation",
+        "pageOrder": [
+            "page-1",
+            "page-2",
+            "page-3",
+            "page-4",
+            "page-5",
+            "page-6",
+            "page-7"
+        ],
+        "sitemapType": "HEX_FLOWER",
+        "defaultPage": "page-1",
+        "backdrop": "PAINT"
+    },
+    "pages": [
+        {
+            "_id": "page-1",
+            "title": "Page 1",
+            "root": {
+                "base": {
+                    "type": "base",
+                    "children": [
+                        {
+                            "type": "stylesheet",
+                            "_id": "stylesheet-stylesheet-1",
+                            "styles": [
+                                {
+                                    "_id": "panel-preview-1",
+                                    "name": "Preview Panel Style",
+                                    "properties": {
+                                        "backgroundColor": "#767649",
+                                        "foregroundColor": "#ffffff",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true,
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "panel-preview-hover-1",
+                                    "name": "Preview Panel Hover Style",
+                                    "properties": {
+                                        "backgroundColor": "#767649",
+                                        "foregroundColor": "#ffffff",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true,
+                                        "borderWidth": "4",
+                                        "borderColor": "#FFFFFF",
+                                        "borderStyle": "solid",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "h1-preview-1",
+                                    "name": "Preview Heading Style",
+                                    "properties": {
+                                        "fontSize": "48",
+                                        "fontWeight": "bold",
+                                        "marginTop": "30px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "p-preview-1",
+                                    "name": "Preview Paragraph Style",
+                                    "properties": {
+                                        "fontSize": "28",
+                                        "marginTop": "15px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "panel-core-1",
+                                    "name": "Core Panel Style",
+                                    "properties": {
+                                        "backgroundColor": "#fdffb6",
+                                        "foregroundColor": "#000000",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true
+                                    }
+                                },
+                                {
+                                    "_id": "h1-1",
+                                    "name": "Heading Style",
+                                    "properties": {
+                                        "fontSize": "52",
+                                        "fontWeight": "bold",
+                                        "marginTop": "30px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "p-1",
+                                    "name": "Paragraph Style",
+                                    "properties": {
+                                        "fontSize": "28",
+                                        "marginTop": "15px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "core": {
+                    "type": "core",
+                    "children": [
+                        {
+                            "_id": "panel-core-1",
+                            "type": "panel",
+                            "children": [
+                                {
+                                    "type": "h1",
+                                    "text": "Welcome to Our Home",
+                                    "_id": "h1-1"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Our digital home showcases the latest in web technology and interactive design. Explore our unique approach to digital experiences.",
+                                    "_id": "p-1"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "We believe in creating memorable, engaging digital spaces that tell your story in innovative ways.",
+                                    "_id": "p-1"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Click through our hexagonal navigation to discover more about our services and approach.",
+                                    "_id": "p-1"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "preview": {
+                    "type": "preview",
+                    "children": [
+                        {
+                            "_id": "panel-preview-1",
+                            "type": "panel",
+                            "children": [
+                                {
+                                    "type": "h1",
+                                    "text": "Home",
+                                    "_id": "h1-preview-1"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Your journey starts here. Click to enter our digital space.",
+                                    "_id": "p-preview-1"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "script": {
+                    "type": "script",
+                    "children": []
+                },
+                "type": "root"
+            },
+            "siteId": "site-001"
+        },
+        {
+            "_id": "page-2",
+            "title": "Page 2",
+            "root": {
+                "base": {
+                    "type": "base",
+                    "children": [
+                        {
+                            "type": "stylesheet",
+                            "_id": "stylesheet-stylesheet-2",
+                            "styles": [
+                                {
+                                    "_id": "panel-preview-2",
+                                    "name": "Preview Panel Style",
+                                    "properties": {
+                                        "backgroundColor": "#885152",
+                                        "foregroundColor": "#ffffff",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true,
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "panel-preview-hover-2",
+                                    "name": "Preview Panel Hover Style",
+                                    "properties": {
+                                        "backgroundColor": "#885152",
+                                        "foregroundColor": "#ffffff",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true,
+                                        "borderWidth": "4",
+                                        "borderColor": "#FFFFFF",
+                                        "borderStyle": "solid",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "h1-preview-2",
+                                    "name": "Preview Heading Style",
+                                    "properties": {
+                                        "fontSize": "48",
+                                        "fontWeight": "bold",
+                                        "marginTop": "30px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "p-preview-2",
+                                    "name": "Preview Paragraph Style",
+                                    "properties": {
+                                        "fontSize": "28",
+                                        "marginTop": "15px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "panel-core-2",
+                                    "name": "Core Panel Style",
+                                    "properties": {
+                                        "backgroundColor": "#ffadad",
+                                        "foregroundColor": "#000000",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true
+                                    }
+                                },
+                                {
+                                    "_id": "h1-2",
+                                    "name": "Heading Style",
+                                    "properties": {
+                                        "fontSize": "52",
+                                        "fontWeight": "bold",
+                                        "marginTop": "30px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "p-2",
+                                    "name": "Paragraph Style",
+                                    "properties": {
+                                        "fontSize": "28",
+                                        "marginTop": "15px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "core": {
+                    "type": "core",
+                    "children": [
+                        {
+                            "_id": "panel-core-2",
+                            "type": "panel",
+                            "children": [
+                                {
+                                    "type": "h1",
+                                    "text": "About Our Platform",
+                                    "_id": "h1-2"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Our platform combines cutting-edge 3D navigation with seamless content delivery for a truly unique web experience.",
+                                    "_id": "p-2"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Built using Angular and Babylon.js, we've created an immersive environment that breaks the mold of traditional websites.",
+                                    "_id": "p-2"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "The hexagonal design represents our interconnected approach to digital solutions.",
+                                    "_id": "p-2"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "preview": {
+                    "type": "preview",
+                    "children": [
+                        {
+                            "_id": "panel-preview-2",
+                            "type": "panel",
+                            "children": [
+                                {
+                                    "type": "h1",
+                                    "text": "Platform",
+                                    "_id": "h1-preview-2"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Discover the technology behind our unique approach.",
+                                    "_id": "p-preview-2"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "script": {
+                    "type": "script",
+                    "children": []
+                },
+                "type": "root"
+            },
+            "siteId": "site-001"
+        },
+        {
+            "_id": "page-3",
+            "title": "Page 3",
+            "root": {
+                "base": {
+                    "type": "base",
+                    "children": [
+                        {
+                            "type": "stylesheet",
+                            "_id": "stylesheet-stylesheet-3",
+                            "styles": [
+                                {
+                                    "_id": "panel-preview-3",
+                                    "name": "Preview Panel Style",
+                                    "properties": {
+                                        "backgroundColor": "#84684A",
+                                        "foregroundColor": "#ffffff",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true,
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "panel-preview-hover-3",
+                                    "name": "Preview Panel Hover Style",
+                                    "properties": {
+                                        "backgroundColor": "#84684A",
+                                        "foregroundColor": "#ffffff",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true,
+                                        "borderWidth": "4",
+                                        "borderColor": "#FFFFFF",
+                                        "borderStyle": "solid",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "h1-preview-3",
+                                    "name": "Preview Heading Style",
+                                    "properties": {
+                                        "fontSize": "48",
+                                        "fontWeight": "bold",
+                                        "marginTop": "30px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "p-preview-3",
+                                    "name": "Preview Paragraph Style",
+                                    "properties": {
+                                        "fontSize": "28",
+                                        "marginTop": "15px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "panel-core-3",
+                                    "name": "Core Panel Style",
+                                    "properties": {
+                                        "backgroundColor": "#ffd6a5",
+                                        "foregroundColor": "#000000",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true
+                                    }
+                                },
+                                {
+                                    "_id": "h1-3",
+                                    "name": "Heading Style",
+                                    "properties": {
+                                        "fontSize": "52",
+                                        "fontWeight": "bold",
+                                        "marginTop": "30px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "p-3",
+                                    "name": "Paragraph Style",
+                                    "properties": {
+                                        "fontSize": "28",
+                                        "marginTop": "15px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "core": {
+                    "type": "core",
+                    "children": [
+                        {
+                            "_id": "panel-core-3",
+                            "type": "panel",
+                            "children": [
+                                {
+                                    "type": "h1",
+                                    "text": "Our Services",
+                                    "_id": "h1-3"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "We offer a wide range of digital services including web development, 3D modeling, and interactive design.",
+                                    "_id": "p-3"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Each project is custom tailored to meet your specific needs and vision, ensuring a result that stands out.",
+                                    "_id": "p-3"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Our team combines technical expertise with creative insight to deliver exceptional results.",
+                                    "_id": "p-3"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "preview": {
+                    "type": "preview",
+                    "children": [
+                        {
+                            "_id": "panel-preview-3",
+                            "type": "panel",
+                            "children": [
+                                {
+                                    "type": "h1",
+                                    "text": "Services",
+                                    "_id": "h1-preview-3"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Explore our range of digital offerings and expertise.",
+                                    "_id": "p-preview-3"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "script": {
+                    "type": "script",
+                    "children": []
+                },
+                "type": "root"
+            },
+            "siteId": "site-001"
+        },
+        {
+            "_id": "page-4",
+            "title": "Page 4",
+            "root": {
+                "base": {
+                    "type": "base",
+                    "children": [
+                        {
+                            "type": "stylesheet",
+                            "_id": "stylesheet-stylesheet-4",
+                            "styles": [
+                                {
+                                    "_id": "panel-preview-4",
+                                    "name": "Preview Panel Style",
+                                    "properties": {
+                                        "backgroundColor": "#4E6F48",
+                                        "foregroundColor": "#ffffff",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true,
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "panel-preview-hover-4",
+                                    "name": "Preview Panel Hover Style",
+                                    "properties": {
+                                        "backgroundColor": "#4E6F48",
+                                        "foregroundColor": "#ffffff",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true,
+                                        "borderWidth": "4",
+                                        "borderColor": "#FFFFFF",
+                                        "borderStyle": "solid",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "h1-preview-4",
+                                    "name": "Preview Heading Style",
+                                    "properties": {
+                                        "fontSize": "48",
+                                        "fontWeight": "bold",
+                                        "marginTop": "30px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "p-preview-4",
+                                    "name": "Preview Paragraph Style",
+                                    "properties": {
+                                        "fontSize": "28",
+                                        "marginTop": "15px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "panel-core-4",
+                                    "name": "Core Panel Style",
+                                    "properties": {
+                                        "backgroundColor": "#caffbf",
+                                        "foregroundColor": "#000000",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true
+                                    }
+                                },
+                                {
+                                    "_id": "h1-4",
+                                    "name": "Heading Style",
+                                    "properties": {
+                                        "fontSize": "52",
+                                        "fontWeight": "bold",
+                                        "marginTop": "30px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "p-4",
+                                    "name": "Paragraph Style",
+                                    "properties": {
+                                        "fontSize": "28",
+                                        "marginTop": "15px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "core": {
+                    "type": "core",
+                    "children": [
+                        {
+                            "_id": "panel-core-4",
+                            "type": "panel",
+                            "children": [
+                                {
+                                    "type": "h1",
+                                    "text": "Portfolio Showcase",
+                                    "_id": "h1-4"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Browse through our collection of completed projects spanning various industries and technologies.",
+                                    "_id": "p-4"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Each case study demonstrates our problem-solving approach and attention to detail.",
+                                    "_id": "p-4"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "We're proud of the diverse range of clients we've helped succeed in their digital transformation.",
+                                    "_id": "p-4"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "preview": {
+                    "type": "preview",
+                    "children": [
+                        {
+                            "_id": "panel-preview-4",
+                            "type": "panel",
+                            "children": [
+                                {
+                                    "type": "h1",
+                                    "text": "Portfolio",
+                                    "_id": "h1-preview-4"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "See our work in action across different industries.",
+                                    "_id": "p-preview-4"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "script": {
+                    "type": "script",
+                    "children": []
+                },
+                "type": "root"
+            },
+            "siteId": "site-001"
+        },
+        {
+            "_id": "page-5",
+            "title": "Page 5",
+            "root": {
+                "base": {
+                    "type": "base",
+                    "children": [
+                        {
+                            "type": "stylesheet",
+                            "_id": "stylesheet-stylesheet-5",
+                            "styles": [
+                                {
+                                    "_id": "panel-preview-5",
+                                    "name": "Preview Panel Style",
+                                    "properties": {
+                                        "backgroundColor": "#3E6F73",
+                                        "foregroundColor": "#ffffff",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true,
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "panel-preview-hover-5",
+                                    "name": "Preview Panel Hover Style",
+                                    "properties": {
+                                        "backgroundColor": "#3E6F73",
+                                        "foregroundColor": "#ffffff",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true,
+                                        "borderWidth": "4",
+                                        "borderColor": "#FFFFFF",
+                                        "borderStyle": "solid",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "h1-preview-5",
+                                    "name": "Preview Heading Style",
+                                    "properties": {
+                                        "fontSize": "48",
+                                        "fontWeight": "bold",
+                                        "marginTop": "30px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "p-preview-5",
+                                    "name": "Preview Paragraph Style",
+                                    "properties": {
+                                        "fontSize": "28",
+                                        "marginTop": "15px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "panel-core-5",
+                                    "name": "Core Panel Style",
+                                    "properties": {
+                                        "backgroundColor": "#64F3FF",
+                                        "foregroundColor": "#000000",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true
+                                    }
+                                },
+                                {
+                                    "_id": "h1-5",
+                                    "name": "Heading Style",
+                                    "properties": {
+                                        "fontSize": "52",
+                                        "fontWeight": "bold",
+                                        "marginTop": "30px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "p-5",
+                                    "name": "Paragraph Style",
+                                    "properties": {
+                                        "fontSize": "28",
+                                        "marginTop": "15px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "core": {
+                    "type": "core",
+                    "children": [
+                        {
+                            "_id": "panel-core-5",
+                            "type": "panel",
+                            "children": [
+                                {
+                                    "type": "h1",
+                                    "text": "The Team Behind It",
+                                    "_id": "h1-5"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Get to know the passionate developers, designers, and strategists who make our projects come to life.",
+                                    "_id": "p-5"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Our team brings together diverse backgrounds and specialties, united by a commitment to excellence.",
+                                    "_id": "p-5"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "We continuously explore new technologies and approaches to stay at the cutting edge.",
+                                    "_id": "p-5"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "preview": {
+                    "type": "preview",
+                    "children": [
+                        {
+                            "_id": "panel-preview-5",
+                            "type": "panel",
+                            "children": [
+                                {
+                                    "type": "h1",
+                                    "text": "Team",
+                                    "_id": "h1-preview-5"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Meet the creators, developers, and visionaries.",
+                                    "_id": "p-preview-5"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "script": {
+                    "type": "script",
+                    "children": []
+                },
+                "type": "root"
+            },
+            "siteId": "site-001"
+        },
+        {
+            "_id": "page-6",
+            "title": "Page 6",
+            "root": {
+                "base": {
+                    "type": "base",
+                    "children": [
+                        {
+                            "type": "stylesheet",
+                            "_id": "stylesheet-stylesheet-6",
+                            "styles": [
+                                {
+                                    "_id": "panel-preview-6",
+                                    "name": "Preview Panel Style",
+                                    "properties": {
+                                        "backgroundColor": "#495F83",
+                                        "foregroundColor": "#ffffff",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true,
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "panel-preview-hover-6",
+                                    "name": "Preview Panel Hover Style",
+                                    "properties": {
+                                        "backgroundColor": "#495F83",
+                                        "foregroundColor": "#ffffff",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true,
+                                        "borderWidth": "4",
+                                        "borderColor": "#FFFFFF",
+                                        "borderStyle": "solid",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "h1-preview-6",
+                                    "name": "Preview Heading Style",
+                                    "properties": {
+                                        "fontSize": "48",
+                                        "fontWeight": "bold",
+                                        "marginTop": "30px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "p-preview-6",
+                                    "name": "Preview Paragraph Style",
+                                    "properties": {
+                                        "fontSize": "28",
+                                        "marginTop": "15px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "panel-core-6",
+                                    "name": "Core Panel Style",
+                                    "properties": {
+                                        "backgroundColor": "#a0c4ff",
+                                        "foregroundColor": "#000000",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true
+                                    }
+                                },
+                                {
+                                    "_id": "h1-6",
+                                    "name": "Heading Style",
+                                    "properties": {
+                                        "fontSize": "52",
+                                        "fontWeight": "bold",
+                                        "marginTop": "30px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "p-6",
+                                    "name": "Paragraph Style",
+                                    "properties": {
+                                        "fontSize": "28",
+                                        "marginTop": "15px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "core": {
+                    "type": "core",
+                    "children": [
+                        {
+                            "_id": "panel-core-6",
+                            "type": "panel",
+                            "children": [
+                                {
+                                    "type": "h1",
+                                    "text": "Latest News & Updates",
+                                    "_id": "h1-6"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Stay informed about our newest projects, technology insights, and company announcements.",
+                                    "_id": "p-6"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "We regularly share our knowledge through blog posts, tutorials, and case studies.",
+                                    "_id": "p-6"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Follow our journey as we continue to push the boundaries of web technology.",
+                                    "_id": "p-6"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "preview": {
+                    "type": "preview",
+                    "children": [
+                        {
+                            "_id": "panel-preview-6",
+                            "type": "panel",
+                            "children": [
+                                {
+                                    "type": "h1",
+                                    "text": "News",
+                                    "_id": "h1-preview-6"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Catch up on our latest developments and insights.",
+                                    "_id": "p-preview-6"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "script": {
+                    "type": "script",
+                    "children": []
+                },
+                "type": "root"
+            },
+            "siteId": "site-001"
+        },
+        {
+            "_id": "page-7",
+            "title": "Page 7",
+            "root": {
+                "base": {
+                    "type": "base",
+                    "children": [
+                        {
+                            "type": "stylesheet",
+                            "_id": "stylesheet-stylesheet-7",
+                            "styles": [
+                                {
+                                    "_id": "panel-preview-7",
+                                    "name": "Preview Panel Style",
+                                    "properties": {
+                                        "backgroundColor": "#794A79",
+                                        "foregroundColor": "#ffffff",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true,
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "panel-preview-hover-7",
+                                    "name": "Preview Panel Hover Style",
+                                    "properties": {
+                                        "backgroundColor": "#794A79",
+                                        "foregroundColor": "#ffffff",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true,
+                                        "borderWidth": "4",
+                                        "borderColor": "#FFFFFF",
+                                        "borderStyle": "solid",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "h1-preview-7",
+                                    "name": "Preview Heading Style",
+                                    "properties": {
+                                        "fontSize": "48",
+                                        "fontWeight": "bold",
+                                        "marginTop": "30px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "p-preview-7",
+                                    "name": "Preview Paragraph Style",
+                                    "properties": {
+                                        "fontSize": "28",
+                                        "marginTop": "15px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center",
+                                        "textVerticalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "panel-core-7",
+                                    "name": "Core Panel Style",
+                                    "properties": {
+                                        "backgroundColor": "#FF9BFF",
+                                        "foregroundColor": "#000000",
+                                        "paddingLeft": "20px",
+                                        "paddingRight": "20px",
+                                        "paddingTop": "15px",
+                                        "paddingBottom": "15px",
+                                        "horizontalAlignment": "center",
+                                        "verticalAlignment": "center",
+                                        "fillSpace": true
+                                    }
+                                },
+                                {
+                                    "_id": "h1-7",
+                                    "name": "Heading Style",
+                                    "properties": {
+                                        "fontSize": "52",
+                                        "fontWeight": "bold",
+                                        "marginTop": "30px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center"
+                                    }
+                                },
+                                {
+                                    "_id": "p-7",
+                                    "name": "Paragraph Style",
+                                    "properties": {
+                                        "fontSize": "28",
+                                        "marginTop": "15px",
+                                        "foregroundColor": "inherit",
+                                        "textHorizontalAlignment": "center"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "core": {
+                    "type": "core",
+                    "children": [
+                        {
+                            "_id": "panel-core-7",
+                            "type": "panel",
+                            "children": [
+                                {
+                                    "type": "h1",
+                                    "text": "Get in Touch",
+                                    "_id": "h1-7"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Ready to start your project? We'd love to hear from you and discuss how we can help bring your vision to life.",
+                                    "_id": "p-7"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Our consultation process is designed to thoroughly understand your goals and requirements.",
+                                    "_id": "p-7"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Reach out today to schedule a conversation with our team of experts.",
+                                    "_id": "p-7"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "preview": {
+                    "type": "preview",
+                    "children": [
+                        {
+                            "_id": "panel-preview-7",
+                            "type": "panel",
+                            "children": [
+                                {
+                                    "type": "h1",
+                                    "text": "Contact",
+                                    "_id": "h1-preview-7"
+                                },
+                                {
+                                    "type": "p",
+                                    "text": "Let's start a conversation about your project.",
+                                    "_id": "p-preview-7"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "script": {
+                    "type": "script",
+                    "children": []
+                },
+                "type": "root"
+            },
+            "siteId": "site-001"
+        }
+    ]
+}

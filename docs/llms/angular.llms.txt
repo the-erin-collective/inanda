@@ -1,0 +1,1158 @@
+TITLE: Defining a Basic Angular Component with @Component Decorator
+DESCRIPTION: This snippet demonstrates the basic structure of an Angular component using the @Component decorator. It defines a `selector` for using the component in HTML and an inline `template` that specifies the component's view. This is the fundamental way to declare an Angular component.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/guide/components/anatomy-of-components.md#_snippet_0
+
+LANGUAGE: angular-ts
+CODE:
+```
+@Component({
+  selector: 'profile-photo',
+  template: `<img src="profile-photo.jpg" alt="Your profile photo">`,
+})
+export class ProfilePhoto { }
+```
+
+----------------------------------------
+
+TITLE: Defining an Angular Component with Inline Template
+DESCRIPTION: This snippet shows the basic structure for defining an Angular component. It uses the `@Component` decorator to specify a selector and an inline HTML template, along with a TypeScript class to encapsulate the component's behavior.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/llms-full.txt#_snippet_18
+
+LANGUAGE: typescript
+CODE:
+```
+// user-profile.ts
+@Component({
+  selector: 'user-profile',
+  template: `
+    <h1>User profile</h1>
+    <p>This is the user profile page</p>
+  `,
+})
+export class UserProfile { /* Your component code goes here */ }
+```
+
+----------------------------------------
+
+TITLE: Creating a New Angular Project
+DESCRIPTION: This Angular CLI command initializes a new Angular project with the specified name. It sets up the basic project structure, installs dependencies, and configures default options, prompting the user for preferences if not provided.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/llms-full.txt#_snippet_4
+
+LANGUAGE: shell
+CODE:
+```
+ng new <project-name>
+```
+
+----------------------------------------
+
+TITLE: Running Development Server with Angular CLI
+DESCRIPTION: This command starts a local development server for the Angular application. It automatically reloads the app in the browser upon source file changes and is accessible at `http://localhost:4200/`.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/integration/standalone-bootstrap/README.md#_snippet_0
+
+LANGUAGE: Shell
+CODE:
+```
+ng serve
+```
+
+----------------------------------------
+
+TITLE: Defining a Basic Angular Component with Inline Template
+DESCRIPTION: This snippet demonstrates the basic structure of an Angular component. It uses the `@Component` decorator to define the component's metadata, including its `selector` for use in HTML and an inline `template` that specifies the HTML structure to be rendered.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/introduction/essentials/components.md#_snippet_0
+
+LANGUAGE: angular-ts
+CODE:
+```
+// user-profile.ts
+@Component({
+  selector: 'user-profile',
+  template: `
+    <h1>User profile</h1>
+    <p>This is the user profile page</p>
+  `,
+})
+export class UserProfile { /* Your component code goes here */ }
+```
+
+----------------------------------------
+
+TITLE: Iterating with Angular @for Loop in Template
+DESCRIPTION: This snippet illustrates the basic usage of the `@for` control flow block in an Angular template. It iterates over a collection named `heroes`, with `hero` representing each item. The `track hero` expression is crucial for performance, enabling Angular to efficiently identify and re-render only the items that have changed.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/examples/testing/src/app/dashboard/dashboard.component.html#_snippet_0
+
+LANGUAGE: Angular HTML Template
+CODE:
+```
+@for (hero of heroes; track hero) { }
+```
+
+----------------------------------------
+
+TITLE: Creating a New Angular Workspace with ng new (Shell)
+DESCRIPTION: This command initializes a new Angular workspace and, by default, creates a root-level application named 'my-project'. It installs all necessary Angular npm packages and other dependencies, setting up a ready-to-run skeleton application within the workspace's 'src/' subfolder. This is suitable for a typical multi-repo development style.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/reference/configs/file-structure.md#_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+ng new my-project
+```
+
+----------------------------------------
+
+TITLE: Creating a Live Consumer with Effect in TypeScript
+DESCRIPTION: This snippet shows how an `effect` makes a `computed` signal 'live'. When `double` is consumed by an `effect`, a hard reference is maintained from `counter` to `double` to the `effect`, ensuring updates propagate. This doesn't cause memory leaks because the `effect` itself holds a direct reference to `double` and must be manually destroyed.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/packages/core/primitives/signals/README.md#_snippet_6
+
+LANGUAGE: TypeScript
+CODE:
+```
+effect(() => console.log(double()));
+```
+
+----------------------------------------
+
+TITLE: Injecting and Using an Angular Service in a Component
+DESCRIPTION: This example shows how to consume the `Calculator` service within an Angular `Receipt` component. It imports the service, uses the `inject` function to obtain an instance, and then calls the service's `add` method to calculate and display a total cost.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/introduction/essentials/dependency-injection.md#_snippet_1
+
+LANGUAGE: angular-ts
+CODE:
+```
+import { Component, inject } from '@angular/core';
+import { Calculator } from './calculator';
+
+@Component({
+  selector: 'app-receipt',
+  template: `<h1>The total is {{ totalCost }}</h1>`,
+})
+
+export class Receipt {
+  private calculator = inject(Calculator);
+  totalCost = this.calculator.add(50, 25);
+}
+```
+
+----------------------------------------
+
+TITLE: Displaying Asynchronous Data in Angular Components with Async Pipe
+DESCRIPTION: This Angular component demonstrates how to display asynchronous data fetched from a service using the `async` pipe. It subscribes to an `Observable<User>` (`user$`) and uses the `@if` block to conditionally render user details only after the data has loaded, ensuring proper subscription management and UI updates.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/guide/http/making-requests.md#_snippet_10
+
+LANGUAGE: TypeScript
+CODE:
+```
+import { AsyncPipe } from '@angular/common';
+@Component({
+  imports: [AsyncPipe],
+  template: `
+    @if (user$ | async; as user) {
+      <p>Name: {{ user.name }}</p>
+      <p>Biography: {{ user.biography }}</p>
+    }
+  `,
+})
+export class UserProfileComponent {
+  @Input() userId!: string;
+  user$!: Observable<User>;
+
+  private userService = inject(UserService);
+
+  constructor(): void {
+    this.user$ = this.userService.getUser(this.userId);
+  }
+}
+```
+
+----------------------------------------
+
+TITLE: Using ngSrc for Static and Dynamic Images in Angular Templates
+DESCRIPTION: This code illustrates how to replace the standard `src` attribute with `ngSrc` for both static image paths and dynamically bound image URLs within an Angular component's template. This enables the `NgOptimizedImage` directive's optimizations, requiring `width` and `height` attributes to prevent layout shift.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/tutorials/learn-angular/steps/11-optimizing-images/README.md#_snippet_1
+
+LANGUAGE: angular-ts
+CODE:
+```
+import { NgOptimizedImage } from '@angular/common';
+
+@Component({
+template: `     ...
+    <li>
+      Static Image:
+      <img ngSrc="/assets/logo.svg" alt="Angular logo" width="32" height="32" />
+    </li>
+    <li>
+      Dynamic Image:
+      <img [ngSrc]="logoUrl" [alt]="logoAlt" width="32" height="32" />
+    </li>
+    ...
+  `,
+imports: [NgOptimizedImage],
+})
+```
+
+----------------------------------------
+
+TITLE: Serving Angular Application Locally
+DESCRIPTION: This command starts the Angular development server, compiling the application and serving it at `http://localhost:4200`. It enables live reloading, allowing developers to see changes in the browser instantly during development.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/guide/routing/routing-with-urlmatcher.md#_snippet_4
+
+LANGUAGE: shell
+CODE:
+```
+ng serve
+```
+
+----------------------------------------
+
+TITLE: Checking Form Validity in Angular Template
+DESCRIPTION: This snippet demonstrates how to use the `valid` property of an Angular `FormGroup` to control the `disabled` state of a submit button in the template. The button will only be enabled when the entire `profileForm` is valid, preventing submission of invalid data.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/tutorials/learn-angular/steps/18-forms-validation/README.md#_snippet_2
+
+LANGUAGE: angular-html
+CODE:
+```
+<button type="submit" [disabled]="!profileForm.valid">Submit</button>
+```
+
+----------------------------------------
+
+TITLE: Implementing Lazily Loaded Components in Angular Routes
+DESCRIPTION: This snippet demonstrates lazy loading components in Angular using the 'loadComponent' property. Components like HomePage and LoginPage are loaded only when their respective routes become active, leveraging JavaScript dynamic imports. This strategy significantly improves initial application load speed by reducing the size of the main bundle.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/guide/routing/define-routes.md#_snippet_8
+
+LANGUAGE: TypeScript
+CODE:
+```
+import { Routes } from "@angular/router";
+
+export const routes: Routes = [
+  // The HomePage and LoginPage components are loaded lazily at the point at which
+  // their corresponding routes become active.
+  {
+    path: 'login',
+    loadComponent: () => import('./components/auth/login-page')
+  },
+  {
+    path: ',
+    loadComponent: () => import('./components/home/home-page')
+  }
+]
+```
+
+----------------------------------------
+
+TITLE: Creating a Signal from an RxJS Observable with toSignal in Angular
+DESCRIPTION: This snippet demonstrates how to use `toSignal` to convert an RxJS Observable (`interval`) into an Angular signal. It shows how to provide an `initialValue` to ensure the signal always has a value, behaving similarly to the `async` pipe but with more flexibility. The subscription is automatically managed by Angular's destruction lifecycle.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/ecosystem/rxjs-interop/signals-interop.md#_snippet_0
+
+LANGUAGE: TypeScript
+CODE:
+```
+import { Component } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { interval } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop;
+
+@Component({
+  template: `{{ counter() }}`,
+})
+export class Ticker {
+  counterObservable = interval(1000);
+
+  // Get a `Signal` representing the `counterObservable`'s value.
+  counter = toSignal(this.counterObservable, {initialValue: 0});
+}
+```
+
+----------------------------------------
+
+TITLE: Automatic Change Events for Angular Model Inputs
+DESCRIPTION: This TypeScript snippet illustrates that declaring a `model` input, like `checked`, automatically generates a corresponding output named `checkedChange`. This output is emitted whenever the model input's value is updated via `set` or `update` methods, enabling subscription to changes in the template.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/llms-full.txt#_snippet_49
+
+LANGUAGE: TypeScript
+CODE:
+```
+@Directive({ /* ... */ })
+export class CustomCheckbox {
+  // This automatically creates an output named "checkedChange".
+  // Can be subscribed to using `(checkedChange)="handler()"` in the template.
+  checked = model(false);
+}
+```
+
+----------------------------------------
+
+TITLE: Nested Angular Defer Blocks with Incremental Hydration (HTML)
+DESCRIPTION: This snippet illustrates incremental hydration with nested Angular `@defer` blocks. When a child `@defer` block's hydration is triggered (e.g., `on hover`), hydration propagates from the top-most dehydrated parent block down to the triggered child, ensuring hierarchical dependency satisfaction.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/llms-full.txt#_snippet_494
+
+LANGUAGE: HTML
+CODE:
+```
+@defer (hydrate on interaction) {
+  <parent-block-cmp />
+  @defer (hydrate on hover) {
+    <child-block-cmp />
+  } @placeholder {
+    <div>Child placeholder</div>
+  }
+} @placeholder{
+  <div>Parent Placeholder</div>
+}
+```
+
+----------------------------------------
+
+TITLE: Bootstrapping Standalone Application (After) - Angular TypeScript
+DESCRIPTION: This snippet shows the `main.ts` file after the migration. It now uses `bootstrapApplication(AppComponent, { providers: [...] })`. Module imports like `SharedModule` are wrapped in `importProvidersFrom`, and `RouterModule.forRoot` and `BrowserAnimationsModule` are replaced by `provideRouter` and `provideAnimations` respectively, directly within the providers array.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/packages/core/schematics/ng-generate/standalone-migration/README.md#_snippet_21
+
+LANGUAGE: TypeScript
+CODE:
+```
+import {platformBrowser, bootstrapApplication} from '@angular/platform-browser';
+import {InjectionToken, importProvidersFrom} from '@angular/core';
+import {withEnabledBlockingInitialNavigation, provideRouter} from '@angular/router';
+import {provideAnimations} from '@angular/platform-browser/animations';
+import {AppModule, ExportedConfigClass} from './app/app.module';
+import {AppComponent} from './app/app.component';
+import {CONFIG} from './app/config';
+import {SharedModule} from './shared/shared.module';
+import {ImportedInterface} from './app/some-interface';
+
+interface NonImportedInterface {
+  foo: any;
+  bar: ImportedInterface;
+}
+
+const token = new InjectionToken<NonImportedInterface>('token');
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    importProvidersFrom(SharedModule),
+    {provide: token, useValue: {foo: true, bar: {baz: false}}},
+    {provide: CONFIG, useClass: ExportedConfigClass},
+    provideAnimations(),
+    provideRouter([{
+      path: 'shop',
+      loadComponent: () => import('./app/shop/shop.component').then(m => m.ShopComponent)
+    }], withEnabledBlockingInitialNavigation())
+  ]
+}).catch(e => console.error(e));
+```
+
+----------------------------------------
+
+TITLE: Bootstrapping Standalone Angular Applications (TypeScript)
+DESCRIPTION: This function is used to bootstrap a standalone Angular application, allowing developers to launch an application without needing an NgModule. It takes the root component and optional application configuration, returning a Promise that resolves to an `ApplicationRef`.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/goldens/public-api/platform-browser/index.api.md#_snippet_1
+
+LANGUAGE: TypeScript
+CODE:
+```
+// @public
+export function bootstrapApplication(rootComponent: Type<unknown>, options?: ApplicationConfig): Promise<ApplicationRef>;
+```
+
+----------------------------------------
+
+TITLE: Rendering Dynamic Text with Text Interpolation in Angular
+DESCRIPTION: This example demonstrates text interpolation in Angular using double curly braces '{{ }}' to display dynamic data from a component property ('theme') in the template. Angular automatically updates the rendered text when the property's value changes.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/llms-full.txt#_snippet_113
+
+LANGUAGE: typescript
+CODE:
+```
+@Component({
+  template: `
+    <p>Your color preference is {{ theme }}.</p>
+  `,
+  ...
+})
+export class AppComponent {
+  theme = 'dark';
+}
+```
+
+----------------------------------------
+
+TITLE: Angular Template Interpolation for Data Binding (HTML)
+DESCRIPTION: This snippet demonstrates Angular's interpolation syntax (`{{ }}`) used to display the value of a component property (`leaf.emoji`) directly within the HTML template. This is a one-way data binding mechanism.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/examples/resolution-modifiers/src/app/skipself/skipself.component.html#_snippet_0
+
+LANGUAGE: HTML
+CODE:
+```
+{{ leaf.emoji }}
+```
+
+----------------------------------------
+
+TITLE: Serving the Angular application locally
+DESCRIPTION: This command builds the Angular application and serves it locally, typically accessible at http://localhost:4200. It enables live reloading, automatically updating the browser as changes are made to the source code, and is intended for local development and testing.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/tutorials/first-app/steps/02-Home/README.md#_snippet_1
+
+LANGUAGE: shell
+CODE:
+```
+ng serve
+```
+
+----------------------------------------
+
+TITLE: Deferring Content for Browser Environment - Angular Template
+DESCRIPTION: This snippet uses the `@defer` block to defer the loading and rendering of its content until the application is running in a browser environment, as indicated by the `isBrowser` condition. This is useful for server-side rendering (SSR) scenarios where certain components or content should only be initialized client-side.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/app/app.component.html#_snippet_0
+
+LANGUAGE: Angular Template
+CODE:
+```
+@defer (when isBrowser) { }
+```
+
+----------------------------------------
+
+TITLE: Iterating List Items with Angular @for Loop
+DESCRIPTION: This snippet demonstrates the basic usage of the Angular `@for` loop to iterate over a collection (`items`) and render each `item`. The `track item` clause is used for performance optimization and proper change detection when reordering or modifying the list.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/examples/animations/src/app/native-css/reorder.component.html#_snippet_0
+
+LANGUAGE: Angular Template
+CODE:
+```
+@for(item of items; track item) {
+  {{ item }}
+}
+```
+
+----------------------------------------
+
+TITLE: Displaying Username with Angular Interpolation
+DESCRIPTION: This snippet demonstrates how to use Angular's interpolation syntax (double curly braces) to display the value of a component property, such as 'username', directly within an HTML template. This is a fundamental concept for data binding in Angular applications.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/examples/routing-with-urlmatcher/src/app/profile/profile.component.html#_snippet_0
+
+LANGUAGE: HTML
+CODE:
+```
+Hello {{ username }}!
+```
+
+----------------------------------------
+
+TITLE: Declaring Local Template Variables with @let in Angular HTML
+DESCRIPTION: Demonstrates various ways to declare local template variables using the `@let` syntax in Angular HTML. Variables can be assigned values from expressions, async pipes, literals, or objects, and their values are automatically kept up-to-date.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/guide/templates/variables.md#_snippet_0
+
+LANGUAGE: angular-html
+CODE:
+```
+@let name = user.name;
+@let greeting = 'Hello, ' + name;
+@let data = data$ | async;
+@let pi = 3.1459;
+@let coordinates = {x: 50, y: 100};
+@let longExpression = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ' +
+                      'sed do eiusmod tempor incididunt ut labore et dolore magna ' +
+                      'Ut enim ad minim veniam...';
+```
+
+----------------------------------------
+
+TITLE: Creating and Updating Local State with Angular Signals
+DESCRIPTION: This snippet demonstrates how to create a signal using the `signal` function, read its value by calling it, and modify its value using the `set` and `update` methods. Signals are fundamental for reactive state management in Angular applications.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/llms-full.txt#_snippet_241
+
+LANGUAGE: typescript
+CODE:
+```
+import {signal} from '@angular/core';
+
+// Create a signal with the `signal` function.
+const firstName = signal('Morgan');
+
+// Read a signal value by calling it— signals are functions.
+console.log(firstName());
+
+// Change the value of this signal by calling its `set` method with a new value.
+firstName.set('Jaime');
+
+// You can also use the `update` method to change the value
+// based on the previous value.
+firstName.update(name => name.toUpperCase());
+```
+
+----------------------------------------
+
+TITLE: Converting RxJS Observable to Angular Signal in TypeScript
+DESCRIPTION: These functions convert an RxJS `Observable` or `Subscribable` into an Angular `Signal`. This allows reactive streams to be consumed as Angular signals, benefiting from Angular's change detection optimizations. Various overloads handle different initial value behaviors, nullability, and synchronization requirements.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/goldens/public-api/core/rxjs-interop/index.api.md#_snippet_8
+
+LANGUAGE: TypeScript
+CODE:
+```
+export function toSignal<T>(source: Observable<T> | Subscribable<T>): Signal<T | undefined>;
+```
+
+LANGUAGE: TypeScript
+CODE:
+```
+export function toSignal<T>(source: Observable<T> | Subscribable<T>, options: NoInfer<ToSignalOptions<T | undefined>> & { initialValue?: undefined; requireSync?: false; }): Signal<T | undefined>;
+```
+
+LANGUAGE: TypeScript
+CODE:
+```
+export function toSignal<T>(source: Observable<T> | Subscribable<T>, options: NoInfer<ToSignalOptions<T | null>> & { initialValue?: null; requireSync?: false; }): Signal<T | null>;
+```
+
+LANGUAGE: TypeScript
+CODE:
+```
+export function toSignal<T>(source: Observable<T> | Subscribable<T>, options: NoInfer<ToSignalOptions<T>> & { initialValue?: undefined; requireSync: true; }): Signal<T>;
+```
+
+LANGUAGE: TypeScript
+CODE:
+```
+export function toSignal<T, const U extends T>(source: Observable<T> | Subscribable<T>, options: NoInfer<ToSignalOptions<T | U>> & { initialValue: U; requireSync?: false; }): Signal<T | U>;
+```
+
+----------------------------------------
+
+TITLE: Declaring Various Angular Signal Inputs and an Accessor Input - TypeScript
+DESCRIPTION: This snippet demonstrates the declaration of multiple Angular `input` properties within an `AppComponent`, showcasing different configurations such as nullable, required with transform, and type-narrowing scenarios. It also includes an example of a traditional `@Input()` setter, noting its complexity for migration.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/packages/core/schematics/migrations/signal-migration/test/golden_best_effort.txt#_snippet_29
+
+LANGUAGE: TypeScript
+CODE:
+```
+import {Component, Input, input} from '@angular/core';
+
+interface Vehicle {}
+interface Car extends Vehicle {
+  __car: true;
+}
+interface Audi extends Car {
+  __audi: true;
+}
+
+@Component({
+  selector: 'app-component',
+  templateUrl: './template.html',
+})
+export class AppComponent {
+  readonly input = input<string | null>(null);
+  readonly bla = input.required<boolean, string | boolean>({ transform: disabledTransform });
+  readonly narrowableMultipleTimes = input<Vehicle | null>(null);
+  readonly withUndefinedInput = input<string>();
+  readonly incompatible = input<string | null>(null);
+
+  private _bla: any;
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
+  @Input()
+  set ngSwitch(newValue: any) {
+    this._bla = newValue;
+    if (newValue === 0) {
+      console.log('test');
+    }
+  }
+```
+
+----------------------------------------
+
+TITLE: Updating a Writable Angular Signal with a Callback
+DESCRIPTION: This snippet shows how to update a writable signal's value based on its previous state using the `.update()` method. The method takes a callback function that receives the current value and returns the new computed value, useful for incremental changes.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/guide/signals/overview.md#_snippet_2
+
+LANGUAGE: ts
+CODE:
+```
+// Increment the count by 1.
+count.update(value => value + 1);
+```
+
+----------------------------------------
+
+TITLE: Conditionally Rendering Elements with NgIf in Angular
+DESCRIPTION: Illustrates the `*ngIf` structural directive, which adds or removes an element from the DOM based on a boolean condition. If the condition is false, the element and its children are completely removed.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/examples/built-in-directives/src/app/app.component.html#_snippet_5
+
+LANGUAGE: HTML (Angular)
+CODE:
+```
+<app-item-detail *ngIf="isActive"></app-item-detail>
+```
+
+----------------------------------------
+
+TITLE: Iterating Over Data with Angular @for Loop
+DESCRIPTION: This snippet demonstrates how to use the Angular `@for` block to iterate over a collection, `internalData()`, and render content for each item. The `track $index` clause is used for performance optimization and proper change detection. It displays the `text` property of each `bar` object.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/devtools/projects/ng-devtools/src/lib/devtools-tabs/profiler/timeline/recording-visualizer/bar-chart.component.html#_snippet_0
+
+LANGUAGE: Angular HTML Template
+CODE:
+```
+@for (bar of internalData(); track $index) {
+
+{{ bar.text }}
+
+}
+```
+
+----------------------------------------
+
+TITLE: Iterating Over Directives with Angular @for
+DESCRIPTION: This snippet demonstrates the Angular `@for` control flow block, used for iterating over the `currentDirectives()` collection. The `track $index` expression provides a unique identifier for each item, optimizing rendering performance by helping Angular efficiently update the DOM. This syntax is a modern replacement for the `*ngFor` directive.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/devtools/projects/ng-devtools/src/lib/devtools-tabs/directive-explorer/property-tab/property-view/property-tab-body.component.html#_snippet_0
+
+LANGUAGE: Angular HTML Template
+CODE:
+```
+@for (directive of currentDirectives(); track $index) {
+
+}
+```
+
+----------------------------------------
+
+TITLE: Configuring Angular Router in Application Providers
+DESCRIPTION: This code configures the Angular Router by importing `provideRouter` and the `routes` array. It then adds `provideRouter(routes)` to the `providers` array within `appConfig`, making the router available throughout the application.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/tutorials/learn-angular/steps/12-enable-routing/README.md#_snippet_1
+
+LANGUAGE: TypeScript
+CODE:
+```
+import {ApplicationConfig} from '@angular/core';
+import {provideRouter} from '@angular/router';
+import {routes} from './app.routes';
+
+export const appConfig: ApplicationConfig = {
+  providers: [provideRouter(routes)]
+};
+```
+
+----------------------------------------
+
+TITLE: Declaring Basic Component Input with @Input Decorator (TypeScript)
+DESCRIPTION: Demonstrates the basic declaration of a component input named 'value' using the `@Input` decorator. This makes the 'value' property bindable from parent components.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/guide/components/inputs.md#_snippet_15
+
+LANGUAGE: ts
+CODE:
+```
+@Component({...})
+export class CustomSlider {
+  @Input() value = 0;
+}
+```
+
+----------------------------------------
+
+TITLE: Iterating 'todo' List in Angular HTML
+DESCRIPTION: This snippet uses the Angular `@for` control flow to iterate over the `todo` array. The `track item` syntax is used for performance optimization when items in the list change, helping Angular identify which items have been added, removed, or reordered. Each `item` from the `todo` array is then displayed within the template.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/examples/drag-drop/src/connected-sorting/app/app.component.html#_snippet_0
+
+LANGUAGE: HTML
+CODE:
+```
+@for (item of todo; track item) {
+
+{{item}}
+
+}
+```
+
+----------------------------------------
+
+TITLE: Displaying Filtered Groups with Empty State in Angular Template
+DESCRIPTION: This Angular template snippet iterates over `filteredGroups()`, displaying content for each group. It includes an `@empty` block to render a message when no groups are found, providing a user-friendly experience for scenarios where no results match the filter criteria.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/app/features/references/api-reference-list/api-reference-list.component.html#_snippet_2
+
+LANGUAGE: Angular Template
+CODE:
+```
+@for (group of filteredGroups(); track group.id) { } @empty {
+
+No API items found.
+
+}
+```
+
+----------------------------------------
+
+TITLE: Injecting HttpClient into an Angular Service (TypeScript)
+DESCRIPTION: This example illustrates how to inject the `HttpClient` service into an Angular service using the `inject` function. Once injected, the service can utilize `this.http` to perform various HTTP requests, such as GET, POST, etc.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/guide/http/setup.md#_snippet_2
+
+LANGUAGE: ts
+CODE:
+```
+@Injectable({providedIn: 'root'})
+export class ConfigService {
+  private http = inject(HttpClient);
+  // This service can now make HTTP requests via `this.http`.
+}
+```
+
+----------------------------------------
+
+TITLE: Injecting HttpClient Service in Angular
+DESCRIPTION: This example illustrates how to inject the `HttpClient` service into an Angular service (or component/class) using the `inject` function. Once injected, the service can utilize `this.http` to make various HTTP requests.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/llms-full.txt#_snippet_349
+
+LANGUAGE: TypeScript
+CODE:
+```
+@Injectable({providedIn: 'root'})
+export class ConfigService {
+  private http = inject(HttpClient);
+  // This service can now make HTTP requests via `this.http`.
+}
+```
+
+----------------------------------------
+
+TITLE: Referencing Expression Results with @if in Angular HTML
+DESCRIPTION: This snippet illustrates how the `@if` block in Angular HTML supports referencing the result of an expression using the `as` keyword. This is useful for common coding patterns, such as unwrapping an observable's value (`users$ | async`) and then using the unwrapped value (`users`) within the block, for example, to display its length.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/tools/manual_api_docs/blocks/if.md#_snippet_1
+
+LANGUAGE: angular-html
+CODE:
+```
+@if (users$ | async; as users) {
+  {{ users.length }}
+}
+```
+
+----------------------------------------
+
+TITLE: Setting a Writable Angular Signal Value
+DESCRIPTION: This snippet illustrates how to directly update the value of a writable signal using the `.set()` method. This operation replaces the signal's current value with the new provided value.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/guide/signals/overview.md#_snippet_1
+
+LANGUAGE: ts
+CODE:
+```
+count.set(3);
+```
+
+----------------------------------------
+
+TITLE: Declaring Basic Local Variables in Angular Templates
+DESCRIPTION: This snippet demonstrates the basic syntax for declaring local variables using `@let` in Angular templates. It shows how to assign a direct property value (`user.name`) and the result of an `async` pipe (`data$ | async`) to a local variable for later use within the template.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/tools/manual_api_docs/blocks/let.md#_snippet_0
+
+LANGUAGE: angular-html
+CODE:
+```
+@let name = user.name;
+@let data = data$ | async;
+```
+
+----------------------------------------
+
+TITLE: Injecting AuthService in a Functional HTTP Interceptor (TypeScript)
+DESCRIPTION: This functional interceptor demonstrates how to inject an `AuthService` using Angular's `inject` API to retrieve an authentication token. It then clones the incoming request to add the `X-Authentication-Token` header before passing the modified request to the next handler. This pattern is useful for automatically adding authentication details to outgoing HTTP requests.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/guide/http/interceptors.md#_snippet_4
+
+LANGUAGE: ts
+CODE:
+```
+export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn) {
+  // Inject the current `AuthService` and use it to get an authentication token:
+  const authToken = inject(AuthService).getAuthToken();
+
+  // Clone the request to add the authentication header.
+  const newReq = req.clone({
+    headers: req.headers.append('X-Authentication-Token', authToken),
+  });
+  return next(newReq);
+}
+```
+
+----------------------------------------
+
+TITLE: Lazy Loaded Angular Route Configuration (After Migration)
+DESCRIPTION: This TypeScript code snippet shows the Angular `RouterModule.forRoot` configuration after the lazy loading migration. The `component` property is replaced with `loadComponent`, which dynamically imports `HomeComponent` only when the route is activated, reducing the initial bundle size.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/packages/core/schematics/ng-generate/route-lazy-loading/README.md#_snippet_3
+
+LANGUAGE: typescript
+CODE:
+```
+// app.module.ts
+@NgModule({
+  imports: [
+    RouterModule.forRoot([
+      {
+        path: 'home',
+        // ↓ HomeComponent is now lazy loaded
+        loadComponent: () => import('./home/home.component').then(m => m.HomeComponent),
+      },
+    ]),
+  },
+})
+export class AppModule {}
+```
+
+----------------------------------------
+
+TITLE: Binding Route Parameter to Component Input in Angular
+DESCRIPTION: This code shows how to create an Angular `@Input()` property that automatically receives a route parameter. When the `id` parameter from the route changes, the setter function is invoked, allowing the component to fetch data based on the new `heroId`.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/llms-full.txt#_snippet_432
+
+LANGUAGE: TypeScript
+CODE:
+```
+@Input()
+set id(heroId: string) {
+  this.hero$ = this.service.getHero(heroId);
+}
+```
+
+----------------------------------------
+
+TITLE: Displaying Question Label using Interpolation in Angular Template
+DESCRIPTION: This snippet uses Angular's interpolation syntax `{{ }}` to display the `label` property of a `question` object. It's commonly used for one-way data binding to render dynamic content directly into the HTML.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/examples/dynamic-form/src/app/dynamic-form-question.component.html#_snippet_0
+
+LANGUAGE: Angular Template
+CODE:
+```
+{{ question().label }}
+```
+
+----------------------------------------
+
+TITLE: Composing Multiple Host Directives Transmitively in Angular
+DESCRIPTION: This example demonstrates the transitive composition of host directives. `MenuWithTooltip` composes `Tooltip` and `Menu` directives, and then `SpecializedMenuWithTooltip` composes `MenuWithTooltip`. When `SpecializedMenuWithTooltip` is used, it effectively applies the behaviors of `Menu`, `Tooltip`, and `MenuWithTooltip` to its host element, showcasing how directives can aggregate behaviors from other directives.
+SOURCE: https://github.com/angular/angular/blob/20.0.0/adev/src/content/guide/directives/directive-composition-api.md#_snippet_5
+
+LANGUAGE: typescript
+CODE:
+```
+@Directive({...})
+export class Menu { }
+
+@Directive({...})
+export class Tooltip { }
+
+// MenuWithTooltip can compose behaviors from multiple other directives
+@Directive({
+  hostDirectives: [Tooltip, Menu],
+})
+export class MenuWithTooltip { }
+
+// CustomWidget can apply the already-composed behaviors from MenuWithTooltip
+@Directive({
+  hostDirectives: [MenuWithTooltip],
+})
+export class SpecializedMenuWithTooltip { }
+```
+
+----------------------------------------
+
+TITLE: Angular httpResource API for Reactive HTTP Requests
+DESCRIPTION: httpResource is an experimental Angular API (since v19.2) that makes reactive HTTP requests and exposes the request status and response value as a WritableResource. It creates signal-based HTTP resources that automatically update when URL or request parameters change via signals. Uses HttpClient under the hood and supports interceptors, testing, and other HttpClient features.
+SOURCE: https://angular.dev/api/common/http/httpResource
+
+LANGUAGE: typescript
+CODE:
+```
+// Basic usage with URL signal
+function httpResource<TResult = unknown>(
+  url: () => string | undefined, 
+  options: HttpResourceOptions<TResult, unknown> & { defaultValue: NoInfer<TResult>; }
+): HttpResourceRef<TResult>;
+
+// Optional options version
+function httpResource<TResult = unknown>(
+  url: () => string | undefined, 
+  options?: HttpResourceOptions<TResult, unknown> | undefined
+): HttpResourceRef<TResult | undefined>;
+
+// Request object version with required options
+function httpResource<TResult = unknown>(
+  request: () => HttpResourceRequest | undefined, 
+  options: HttpResourceOptions<TResult, unknown> & { defaultValue: NoInfer<TResult>; }
+): HttpResourceRef<TResult>;
+
+// Request object version with optional options
+function httpResource<TResult = unknown>(
+  request: () => HttpResourceRequest | undefined, 
+  options?: HttpResourceOptions<TResult, unknown> | undefined
+): HttpResourceRef<TResult | undefined>;
+
+// ArrayBuffer variants
+function httpResource.arrayBuffer<TResult = ArrayBuffer>(
+  url: () => string | undefined, 
+  options: HttpResourceOptions<TResult, ArrayBuffer> & { defaultValue: NoInfer<TResult>; }
+): HttpResourceRef<TResult>;
+
+function httpResource.arrayBuffer<TResult = ArrayBuffer>(
+  url: () => string | undefined, 
+  options?: HttpResourceOptions<TResult, ArrayBuffer> | undefined
+): HttpResourceRef<TResult | undefined>;
+
+function httpResource.arrayBuffer<TResult = ArrayBuffer>(
+  request: () => HttpResourceRequest | undefined, 
+  options: HttpResourceOptions<TResult, ArrayBuffer> & { defaultValue: NoInfer<TResult>; }
+): HttpResourceRef<TResult>;
+
+function httpResource.arrayBuffer<TResult = ArrayBuffer>(
+  request: () => HttpResourceRequest | undefined, 
+  options?: HttpResourceOptions<TResult, ArrayBuffer> | undefined
+): HttpResourceRef<TResult | undefined>;
+
+// Blob variants
+function httpResource.blob<TResult = Blob>(
+  url: () => string | undefined, 
+  options: HttpResourceOptions<TResult, Blob> & { defaultValue: NoInfer<TResult>; }
+): HttpResourceRef<TResult>;
+
+function httpResource.blob<TResult = Blob>(
+  url: () => string | undefined, 
+  options?: HttpResourceOptions<TResult, Blob> | undefined
+): HttpResourceRef<TResult | undefined>;
+
+function httpResource.blob<TResult = Blob>(
+  request: () => HttpResourceRequest | undefined, 
+  options: HttpResourceOptions<TResult, Blob> & { defaultValue: NoInfer<TResult>; }
+): HttpResourceRef<TResult>;
+
+function httpResource.blob<TResult = Blob>(
+  request: () => HttpResourceRequest | undefined, 
+  options?: HttpResourceOptions<TResult, Blob> | undefined
+): HttpResourceRef<TResult | undefined>;
+
+// Text variants
+function httpResource.text<TResult = string>(
+  url: () => string | undefined, 
+  options: HttpResourceOptions<TResult, string> & { defaultValue: NoInfer<TResult>; }
+): HttpResourceRef<TResult>;
+
+function httpResource.text<TResult = string>(
+  url: () => string | undefined, 
+  options?: HttpResourceOptions<TResult, string> | undefined
+): HttpResourceRef<TResult | undefined>;
+
+function httpResource.text<TResult = string>(
+  request: () => HttpResourceRequest | undefined, 
+  options: HttpResourceOptions<TResult, string> & { defaultValue: NoInfer<TResult>; }
+): HttpResourceRef<TResult>;
+
+function httpResource.text<TResult = string>(
+  request: () => HttpResourceRequest | undefined, 
+  options?: HttpResourceOptions<TResult, string> | undefined
+): HttpResourceRef<TResult | undefined>;
+```
+
+----------------------------------------
+
+TITLE: httpResource Basic Usage Example
+DESCRIPTION: Example of using httpResource to create a reactive HTTP resource that fetches data from a signal-based URL. The resource automatically updates when the URL signal changes.
+SOURCE: https://angular.dev/api/common/http/httpResource
+
+LANGUAGE: typescript
+CODE:
+```
+import { httpResource } from '@angular/common/http';
+import { signal } from '@angular/core';
+
+// Create a signal for the URL
+const urlSignal = signal('https://api.example.com/data');
+
+// Create an HTTP resource that reacts to URL changes
+const dataResource = httpResource(() => urlSignal(), {
+  // Optional: provide default value
+  defaultValue: null
+});
+
+// Access the resource value (signal)
+const data = dataResource.value();
+
+// Check loading state
+const isLoading = dataResource.isLoading();
+
+// Check error state
+const error = dataResource.error();
+
+// Update URL to trigger new request
+urlSignal.set('https://api.example.com/other-data');
+```
+
+----------------------------------------
+
+TITLE: httpResource with Request Object
+DESCRIPTION: Example showing how to use httpResource with a request object signal for more complex HTTP configurations including headers, body, and HTTP method.
+SOURCE: https://angular.dev/api/common/http/httpResource
+
+LANGUAGE: typescript
+CODE:
+```
+import { httpResource, HttpResourceRequest } from '@angular/common/http';
+import { signal } from '@angular/core';
+
+// Create a signal for the request configuration
+const requestSignal = signal<HttpResourceRequest>({
+  url: 'https://api.example.com/data',
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer token'
+  },
+  body: { key: 'value' }
+});
+
+// Create an HTTP resource with request object
+const postResource = httpResource(() => requestSignal());
+
+// Access response data
+const responseData = postResource.value();
+
+// Update request to trigger new HTTP call
+requestSignal.set({
+  url: 'https://api.example.com/data',
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer new-token'
+  },
+  body: { updatedKey: 'updatedValue' }
+});
+```
+
+----------------------------------------
+
+TITLE: httpResource Text Response Example
+DESCRIPTION: Example demonstrating how to use httpResource.text() to fetch text content instead of JSON, useful for APIs that return plain text, HTML, or other text-based formats.
+SOURCE: https://angular.dev/api/common/http/httpResource
+
+LANGUAGE: typescript
+CODE:
+```
+import { httpResource } from '@angular/common/http';
+import { signal } from '@angular/core';
+
+// URL signal for text endpoint
+const textUrlSignal = signal('https://api.example.com/text-data');
+
+// Create HTTP resource for text response
+const textResource = httpResource.text(() => textUrlSignal(), {
+  defaultValue: ''
+});
+
+// Access text response
+const textData = textResource.value();
+
+// Check if loading
+const isLoading = textResource.isLoading();
+
+// Handle errors
+const error = textResource.error();
+```
+
+----------------------------------------
+
+TITLE: Starting Angular Development Server
+DESCRIPTION: Command to start the Angular development server for the AI-TTS-MP3 application. This runs the application in development mode with live reload, typically accessible at http://localhost:4200.
+SOURCE: AI-TTS-MP3 Project package.json scripts
+
+LANGUAGE: shell
+CODE:
+```
+npm start
+```
+
+----------------------------------------
+
+TITLE: Alternative Angular Serve Command
+DESCRIPTION: Direct Angular CLI command to serve the application. Equivalent to npm start but uses the Angular CLI directly. Starts the development server with live reload.
+SOURCE: AI-TTS-MP3 Project package.json scripts
+
+LANGUAGE: shell
+CODE:
+```
+ng serve
+```
+
+----------------------------------------
+
+TITLE: Building and Running Production Build
+DESCRIPTION: Commands to build the application for production and serve it locally. The build process includes linting and optimization for production deployment.
+SOURCE: AI-TTS-MP3 Project package.json scripts
+
+LANGUAGE: shell
+CODE:
+```
+# Build for production
+npm run build
+
+# Build for static hosting
+npm run build:static
+
+# Build for GitHub Pages
+npm run build:github-pages
+
+# Build SSR version
+npm run build:ssr
+```
+
+----------------------------------------
+
+TITLE: Development Build with File Watching
+DESCRIPTION: Command to build the application in development mode with file watching enabled. Automatically rebuilds when source files change, useful for development workflows that don't require the full dev server.
+SOURCE: AI-TTS-MP3 Project package.json scripts
+
+LANGUAGE: shell
+CODE:
+```
+npm run watch
+```
+
+----------------------------------------
+
+TITLE: Running Server-Side Rendering (SSR) Build
+DESCRIPTION: Command to run the built SSR version of the application using Node.js. This requires building the SSR version first using npm run build:ssr.
+SOURCE: AI-TTS-MP3 Project package.json scripts
+
+LANGUAGE: shell
+CODE:
+```
+# First build SSR
+npm run build:ssr
+
+# Then serve SSR
+npm run serve:ssr:ai-tts-mp3
+```
+
+----------------------------------------
+
+TITLE: Complete Development Workflow Commands
+DESCRIPTION: Common commands for developing the AI-TTS-MP3 application, including linting, testing, and serving.
+SOURCE: AI-TTS-MP3 Project package.json scripts
+
+LANGUAGE: shell
+CODE:
+```
+# Install dependencies
+npm install
+
+# Start development server
+npm start
+
+# Run linting
+npm run lint
+
+# Fix linting issues automatically
+npm run lint:fix
+
+# Run tests
+npm test
+
+# Build for production
+npm run build
+```
