@@ -199,7 +199,8 @@ export class ServerSiteRepository implements SiteRepository {
     const dbAvailable = await this.ensureMongoConnection();
     if (!dbAvailable) {
       throw new Error('Cannot save site: MongoDB is not available');
-    }      const siteData = {
+    }      
+    const siteData = {
       _id: site.id, // Use the string ID directly
       name: site.name,
       description: site.description,
@@ -207,7 +208,8 @@ export class ServerSiteRepository implements SiteRepository {
       sitemapType: site.sitemapType.toString(), // Convert enum to string for storage
       defaultPage: site.defaultPage,
       backdrop: site.backdrop
-    };    const siteModel = site.id
+    };    
+    const siteModel = site.id
       ? await SiteModel.findByIdAndUpdate(site.id, siteData, { new: true, upsert: true }).exec()
       : await new SiteModel(siteData).save();
     
