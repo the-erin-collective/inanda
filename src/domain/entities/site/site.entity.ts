@@ -1,31 +1,29 @@
 import { SiteBackdrop } from './backdrop.enum';
+import { SitemapType } from './sitemap-type.enum';
 
-export class Site {
-    constructor(
+export class Site {    constructor(
       public id: string,
       public name: string,
       public description?: string,
       public pageOrder: string[] = [],
-      public sitemapType: string = 'hex-flower',
+      public sitemapType: SitemapType = SitemapType.HEX_FLOWER,
       public defaultPage?: string,
       public backdrop?: string
     ) {}
-  
     static fromJSON(json: {
       id: string;
       name: string;
       description?: string;
       pageOrder?: string[];
-      sitemapType?: string;
+      sitemapType?: SitemapType;
       defaultPage?: string;
       backdrop?: string;
-    }): Site {
-      return new Site(
+    }): Site {      return new Site(
         json.id,
         json.name,
         json.description,
         json.pageOrder ?? [],
-        json.sitemapType ?? 'hex-flower',
+        json.sitemapType ?? SitemapType.HEX_FLOWER,
         json.defaultPage,
         json.backdrop
       );
