@@ -278,7 +278,7 @@ export function createPaintBackdrop(scene: Scene): void {
       // Fade out alpha at the edge of any region, modulated by fine detail fade
       float edgeAlpha = smoothstep(0.0, 0.15, maxMask) * fineDetailFade;
       
-      float globalOpacity = 0.5; // Set to 50% opacity
+      float globalOpacity = 0.1; // Set to 50% opacity
       gl_FragColor = vec4(finalColor, edgeAlpha * globalOpacity);
 
       // Debug: visualize the wakePos as a red dot
