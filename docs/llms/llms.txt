@@ -42,6 +42,7 @@ ng test
 ```
 
 ## PROJECT REQUIREMENTS DOCUMENT (PRD)
+- The PRD can be found at docs\llms\PRODUCT_REQUIREMENTS_DOCUMENT.md and links to other docs for details  
 - The PRD contains project specifications with checkboxes for task tracking
 - The PRD includes detailed implementation specifications and describes how the app should work
 - When completing tasks, check off corresponding boxes in the PRD
