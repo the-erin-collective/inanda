@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Scene, MeshBuilder, Mesh, StandardMaterial, Texture, ArcRotateCamera } from '@babylonjs/core';
+import { Scene, MeshBuilder, Mesh, StandardMaterial, Texture, ArcRotateCamera, HemisphericLight, Vector3 } from '@babylonjs/core';
 import * as honeycomb from 'honeycomb-grid';
 import { SiteContent } from '../../models/site-content.aggregate.model';
 import { Page } from 'src/domain/entities/page/page.entity';
@@ -30,10 +30,28 @@ export class PageLayoutService {
       return;
     }
 
+    // Add a hemispheric light to the scene
+    new HemisphericLight('light', new Vector3(0, 1, 0), scene);
+    console.log('Added HemisphericLight to the scene.');
+
     // Apply the site backdrop
     this.backdropService.applyBackdrop(scene, siteContent.site.backdrop);
 
-    this.material = this.createMaterial(scene);
+    // Conditionally create material based on site's backgroundType or borderType
+    if (siteContent.site.backgroundType === 'material' || siteContent.site.borderType === 'material') {
+      console.log(`RenderGrid: Creating scene material with type=${siteContent.site.materialType}, texture=${siteContent.site.materialTextureUrl} because backgroundType or borderType is 'material'.`);
+      this.material = this.createMaterial(
+        scene,
+        siteContent.site.materialType,
+        siteContent.site.materialTextureUrl
+      );
+    } else {
+      console.log(`RenderGrid: Creating transparent scene material because backgroundType and borderType are not 'material'.`);
+      this.material = new StandardMaterial('transparent_surface', scene);
+      this.material.alpha = 0; // Make it fully transparent
+      this.material.diffuseTexture = null; // Ensure no texture is applied
+    }
+    
     this.guiService.initializeGui(scene);
 
     // Initialize navigation service with pages
@@ -41,21 +59,21 @@ export class PageLayoutService {
 
     switch (siteContent.site.sitemapType) {
       case SitemapType.HEX_FLOWER:
-        await this.renderHexFlower(scene, pages, siteContent.site.defaultPage);
+        await this.renderHexFlower(scene, pages, siteContent.site.defaultPage, siteContent);
         break;
       case SitemapType.GRID:
-        await this.renderGridLayout(scene, pages, siteContent.site.defaultPage);
+        await this.renderGridLayout(scene, pages, siteContent.site.defaultPage, siteContent);
         break;
       case SitemapType.LIST:
-        await this.renderListLayout(scene, pages, siteContent.site.defaultPage);
+        await this.renderListLayout(scene, pages, siteContent.site.defaultPage, siteContent);
         break;
       default:
         console.warn(`Unsupported sitemap type: ${siteContent.site.sitemapType}`);
-        await this.renderHexFlower(scene, pages, siteContent.site.defaultPage);
+        await this.renderHexFlower(scene, pages, siteContent.site.defaultPage, siteContent);
     }
   }
 
-  private async renderHexFlower(scene: Scene, pages: Page[], defaultPageId?: string): Promise<void> {
+  private async renderHexFlower(scene: Scene, pages: Page[], defaultPageId?: string, siteContent?: SiteContent | null): Promise<void> {
     console.log('Rendering hex flower with pages:', pages.map(p => ({ id: p._id, title: p.title })));
     
     const grid = this.createGrid();
@@ -84,6 +102,28 @@ export class PageLayoutService {
       // Store the page ID in the mesh metadata
       hexMesh.metadata = { pageId: page._id };
       console.log(`Stored page ID in mesh metadata:`, hexMesh.metadata);
+
+      // If site has a material border, create a separate border mesh
+      if (siteContent?.site?.borderType === 'material') {
+        const borderMaterial = this.createMaterial(
+          scene,
+          siteContent.site.materialType,
+          siteContent.site.materialTextureUrl
+        );
+        // Create a slightly larger hex cylinder for the border
+        const borderMesh = MeshBuilder.CreateCylinder(`hex_border_${hex.q}_${hex.r}_page_${page._id}`, {
+          diameter: 62.0, // Slightly larger diameter
+          height: 0.15,  // Slightly thicker to stand out
+          tessellation: 6,
+        }, scene);
+
+        borderMesh.material = borderMaterial;
+        borderMesh.position.x = hex.x;
+        borderMesh.position.z = hex.y;
+        borderMesh.position.y = -0.05; // Slightly below the main hex
+        borderMesh.isPickable = false; // Border should not be pickable
+        console.log(`  Created material border for hex mesh: ${borderMesh.name}, Material Name: ${borderMaterial.name}`);
+      }
       
       const guiElements = await this.guiService.createGuiFromJson(page.root);
       if (guiElements) {
@@ -116,7 +156,7 @@ export class PageLayoutService {
     }
   }
 
-  private async renderGridLayout(scene: Scene, pages: Page[], defaultPageId?: string): Promise<void> {
+  private async renderGridLayout(scene: Scene, pages: Page[], defaultPageId?: string, siteContent?: SiteContent | null): Promise<void> {
     const gridSize = Math.ceil(Math.sqrt(pages.length));
     const spacing = 70;
     
@@ -126,14 +166,37 @@ export class PageLayoutService {
       const col = i % gridSize;
       
       const mesh = MeshBuilder.CreateBox(`page_${page.id}`, {
-        height: 0.1,
+        height: 0.5, // Increased height for better visibility
         width: 60,
         depth: 60
       }, scene);
       
       mesh.material = this.material;
+      console.log(`  Applying material to grid mesh: ${mesh.name}, Material Name: ${this.material.name}, Has Diffuse Texture: ${!!this.material.diffuseTexture}`);
       mesh.position.x = (col - gridSize/2) * spacing;
       mesh.position.z = (row - gridSize/2) * spacing;
+
+      // If site has a material border, create a separate border mesh
+      if (siteContent?.site?.borderType === 'material') {
+        const borderMaterial = this.createMaterial(
+          scene,
+          siteContent.site.materialType,
+          siteContent.site.materialTextureUrl
+        );
+        // Create a slightly larger box for the border
+        const borderMesh = MeshBuilder.CreateBox(`box_border_${page.id}`, {
+          height: 0.15, // Slightly thicker
+          width: 62,   // Slightly larger
+          depth: 62
+        }, scene);
+
+        borderMesh.material = borderMaterial;
+        borderMesh.position.x = mesh.position.x;
+        borderMesh.position.z = mesh.position.z;
+        borderMesh.position.y = -0.05; // Slightly below the main box
+        borderMesh.isPickable = false;
+        console.log(`  Created material border for grid mesh: ${borderMesh.name}, Material Name: ${borderMaterial.name}`);
+      }
       
       const guiElement = await this.guiService.createGuiFromJson(page.root);
       if (guiElement) {
@@ -153,20 +216,43 @@ export class PageLayoutService {
     }
   }
 
-  private async renderListLayout(scene: Scene, pages: Page[], defaultPageId?: string): Promise<void> {
+  private async renderListLayout(scene: Scene, pages: Page[], defaultPageId?: string, siteContent?: SiteContent | null): Promise<void> {
     const spacing = 70;
     
     for (let i = 0; i < pages.length; i++) {
       const page = pages[i];
       const mesh = MeshBuilder.CreateBox(`page_${page.id}`, {
-        height: 0.1,
+        height: 0.5, // Increased height for better visibility
         width: 60,
         depth: 60
       }, scene);
       
       mesh.material = this.material;
+      console.log(`  Applying material to list mesh: ${mesh.name}, Material Name: ${this.material.name}, Has Diffuse Texture: ${!!this.material.diffuseTexture}`);
       mesh.position.x = 0;
       mesh.position.z = i * spacing;
+
+      // If site has a material border, create a separate border mesh
+      if (siteContent?.site?.borderType === 'material') {
+        const borderMaterial = this.createMaterial(
+          scene,
+          siteContent.site.materialType,
+          siteContent.site.materialTextureUrl
+        );
+        // Create a slightly larger box for the border
+        const borderMesh = MeshBuilder.CreateBox(`box_border_${page.id}`, {
+          height: 0.15, // Slightly thicker
+          width: 62,   // Slightly larger
+          depth: 62
+        }, scene);
+
+        borderMesh.material = borderMaterial;
+        borderMesh.position.x = mesh.position.x;
+        borderMesh.position.z = mesh.position.z;
+        borderMesh.position.y = -0.05; // Slightly below the main box
+        borderMesh.isPickable = false;
+        console.log(`  Created material border for list mesh: ${borderMesh.name}, Material Name: ${borderMaterial.name}`);
+      }
       
       const guiElement = await this.guiService.createGuiFromJson(page.root);
       if (guiElement) {
@@ -216,11 +302,12 @@ export class PageLayoutService {
     
     const hexMesh = MeshBuilder.CreateCylinder(meshName, {
       diameter: 60.0, 
-      height: 0.1,
+      height: 0.5, // Increased height for better visibility
       tessellation: 6,
     }, scene);
 
     hexMesh.material = material;
+    console.log(`  Applying material to hex mesh: ${hexMesh.name}, Material Name: ${material.name}, Has Diffuse Texture: ${!!material.diffuseTexture}`);
     hexMesh.position.x = hex.x;
     hexMesh.position.z = hex.y;
     hexMesh.position.y = 0;
@@ -232,10 +319,37 @@ export class PageLayoutService {
     return hexMesh;
   }
 
-  createMaterial(scene: Scene): StandardMaterial {
+  createMaterial(scene: Scene, materialType?: string, materialTextureUrl?: string): StandardMaterial {
+    console.log(`Creating material: type=${materialType}, texture=${materialTextureUrl}`);
     const material = new StandardMaterial('hex_surface', scene);
-    material.specularPower = 100000000;
-    material.diffuseTexture = new Texture('presentation/assets/textures/abstract-gray-background.jpg', scene);
+    material.specularPower = 50; // Reduced specular power for better texture visibility
+
+    let effectiveMaterialType = materialType || 'concrete'; // Default to 'concrete'
+    let effectiveTextureUrl = materialTextureUrl; // Start with provided texture URL
+
+    console.log(`  Initial material properties: type=${materialType}, texture=${materialTextureUrl}`);
+
+    if (effectiveMaterialType === 'concrete') {
+      effectiveTextureUrl = effectiveTextureUrl || 'src/presentation/assets/textures/light-concrete.jpg';
+      console.log('  Determined material type: concrete. Using concrete properties.');
+    } else if (effectiveMaterialType === 'wood') {
+      effectiveTextureUrl = effectiveTextureUrl || 'src/presentation/assets/textures/light-wood-boards.jpg';
+      console.log('  Determined material type: wood. Using wood properties.');
+    } else {
+      // If materialType is specified but not recognized, default to concrete
+      effectiveMaterialType = 'concrete';
+      effectiveTextureUrl = effectiveTextureUrl || 'src/presentation/assets/textures/light-concrete.jpg';
+      console.warn(`  Unrecognized material type: ${materialType}. Defaulting to concrete.`);
+    }
+
+    // Ensure a texture URL is always set
+    if (!effectiveTextureUrl) {
+      effectiveTextureUrl = 'src/presentation/assets/textures/light-concrete.jpg';
+      console.warn(`  No effective texture URL determined. Defaulting to light-concrete.jpg.`);
+    }
+
+    material.diffuseTexture = new Texture(effectiveTextureUrl, scene);
+    console.log(`  Final material properties: Effective Type=${effectiveMaterialType}, Effective Texture URL=${effectiveTextureUrl}, Diffuse Texture Set: ${!!material.diffuseTexture}`);
     return material;
   }
 }

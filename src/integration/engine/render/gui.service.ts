@@ -370,6 +370,15 @@ export class GuiService {
     const styleChain = this.styleService.getStyleChain(node, this.stylesheetMap);
     this.styleService.applyStyles(rect, styleChain);
     
+    // If the node's style has a material background or border, make the GUI rectangle transparent
+    const nodeStyle = styleChain.find(s => s._id === node._id); // Get the specific style for this node
+    if (nodeStyle) {
+      if (nodeStyle.properties?.backgroundType === 'material' || nodeStyle.properties?.borderType === 'material') {
+        rect.background = "transparent";
+        console.log(`Container ${node.type} set to transparent background due to material type.`);
+      }
+    }
+
     // Determine pixel width for this container
     let rectWidth = 800; // Default fallback
     if (typeof rect.width === 'string' && rect.width.endsWith('px')) {

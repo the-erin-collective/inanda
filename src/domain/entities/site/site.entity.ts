@@ -8,7 +8,11 @@ export class Site {    constructor(
       public pageOrder: string[] = [],
       public sitemapType: SitemapType = SitemapType.HEX_FLOWER,
       public defaultPage?: string,
-      public backdrop?: string
+      public backdrop?: string,
+      public backgroundType?: 'solid' | 'gradient' | 'image' | 'material',
+      public materialType?: string,
+      public materialTextureUrl?: string,
+      public borderType?: 'solid' | 'gradient' | 'material'
     ) {}
     static fromJSON(json: {
       id: string;
@@ -17,6 +21,10 @@ export class Site {    constructor(
       pageOrder?: string[];      sitemapType?: SitemapType;
       defaultPage?: string;
       backdrop?: string;
+      backgroundType?: 'solid' | 'gradient' | 'image' | 'material';
+      materialType?: string;
+      materialTextureUrl?: string;
+      borderType?: 'solid' | 'gradient' | 'material';
     }): Site {
       return new Site(
         json.id,
@@ -25,7 +33,11 @@ export class Site {    constructor(
         json.pageOrder ?? [],
         json.sitemapType ?? SitemapType.HEX_FLOWER,
         json.defaultPage,
-        json.backdrop
+        json.backdrop,
+        json.backgroundType,
+        json.materialType,
+        json.materialTextureUrl,
+        json.borderType
       );
     }
   
@@ -37,7 +49,11 @@ export class Site {    constructor(
         pageOrder: this.pageOrder,
         sitemapType: this.sitemapType,
         defaultPage: this.defaultPage,
-        backdrop: this.backdrop
+        backdrop: this.backdrop,
+        backgroundType: this.backgroundType,
+        materialType: this.materialType,
+        materialTextureUrl: this.materialTextureUrl,
+        borderType: this.borderType
       };
     }
   }

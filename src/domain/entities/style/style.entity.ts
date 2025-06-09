@@ -33,11 +33,24 @@ export interface Style {
     foregroundColor?: string;
     backgroundColor?: string;
     
+    // Background type and properties
+    backgroundType?: 'solid' | 'gradient' | 'image' | 'material';
+    gradientStops?: Array<{ color: string; position: number; }>;
+    backgroundImageUrl?: string;
+
     // Border
     borderWidth?: string;
     borderColor?: string;
     borderStyle?: string;
     
+    // Border type and properties
+    borderType?: 'solid' | 'gradient' | 'material';
+    // gradientStops is reused for border gradients
+
+    // Material properties (for both background and border, when type is 'material')
+    materialType?: string;
+    materialTextureUrl?: string;
+
     // Special properties
     fillSpace?: boolean; // For panels that should fill their container
   };

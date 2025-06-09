@@ -53,6 +53,8 @@ export class PlatformComponent implements OnChanges {
     }
 
     if (changes['siteContent'] && changes['siteContent'].currentValue) {
+      this.siteContent.site.backgroundType = 'material'; 
+      this.siteContent.site.materialType = 'wood';
       console.log('EngineComponent - Received site content:', this.siteContent);
       // Perform any logic with the site content here
     }
