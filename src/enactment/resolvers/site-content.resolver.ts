@@ -42,6 +42,16 @@ export class SiteContentResolver implements Resolve<Promise<SiteContent>> {
     const siteId = route.paramMap.get('siteId') ?? DEFAULT_SITE_ID;
     console.log('Fetching site content for siteId:', siteId);
 
+    // Explicitly handle 'assets' or other static paths being incorrectly routed as site IDs
+    if (siteId === 'assets' || siteId === 'css' || siteId === 'js') {
+      console.warn(`SiteContentResolver: Ignoring request for static asset path: ${siteId}`);
+      // Depending on the expected return type, return null or a minimal valid object
+      // Assuming SiteContentResolver expects a SiteContent object, we'll return a dummy one.
+      // If the consumer of this resolver handles null, then 'return null;' would be simpler.
+      // For now, returning a dummy object to ensure the promise resolves without crashing.
+      return Promise.resolve(null); 
+    }
+
     try {
       const siteContent = await this.siteContentService.getSiteContent(siteId);
       console.log('Resolved site content:', siteContent);

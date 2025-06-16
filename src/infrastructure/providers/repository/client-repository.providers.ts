@@ -1,9 +1,12 @@
-import { StaticProvider } from '@angular/core';
+import { ClassProvider, StaticProvider } from '@angular/core';
 import { PAGE_REPOSITORY } from '../../../domain/repository/page.repository.interface';
 import { ClientPageRepository } from '../../repository/client/page.repository.client';
 import { SITE_REPOSITORY } from '../../../domain/repository/site.repository.interface';
 import { ClientSiteRepository } from '../../repository/client/site.repository.client';
 import { TransferState } from '@angular/core';
+import { STYLESHEET_REPOSITORY } from '../../../domain/repository/stylesheet.repository.token';
+import { ClientStylesheetRepository } from '../../repository/client/stylesheet.repository.client';
+import { clientStylesheetProviders } from './client-stylesheet.providers';
 
 export const repositoryProviders: StaticProvider[] = [
   {
@@ -14,4 +17,5 @@ export const repositoryProviders: StaticProvider[] = [
     provide: SITE_REPOSITORY,
     useValue: new ClientSiteRepository(new TransferState()),
   },
+  ...clientStylesheetProviders
 ];

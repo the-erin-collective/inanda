@@ -7,7 +7,8 @@ import { ContentNode } from 'src/domain/entities/page/content.entity.interface';
 import { CoreNode } from 'src/domain/entities/page/containers/core.entity';
 import { PreviewNode } from 'src/domain/entities/page/containers/preview.entity';
 import { EmbeddableContainerNode } from 'src/domain/entities/page/content/embeddable-container.entity';
-import { TextNode } from 'src/domain/entities/page/content/items/text.entity';
+import { H1Node } from 'src/domain/entities/page/content/items/text/h1.entity';
+import { PNode } from 'src/domain/entities/page/content/items/text/p.entity';
 import { StyleService } from 'src/integration/engine/render/style.service';
 import { StylesheetNode } from 'src/domain/entities/page/content/items/stylesheet.entity';
 
