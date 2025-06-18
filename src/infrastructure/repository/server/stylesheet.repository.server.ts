@@ -13,16 +13,24 @@ export class ServerStylesheetRepository implements StylesheetRepository {
 
   async getStylesheetById(id: string): Promise<Stylesheet | null> {
     const cacheKey = `stylesheet:${id}`;
-    // Use getData, which will call fetchFn if not cached
     return this.cache.getData<Stylesheet | null>(cacheKey, async () => {
-      const doc = await StylesheetModel.findById(id).lean();
-      if (!doc) return null;
-      return {
-        _id: doc._id,
-        name: doc.name,
-        styles: doc.styles,
-        importedStylesheetIds: doc.importedStylesheetIds || [],
-      };
+      try {
+        const doc = await StylesheetModel.findById(id).lean();
+        if (!doc) {
+          console.log(`No stylesheet found in MongoDB for ID: ${id}`);
+          return null;
+        }
+        console.log(`Found stylesheet in MongoDB: ${id}`);
+        return {
+          _id: doc._id,
+          name: doc.name,
+          styles: doc.styles,
+          importedStylesheetIds: doc.importedStylesheetIds || []
+        };
+      } catch (err) {
+        console.error(`Error fetching stylesheet from MongoDB: ${err.message}`);
+        return null;
+      }
     });
   }
 }

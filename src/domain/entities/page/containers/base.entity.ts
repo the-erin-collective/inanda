@@ -1,6 +1,5 @@
 import { ContainerNode } from '../container.entity.interface';
 import { ContentNode } from '../content.entity.interface';
-import { ElementNode } from '../element.entity.interface';
 
 export class BaseNode implements ContainerNode {
   type: string;
@@ -13,10 +12,15 @@ export class BaseNode implements ContainerNode {
     this.styleIds = [];
   }
 
-  toJSON(): Record<string, unknown> {
+  toJSON(): { type: string; children: any[]; styleIds?: string[] } {
     return {
       type: this.type,
-      children: this.children,
+      children: this.children.map(child => {
+        if (child && typeof child === 'object') {
+          return child.toJSON ? child.toJSON() : child;
+        }
+        return child;
+      }),
       styleIds: this.styleIds
     };
   }

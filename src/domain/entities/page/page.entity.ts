@@ -21,10 +21,10 @@ export class Page {
     _id?: string;
     title: string;
     root: {
-      base: { children?: ContentNode[] };
-      core: { children?: ContentNode[] };
-      preview: { children?: ContentNode[] };
-      script: { children?: ContentNode[] };
+      base: { children?: ContentNode[]; type?: string };
+      core: { children?: ContentNode[]; type?: string };
+      preview: { children?: ContentNode[]; type?: string };
+      script: { children?: ContentNode[]; type?: string };
       type: string;
     };
     siteId: string;
@@ -43,25 +43,24 @@ export class Page {
     );
   }
 
-  toJSON(): {
-    _id: string;
-    title: string;
-    root: {
-      base: { children?: ContentNode[] };
-      core: { children?: ContentNode[] };
-      preview: { children?: ContentNode[] };
-      script: { children?: ContentNode[] };
-      type: string;
-    };
-    siteId: string;
-    styles?: Style['properties'];
-  } {
+  toJSON(): Record<string, unknown> {
     return {
-      _id: this.id, 
+      _id: this.id,
       title: this.title,
-      root: this.root.toJSON(),
+      root:
+        this.root && typeof this.root === 'object'
+          ? this.root.toJSON
+            ? this.root.toJSON()
+            : {
+                base: this.root.base,
+                core: this.root.core,
+                preview: this.root.preview,
+                script: this.root.script,
+                type: this.root.type,
+              }
+          : this.root,
       siteId: this.siteId,
-      styles: this.styles
+      styles: this.styles,
     };
   }
 }

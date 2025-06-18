@@ -17,7 +17,13 @@ export class RootNode implements ElementNode {
     this.type = 'root';
   }
   
-  static fromJSON(root: { base: { children?: ContentNode[] }, core: { children?: ContentNode[] }, preview: { children?: ContentNode[] }, script: { children?: ContentNode[] }, type: string }): RootNode {
+  static fromJSON(root: { 
+    base: { children?: ContentNode[]; type?: string }, 
+    core: { children?: ContentNode[]; type?: string }, 
+    preview: { children?: ContentNode[]; type?: string }, 
+    script: { children?: ContentNode[]; type?: string }, 
+    type: string 
+  }): RootNode {
     const base = new BaseNode(root.base.children);
     const core = new CoreNode(root.core.children);
     const script = new ScriptNode(root.script.children);
@@ -26,12 +32,23 @@ export class RootNode implements ElementNode {
     return new RootNode(base, core, preview, script);
   }
 
-  toJSON(): { base: { children?: ContentNode[] }, core: { children?: ContentNode[] }, preview: { children?: ContentNode[] }, script: { children?: ContentNode[]  }, type: string}{
+  toJSON(): Record<string, unknown> {
+    const safeToJSON = (obj: any) => {
+      if (obj && typeof obj === 'object') {
+        return obj.toJSON ? obj.toJSON() : {
+          type: obj.type,
+          children: Array.isArray(obj.children) ? obj.children.map(safeToJSON) : obj.children,
+          styleIds: obj.styleIds
+        };
+      }
+      return obj;
+    };
+
     return {
-      base: this.base.toJSON(),
-      core: this.core.toJSON(),
-      preview: this.preview.toJSON(),
-      script: this.script.toJSON(),
+      base: safeToJSON(this.base),
+      core: safeToJSON(this.core),
+      preview: safeToJSON(this.preview),
+      script: safeToJSON(this.script),
       type: this.type,
     };
   }

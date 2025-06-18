@@ -94,29 +94,71 @@ const connectToDatabase = async (): Promise<boolean> => {
     
     console.log('Connecting to MongoDB...');
     
-    // Set a longer timeout for initial connection
-    const connectionOptions = { 
+    // Set up connection options with longer timeouts
+    const connectionOptions: mongoose.ConnectOptions = { 
       useNewUrlParser: true, 
       useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 10000, // 10 seconds timeout
-      connectTimeoutMS: 10000,
-      socketTimeoutMS: 45000
+      serverSelectionTimeoutMS: 30000, // 30 seconds timeout
+      connectTimeoutMS: 30000,
+      socketTimeoutMS: 45000,
+      family: 4 as 4 // Force IPv4
     };
-    
-    console.log('Debugging: Mongoose object before connect:', mongoose); // New debugging line
 
-    // Connect to MongoDB
-    await mongoose.connect(MONGO_URI, connectionOptions);
+    // Create a promise that resolves when the connection is ready
+    const connectionPromise = new Promise<boolean>((resolve, reject) => {
+      let isResolved = false;
+      const timeoutId = setTimeout(() => {
+        if (!isResolved) {
+          isResolved = true;
+          reject(new Error('MongoDB connection timeout after 30 seconds'));
+        }
+      }, 30000);
 
-    // Verify connection is actually established after the connect call
-    if (!mongoose.connection || mongoose.connection.readyState !== 1) {
-      console.error(`MongoDB connection not in connected state after connect call, current state: ${mongoose.connection?.readyState}`);
-      throw new Error(`MongoDB connection not established, current state: ${mongoose.connection?.readyState}`);
-    }
+      // Set up connection event handlers
+      function onConnected() {
+        if (!isResolved) {
+          isResolved = true;
+          clearTimeout(timeoutId);
+          console.log('Mongoose connected event received');
+          // Give a small delay to ensure connection state is updated
+          setTimeout(() => {
+            if (mongoose.connection.readyState === 1) {
+              cleanup();
+              resolve(true);
+            } else {
+              cleanup();
+              reject(new Error(`MongoDB connection state invalid after connected event: ${mongoose.connection.readyState}`));
+            }
+          }, 100);
+        }
+      }
 
-    console.log('Debugging: mongoose.connection state before attaching listeners:', mongoose.connection); // Debugging line
+      function onConnectionError(err: Error) {
+        if (!isResolved) {
+          isResolved = true;
+          clearTimeout(timeoutId);
+          console.error('Mongoose connection error:', err);
+          cleanup();
+          reject(err);
+        }
+      }
 
-    // Now that connection is established and verified, attach event listeners
+      function cleanup() {
+        mongoose.connection.off('connected', onConnected);
+        mongoose.connection.off('error', onConnectionError);
+      }
+
+      // Set up event handlers before connecting
+      mongoose.connection.once('connected', onConnected);
+      mongoose.connection.once('error', onConnectionError);
+
+      // Also handle disconnect events
+      mongoose.connection.on('disconnected', () => {
+        console.log('Mongoose disconnected');
+      });
+    });
+
+    // Set up permanent event listeners before connecting
     mongoose.connection.on('connecting', () => {
       console.log('Mongoose connecting...');
     });
@@ -128,6 +170,17 @@ const connectToDatabase = async (): Promise<boolean> => {
     mongoose.connection.on('error', (err) => {
       console.error('Mongoose connection error:', err);
     });
+
+    // Connect to MongoDB
+    await mongoose.connect(MONGO_URI, connectionOptions);
+
+    // Wait for the connection to be fully established
+    await connectionPromise;
+
+    // Final verification
+    if (mongoose.connection.readyState !== 1) {
+      throw new Error(`MongoDB connection verification failed, current state: ${mongoose.connection.readyState}`);
+    }
     
     console.log('Connected to MongoDB successfully');
     return true;

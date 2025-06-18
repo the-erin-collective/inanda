@@ -6,5 +6,5 @@ export interface ElementNode {
   name?: string;
   styleIds?: string[]; // References to styles that should be applied to this element
   children?: ContentNode[];
-  toJSON(): Record<string, unknown>;
+  toJSON?(): Record<string, unknown>;
 }
