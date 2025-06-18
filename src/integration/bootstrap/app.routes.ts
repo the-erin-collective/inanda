@@ -9,17 +9,14 @@ export const routes: Routes = [
         redirectTo: DEFAULT_SITE_ID,
         pathMatch: 'full'
     },
-    // Static assets routes - these should not be handled by Angular router
+    // Dynamic routes for site and pages
     {
-        path: 'favicon.ico',
-        redirectTo: '/favicon.ico',
-        pathMatch: 'full'
-    },    {
-        path: 'assets/**',
-        redirectTo: '/assets/**',
-        pathMatch: 'prefix'
+        path: ':siteId/:pageId', // This will match /site-001/page-1
+        component: AppComponent,
+        resolve: {
+          siteContent: SiteContentResolver // Resolver will use siteId
+        }
     },
-    // Site route - catch-all for site IDs (static assets handled above)
     {
         path: ':siteId',
         component: AppComponent,

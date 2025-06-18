@@ -30,7 +30,7 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/presentation/assets",
-              "src/presentation/favicon.ico"
+              "src/presentation/assets/favicon.ico"
             ],
             "styles": [
               "src/presentation/styles/main.scss"
@@ -47,7 +47,10 @@
             "scripts": [],
             "browser": "src/presentation/app/main.ts",
             "server": "src/integration/bootstrap/main.server.ts",
-            "prerender": true
+            "prerender": false,
+            "ssr": {
+              "entry": "src/integration/bootstrap/server.ts"
+            }
           },
           "configurations": {
             "production": {
@@ -72,13 +75,25 @@
                   "maximumWarning": "10kb",
                   "maximumError": "15kb"
                 }
+              ],
+              "scripts": [],
+              "assets": [
+                "src/presentation/assets",
+                "src/presentation/assets/favicon.ico"
               ]
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              
+              "scripts": [
+              ],
+              "assets": [
+                "src/presentation/assets",
+                "src/presentation/assets/favicon.ico"
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -114,7 +129,7 @@
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "src/presentation/favicon.ico",
+              "src/presentation/assets/favicon.ico",
               "src/presentation/assets"
             ],
             "styles": [

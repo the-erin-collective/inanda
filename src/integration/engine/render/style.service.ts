@@ -3,15 +3,38 @@ import { Style } from '../../../domain/entities/style/style.entity';
 import { Stylesheet } from '../../../domain/entities/style/stylesheet.entity';
 import { Control, TextBlock, Rectangle } from '@babylonjs/gui';
 import { Color3 } from '@babylonjs/core/Maths/math.color';
+import { DynamicTexture, Scene } from '@babylonjs/core';
 import { MeshBuilder, Vector3 } from '@babylonjs/core';
+import { MaterialService } from './material.service';
+import { SiteContent } from '../../models/site-content.aggregate.model';
+import { TextureService } from './texture.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StyleService {
   private stylesheetCache: Map<string, Stylesheet> = new Map();
+  private scene: Scene | null = null;
+  private siteContent: SiteContent | null = null;
 
-  constructor() {}
+  constructor(
+    private materialService: MaterialService,
+    private textureService: TextureService
+  ) {}
+
+  /**
+   * Set the current scene for texture operations
+   */
+  setScene(scene: Scene): void {
+    this.scene = scene;
+  }
+
+  /**
+   * Set the current site content for material-aware styling
+   */
+  setSiteContent(siteContent: SiteContent | null): void {
+    this.siteContent = siteContent;
+  }
 
   /**
    * Loads a stylesheet and all its imported stylesheets recursively
@@ -57,12 +80,94 @@ export class StyleService {
     // Apply styles based on control type and properties
     this.applyBasicStyles(control, mergedProps);
     
+    // Apply background and border styles based on their types
+    this.applyBackgroundStyles(control, mergedProps);
+    this.applyBorderStyles(control, mergedProps);
+    
     if (control instanceof TextBlock) {
       this.applyTextStyles(control, mergedProps);
     }
     
     if (control instanceof Rectangle) {
+      // Container styles are applied after background/border to ensure proper rendering order
+      // For example, if background sets a texture, ensure container styles don't override it.
+      // Also, border needs to be applied after background for correct visual stacking.
+      // We already call applyContainerStyles, so let's ensure it works with the new types.
       this.applyContainerStyles(control, mergedProps);
+    }
+  }
+
+  /**
+   * Applies styles to a control with site context for material background handling
+   */  async applyStylesWithSiteContext(control: Control, styles: Style[], siteContent?: SiteContent | null): Promise<void> {
+    console.log(`Applying ${styles.length} styles to control: ${control.name}`);
+    for (const style of styles) {
+      await this.applyStyleWithSiteContext(control, style, siteContent);
+    }
+  }
+
+  /**
+   * Apply a single style to a control with site context
+   */  private async applyStyleWithSiteContext(control: Control, style: Style, siteContent?: SiteContent | null): Promise<void> {
+    if (!style.properties) return;
+
+    const props = style.properties;
+    console.log(`[DEBUG] applyStyleWithSiteContext - control: ${control.name}, style: ${style.name || 'Unnamed'}`);
+    console.log(`[DEBUG] siteContent?.site?.backgroundType: ${siteContent?.site?.backgroundType}`);
+    console.log(`[DEBUG] props.backgroundColor: ${props.backgroundColor}`);    // Handle material backgrounds when site has material background type
+    if (siteContent?.site?.backgroundType === 'material') {
+      console.log(`[DEBUG] *** SKIPPING BACKGROUND APPLICATION - Site uses materials for: ${control.name} ***`);
+      // Don't apply any solid backgrounds when site uses materials
+      // The mesh material provides the background
+    } else {
+      console.log(`[DEBUG] Site doesn't use materials, applying regular background styles for: ${control.name}`);
+      // Apply regular background styles only when site doesn't use materials
+      this.applyBackgroundStyles(control, props);
+    }
+
+    // Apply other styles (positioning, text, borders, etc.)
+    this.applyOtherStyles(control, props);
+  }
+
+  /**
+   * Apply material background with color tinting to a control
+   */  private async applyMaterialBackgroundWithTint(control: Control, props: Style['properties'], siteContent: SiteContent): Promise<void> {
+    if (!(control instanceof Rectangle)) {
+      console.warn(`Material background with tint only supported for Rectangle controls, skipping for ${control.constructor.name}`);
+      return;
+    }
+
+    console.log(`Applying material background with tint color: ${props.backgroundColor}`);
+    
+    // For GUI controls, we make them transparent so the material'd mesh shows through
+    control.background = "transparent";
+    
+    // The actual material tinting should be applied to the mesh, not the GUI
+    // This will be handled by the mesh creation process in PageLayoutService
+    console.log(`Set GUI control to transparent, material mesh should show the tinted material underneath`);
+  }  /**
+   * Apply non-background styles to a control
+   */
+  private applyOtherStyles(control: Control, props: Style['properties']): void {
+    // Apply text styles if it's a TextBlock
+    if (control instanceof TextBlock) {
+      this.applyTextStyles(control, props);
+    }
+    
+    // Apply basic styles (positioning, etc.)
+    this.applyBasicStyles(control, props);
+    
+    // Apply border styles
+    this.applyBorderStyles(control, props);
+    
+    // Apply container styles if it's a Rectangle
+    if (control instanceof Rectangle) {
+      this.applyContainerStyles(control, props);
+    }
+    
+    // Apply other properties
+    if (props.alpha !== undefined) {
+      control.alpha = props.alpha;
     }
   }
 
@@ -110,6 +215,7 @@ export class StyleService {
       }
     }
   }
+
   private applyTextStyles(textBlock: TextBlock, props: Style['properties']): void {
     // Text-specific properties
     if (props.foregroundColor) textBlock.color = props.foregroundColor;
@@ -204,7 +310,138 @@ export class StyleService {
           break;
       }
     }
-  }  /**
+  }
+
+  /**
+   * Applies background styles to a Babylon.js GUI control based on backgroundType.
+   * @param control The GUI control to apply styles to.
+   * @param props The style properties.
+   */  private applyBackgroundStyles(control: Control, props: Style['properties']): void {
+    const backgroundType = props.backgroundType || 'solid'; // Default to 'solid'
+    console.log(`[DEBUG] applyBackgroundStyles called - control: ${control.name}, backgroundType: ${backgroundType}`);
+    console.log(`[DEBUG] props.backgroundColor: ${props.backgroundColor}`);
+
+    // Check if site uses materials and force transparency for GUI controls
+    if (this.siteContent?.site?.backgroundType === 'material') {
+      console.log(`[DEBUG] *** FORCING TRANSPARENT BACKGROUND - Site uses materials for: ${control.name} ***`);
+      if (control instanceof Rectangle) {
+        control.background = "transparent";
+        console.log(`[DEBUG] Set Rectangle background to transparent due to material mode`);
+        return; // Skip all other background application
+      }
+      if (control instanceof TextBlock) {
+        // TextBlocks don't have a background property, but we can skip applying any background-related styles
+        console.log(`[DEBUG] Skipping background application for TextBlock due to material mode`);
+        return;
+      }
+    }
+
+    switch (backgroundType) {
+      case 'solid':
+        const solidColor = props.backgroundColor || '#222'; // Default to #222
+        if (control instanceof Rectangle) {
+          control.background = solidColor;
+          console.log(`[DEBUG] *** APPLIED SOLID BACKGROUND: ${solidColor} to ${control.name} ***`);
+        }
+        break;
+      case 'gradient':
+        // Default gradient: linear from #0f7fd8 (0) to #00896e (1)
+        const gradientStops = props.gradientStops || [
+          { color: '#0f7fd8', position: 0 },
+          { color: '#00896e', position: 1 }
+        ];
+        // BabylonJS GUI does not directly support CSS-like linear gradients out of the box.
+        // This would require custom shader or advanced dynamic texture manipulation.
+        // For now, we will log a warning and fallback to solid background.
+        console.warn(`  Gradient background is not directly supported by BabylonJS GUI Rectangle control. Falling back to solid color.`);
+        if (control instanceof Rectangle) {
+          control.background = gradientStops[0].color; // Use the first color as fallback
+        }
+        break;
+      case 'image':
+        const imageUrl = props.backgroundImageUrl || 'src/presentation/assets/images/image-background.txt';
+        // Apply image background to Rectangle. This might require creating an Image control
+        // and setting it as a background, or using AdvancedDynamicTexture.CreateForMesh
+        // if this is a mesh-attached GUI.
+        if (control instanceof Rectangle) {
+          // In Babylon.js GUI, setting an image background for a Rectangle directly isn't straightforward.
+          // A common approach is to create an Image control and add it as a child behind other elements.
+          // and setting it as a background, or using AdvancedDynamicTexture.CreateForMesh
+          // if this is a mesh-attached GUI.        if (control instanceof Rectangle) {
+          // In Babylon.js GUI, setting an image background for a Rectangle directly isn't straightforward.
+          // A common approach is to create an Image control and add it as a child behind other elements.
+          // For simplicity, we'll log for now.
+          console.warn(`  Image background is not directly supported by BabylonJS GUI Rectangle control. Falling back to solid color.`);
+          control.background = 'transparent'; // Fallback to transparent
+        } else {
+          console.warn(`  Image background is only applicable to Rectangle controls. Skipping for ${control.name || 'unnamed control'}.`);
+        }
+        break;
+      case 'material':
+        // Material backgrounds are typically applied to 3D meshes, not 2D GUI controls.
+        // This constraint needs to be enforced at a higher level (e.g., PageLayoutService).
+        console.warn(`  Material background type is intended for 3D meshes and site-level application, not direct GUI controls. Skipping for ${control.constructor.name}.`);
+        break;
+      default:
+        console.warn(`  Unknown background type: ${backgroundType}. Falling back to solid.`);
+        if (control instanceof Rectangle) {
+          control.background = props.backgroundColor || '#222';
+        }
+        break;
+    }
+  }
+
+  /**
+   * Applies border styles to a Babylon.js GUI control based on borderType.
+   * @param control The GUI control to apply styles to.
+   * @param props The style properties.
+   */
+  private applyBorderStyles(control: Control, props: Style['properties']): void {
+    const borderType = props.borderType || 'solid'; // Default to 'solid'
+    console.log(`Applying border style: ${borderType} to control: ${control.name}`);
+
+    if (control instanceof Rectangle) {
+      switch (borderType) {
+        case 'solid':
+          const borderWidthNum = parseInt(props.borderWidth || '0');
+          const borderColor = props.borderColor || 'transparent';
+          if (borderWidthNum > 0) {
+            control.thickness = borderWidthNum;
+            control.color = borderColor;
+            console.log(`  Solid border: width=${borderWidthNum}, color=${borderColor}`);
+          } else {
+            control.thickness = 0;
+            control.color = 'transparent';
+            console.log(`  Solid border: thickness 0 or invalid, setting transparent.`);
+          }
+          break;
+        case 'gradient':
+          const gradientStops = props.gradientStops || [
+            { color: '#0f7fd8', position: 0 },
+            { color: '#00896e', position: 1 }
+          ];
+          console.warn(`  Gradient border is not directly supported by BabylonJS GUI Rectangle control. Falling back to solid border.`);
+          control.thickness = parseInt(props.borderWidth || '0');
+          control.color = gradientStops[0].color; // Use the first color as fallback
+          break;
+        case 'material':
+          // Material borders are typically applied to 3D meshes, not 2D GUI controls.
+          console.warn(`  Material border type is intended for 3D meshes and site-level application, not direct GUI controls. Skipping for ${control.constructor.name}.`);
+          control.thickness = 0;
+          control.color = 'transparent';
+          break;
+        default:
+          console.warn(`  Unknown border type: ${borderType}. Falling back to solid.`);
+          control.thickness = parseInt(props.borderWidth || '0');
+          control.color = props.borderColor || 'transparent';
+          break;
+      }
+    } else {
+      console.warn(`Border styles are only applicable to Rectangle controls. Skipping for ${control.constructor.name}.`);
+    }
+  }
+
+  /**
    * Applies a border to a BabylonJS mesh (e.g., a hexagon in the hex-flower theme) using a line mesh above the hex.
    * The border is constructed from the hex's edge vertices and rendered above the mesh.
    * Uses a 2D convex hull (X/Z plane) for robust perimeter extraction.
@@ -301,55 +538,42 @@ export class StyleService {
       container.width = "120%";  // Special case for hex panels
       container.height = "120%";
     }
-    if (props.backgroundColor) {
-      container.background = props.backgroundColor;
-    }
+    // Background color is now handled by applyBackgroundStyles
+    // if (props.backgroundColor) {
+    //   container.background = props.backgroundColor;
+    // }
 
-    // Border styles
-    if (props.borderWidth && props.borderColor) {
-      const borderWidthNum = parseInt(props.borderWidth);
+    // Border styles are now handled by applyBorderStyles
+    // if (props.borderWidth && props.borderColor) {
+    //   const borderWidthNum = parseInt(props.borderWidth);
 
-      if (isNaN(borderWidthNum) || borderWidthNum <= 0) {
-        // Invalid borderWidth, treat as no border
-        container.thickness = 0;
-        container.color = "transparent";
-        // Optional: console.log(`Invalid border width: ${props.borderWidth} for container ${container.name || 'undefined'}. Setting thickness to 0.`);
-      } else {
-        // Valid border width and color provided
-        container.thickness = borderWidthNum;
-        container.color = props.borderColor;
+    //   if (isNaN(borderWidthNum) || borderWidthNum <= 0) {
+    //     container.thickness = 0;
+    //     container.color = "transparent";
+    //   } else {
+    //     container.thickness = borderWidthNum;
+    //     container.color = props.borderColor;
 
-        if (props.fillSpace) {
-          // For fillSpace containers (e.g., hex panels), set padding to 0 to ensure border is at the very edge.
-          // This overrides any padding that might have been set by other styles for this specific case.
-          container.paddingLeft = "0px";
-          container.paddingRight = "0px";
-          container.paddingTop = "0px";
-          container.paddingBottom = "0px";
+    //     if (props.fillSpace) {
+    //       container.paddingLeft = "0px";
+    //       container.paddingRight = "0px";
+    //       container.paddingTop = "0px";
+    //       container.paddingBottom = "0px";
 
-          console.log(
-            `Border for fillSpace container (name: ${container.name || 'undefined'}): ` +
-            `width=${borderWidthNum}, color=${props.borderColor}. ` +
-            `Padding after adjustment: L=${container.paddingLeft}, R=${container.paddingRight}, T=${container.paddingTop}, B=${container.paddingBottom}`
-          );
-        }
-        // Optional: Log for non-fillSpace containers if needed
-        // else {
-        //   console.log(
-        //     `Applying border to container (name: ${container.name || 'undefined'}): width=${borderWidthNum}, color=${props.borderColor}.`
-        //   );
-        // }
-      }
-    } else {
-      // borderWidth or borderColor not provided, ensure no border is rendered.
-      container.thickness = 0;
-      container.color = "transparent";
-      // Optional: console.log(`Border properties not provided for container ${container.name || 'undefined'}. Setting thickness to 0.`);
-    }
+    //       console.log(
+    //         `Border for fillSpace container (name: ${container.name || 'undefined'}): ` +
+    //         `width=${borderWidthNum}, color=${props.borderColor}. ` +
+    //         `Padding after adjustment: L=${container.paddingLeft}, R=${container.paddingRight}, T=${container.paddingTop}, B=${container.paddingBottom}`
+    //       );
+    //     }
+    //   }
+    // } else {
+    //   container.thickness = 0;
+    //   container.color = "transparent";
+    // }
 
     if (props.borderStyle) {
       // Log if borderStyle is provided, though BabylonJS Rectangle doesn't directly use it like CSS.
-      // This can be useful for debugging or future extensions.
       console.log(`Border style specified: ${props.borderStyle} for container ${container.name || 'undefined'} (Note: BabylonJS Rectangle does not directly support CSS-like border-style).`);
     }
   }
@@ -399,5 +623,38 @@ export class StyleService {
       current = current.parent;
     }
     return chain;
+  }
+
+  /**
+   * Apply hover styles without overriding material backgrounds
+   * This method applies only border, text, and layout styles while preserving material backgrounds
+   */
+  applyHoverStyles(control: Control, styles: Style[]): void {
+    // Merge all style properties, resolving 'inherit' by walking up the chain
+    const mergedProps: any = {};
+    for (const style of styles) {
+      for (const key of Object.keys(style.properties)) {
+        const value = style.properties[key];
+        if (value === 'inherit') {
+          // Do not overwrite, keep parent value if present
+          continue;
+        }
+        mergedProps[key] = value;
+      }
+    }
+    
+    // Apply styles but skip background colors to preserve material
+    this.applyBasicStyles(control, mergedProps);
+    
+    // Apply only border styles, skip background styles for material preservation
+    this.applyBorderStyles(control, mergedProps);
+    
+    if (control instanceof TextBlock) {
+      this.applyTextStyles(control, mergedProps);
+    }
+    
+    if (control instanceof Rectangle) {
+      this.applyContainerStyles(control, mergedProps);
+    }
   }
 }

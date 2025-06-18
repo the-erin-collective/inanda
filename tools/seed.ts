@@ -15,6 +15,7 @@ import { PreviewNode } from '../src/domain/entities/page/containers/preview.enti
 import { Stylesheet } from '../src/domain/entities/style/stylesheet.entity';
 import { Style } from '../src/domain/entities/style/style.entity';
 import { StylesheetNode } from '../src/domain/entities/page/content/items/stylesheet.entity';
+import { SitemapType } from '../src/domain/entities/site/sitemap-type.enum';
 
 // Load .env if present
 dotenv.config();
@@ -133,13 +134,13 @@ function getPageContent(index: number) {
 function createStylesheet(index: number): Stylesheet {
   // Define different color schemes for each page
   const colorSchemes = [
-    { preview: '#767649', core: '#fdffb6', previewText: '#ffffff', coreText: '#000000' }, // Page 1
-    { preview: '#885152', core: '#ffadad', previewText: '#ffffff', coreText: '#000000' }, // Page 2
-    { preview: '#84684A', core: '#ffd6a5', previewText: '#ffffff', coreText: '#000000' }, // Page 3
-    { preview: '#4E6F48', core: '#caffbf', previewText: '#ffffff', coreText: '#000000' }, // Page 4
-    { preview: '#3E6F73', core: '#64F3FF', previewText: '#ffffff', coreText: '#000000' }, // Page 5
-    { preview: '#495F83', core: '#a0c4ff', previewText: '#ffffff', coreText: '#000000' }, // Page 6
-    { preview: '#794A79', core: '#FF9BFF', previewText: '#ffffff', coreText: '#000000' }  // Page 7
+    { preview: '#535332ff', core: '#fdffb6', previewText: '#ffffff', coreText: '#000000' }, // Page 1
+    { preview: '#5e3637ff', core: '#ffadad', previewText: '#ffffff', coreText: '#000000' }, // Page 2
+    { preview: '#55422fff', core: '#ffd6a5', previewText: '#ffffff', coreText: '#000000' }, // Page 3
+    { preview: '#3c5837ff', core: '#caffbf', previewText: '#ffffff', coreText: '#000000' }, // Page 4
+    { preview: '#2b5053ff', core: '#64F3FF', previewText: '#ffffff', coreText: '#000000' }, // Page 5
+    { preview: '#304361ff', core: '#a0c4ff', previewText: '#ffffff', coreText: '#000000' }, // Page 6
+    { preview: '#573657ff', core: '#FF9BFF', previewText: '#ffffff', coreText: '#000000' }  // Page 7
   ];
 
   const colors = colorSchemes[index - 1];
@@ -186,7 +187,7 @@ function createStylesheet(index: number): Stylesheet {
         _id: `h1-preview-${index}`,
         name: 'Preview Heading Style',
         properties: {
-          fontSize: '48',  // Increased font size
+          fontSize: '92',  // Increased font size
           fontWeight: 'bold',
           marginTop: '30px',
           foregroundColor: 'inherit',
@@ -198,7 +199,8 @@ function createStylesheet(index: number): Stylesheet {
         _id: `p-preview-${index}`,
         name: 'Preview Paragraph Style',
         properties: {
-          fontSize: '28',  // Increased font size
+          fontSize: '48',  // Increased font size
+          fontWeight: 'bold',
           marginTop: '15px',
           foregroundColor: 'inherit',
           textHorizontalAlignment: 'center',
@@ -302,7 +304,7 @@ async function seed() {
       'Example Site',
       'A modern web experience with 3D navigation',
       [],
-      'HEX_FLOWER',
+      SitemapType.HEX_FLOWER,
       'page-1',
       'PAINT'
     );

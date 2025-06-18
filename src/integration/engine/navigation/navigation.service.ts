@@ -311,7 +311,6 @@ export class NavigationService {
 
     // Remove border from any hovered hex before switching to page view
     if (this.currentPickedMesh && this.currentPickedMesh instanceof Mesh) {
-      this.guiService.applyNormalStyle(this.currentPickedMesh);
       this.currentPickedMesh = null;
     }
 

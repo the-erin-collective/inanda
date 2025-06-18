@@ -6,6 +6,7 @@ import { ServerSiteRepository } from '../../repository/server/site.repository.se
 import { CACHE_PROVIDER } from '../cache/cache.tokens';
 import { CacheData } from '../../../domain/data/cache.interface';
 import { MONGO_CONNECTION_FACTORY, MongoConnectionFactory } from '../../data/db/mongo.factory';
+import { ServerStylesheetRepository } from '../../repository/server/stylesheet.repository.server';
 
 export const repositoryProviders: StaticProvider[] = [
   {
@@ -33,5 +34,13 @@ export const repositoryProviders: StaticProvider[] = [
       return new ServerPageRepository(cache, mongoConnectionFactory);
     },
     deps: [CACHE_PROVIDER, [new Optional(), MONGO_CONNECTION_FACTORY]]
+  },
+  // Provide the ServerStylesheetRepository as a standalone provider
+  {
+    provide: ServerStylesheetRepository,
+    useFactory: (cache: CacheData) => {
+      return new ServerStylesheetRepository(cache);
+    },
+    deps: [CACHE_PROVIDER]
   }
 ];
