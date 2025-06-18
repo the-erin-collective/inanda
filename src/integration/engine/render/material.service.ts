@@ -19,7 +19,7 @@ export interface MaterialOptions {
 @Injectable({ providedIn: 'root' })
 export class MaterialService {
   // Map of material types to folder names
-  private materialFolderMap: Record<string, string> = {
+  public materialFolderMap: Record<string, string> = {
     'wood': 'light-wood-boards',
     'dark-wood': 'dark-wood',
     'metal': 'brushed-metal',
@@ -35,7 +35,7 @@ export class MaterialService {
    * Converts a hexadecimal color string to a BabylonJS Color3 object
    * @param hex Hexadecimal color string (e.g., "#FF0000" or "FF0000" for red)
    * @returns BabylonJS Color3 object
-   */  private hexToColor3(hex: string): Color3 {
+   */  public hexToColor3(hex: string): Color3 {
     // Remove the # if present
     hex = hex.replace('#', '');
     
@@ -64,36 +64,34 @@ export class MaterialService {
    * @param extension The file extension ('jpg', 'png')
    * @returns Full texture URL
    */
-  private getTextureUrl(materialType: string | undefined, mapType: string, extension: string = 'jpg'): string {
+  public getTextureUrl(materialType: string | undefined, fileName: string): string {
     const folder = this.getMaterialFolder(materialType);
-    return `/presentation/assets/textures/${folder}/${mapType}.${extension}`;
-  }  async getMaterial(options: MaterialOptions, scene: Scene): Promise<StandardMaterial> {
+    return `/presentation/assets/textures/${folder}/${fileName}`;
+  }  
+  
+  async getMaterial(options: MaterialOptions, scene: Scene): Promise<StandardMaterial> {
     const { 
       materialType, 
       materialTextureUrl, // This can be provided directly or generated using materialType
       normalMapUrl,       // This can be provided directly or generated using materialType
       ambientOcclusionMapUrl,
       specularMapUrl,
-      bumpStrength = 0.8,           // Normal map intensity
-      aoStrength = 0.5,             // Ambient occlusion intensity
-      specularIntensity = 0.3,      // Specular intensity
-      diffuseIntensity = 1.2,       // Color map intensity
+      bumpStrength = 0.5,           // Normal map intensity
+      aoStrength = 0.3,             // Ambient occlusion intensity
+      specularIntensity = 0.1,      // Specular intensity
+      diffuseIntensity = 1.0,       // Color map intensity
       tintColor,                    // Optional color tint
       tintIntensity = 0.5           // Tint strength
     } = options;
     
     // Generate texture URLs from materialType if not provided directly
-    const diffuseUrl = materialTextureUrl || this.getTextureUrl(materialType, 'ColorMap', 'jpg');
-    const normalUrl = normalMapUrl || this.getTextureUrl(materialType, 'NormalMap', 'png');
-    const aoUrl = ambientOcclusionMapUrl || this.getTextureUrl(materialType, 'AmbientOcclusionMap', 'png');
-    const specularUrl = specularMapUrl || this.getTextureUrl(materialType, 'SpecularMap', 'png');    // Create StandardMaterial
+    const diffuseUrl = materialTextureUrl || this.getTextureUrl(materialType, 'ColorMap.jpg');
+    const normalUrl = normalMapUrl || this.getTextureUrl(materialType, 'NormalMap.png');
+    const aoUrl = ambientOcclusionMapUrl || this.getTextureUrl(materialType, 'AmbientOcclusionMap.png');
+    const specularUrl = specularMapUrl || this.getTextureUrl(materialType, 'SpecularMap.png');    // Create StandardMaterial
     const material = new StandardMaterial(materialType || 'defaultMaterial', scene);
     console.log(`[MaterialService] Creating StandardMaterial: ${material.name}`);
-    
-    // Configure material properties for better appearance
-    material.specularPower = 32;
-    material.specularColor = new Color3(specularIntensity, specularIntensity, specularIntensity); // Configurable specular
-    material.alpha = 1;
+        // Configure material properties for better appearance
     
     // Set diffuse color - white by default but can be tinted if tintColor is specified
     if (tintColor) {
@@ -132,8 +130,8 @@ export class MaterialService {
           // Enhance texture visibility with customizable intensity
           diffuseTexture.level = diffuseIntensity; // Configurable contrast boost
           diffuseTexture.coordinatesIndex = 0;
-          (diffuseTexture as Texture).uScale = 1;
-          (diffuseTexture as Texture).vScale = 1;          // Load normal map if available - adds 3D-like detail to the surface
+          (diffuseTexture as Texture).uScale = 4;
+          (diffuseTexture as Texture).vScale = 4;          // Load normal map if available - adds 3D-like detail to the surface
           if (normalUrl) {
             try {
               console.log(`[MaterialService] Loading normal map: ${normalUrl}`);
@@ -178,7 +176,7 @@ export class MaterialService {
             try {
               console.log(`[MaterialService] Loading specular map: ${specularUrl}`);
               const specularTexture = await this.textureService.getTexture(specularUrl, scene);
-              
+
               // Standard material uses specularTexture
               material.specularTexture = specularTexture;
                 if (material.specularTexture) {
@@ -197,7 +195,12 @@ export class MaterialService {
         console.warn(`[MaterialService] Using fallback material for: ${diffuseUrl}`);
       }
     }
-    
+
+    material.specularPower = 32; // Lower value = more diffuse reflection
+    material.specularColor = new Color3(specularIntensity, specularIntensity, specularIntensity);
+    material.alpha = 1;
+    material.roughness = 1.0; // Higher roughness reduces reflections
+
     return material;
   }
 

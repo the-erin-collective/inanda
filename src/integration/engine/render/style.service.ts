@@ -3,15 +3,38 @@ import { Style } from '../../../domain/entities/style/style.entity';
 import { Stylesheet } from '../../../domain/entities/style/stylesheet.entity';
 import { Control, TextBlock, Rectangle } from '@babylonjs/gui';
 import { Color3 } from '@babylonjs/core/Maths/math.color';
+import { DynamicTexture, Scene } from '@babylonjs/core';
 import { MeshBuilder, Vector3 } from '@babylonjs/core';
+import { MaterialService } from './material.service';
+import { SiteContent } from '../../models/site-content.aggregate.model';
+import { TextureService } from './texture.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StyleService {
   private stylesheetCache: Map<string, Stylesheet> = new Map();
+  private scene: Scene | null = null;
+  private siteContent: SiteContent | null = null;
 
-  constructor() {}
+  constructor(
+    private materialService: MaterialService,
+    private textureService: TextureService
+  ) {}
+
+  /**
+   * Set the current scene for texture operations
+   */
+  setScene(scene: Scene): void {
+    this.scene = scene;
+  }
+
+  /**
+   * Set the current site content for material-aware styling
+   */
+  setSiteContent(siteContent: SiteContent | null): void {
+    this.siteContent = siteContent;
+  }
 
   /**
    * Loads a stylesheet and all its imported stylesheets recursively
@@ -71,6 +94,80 @@ export class StyleService {
       // Also, border needs to be applied after background for correct visual stacking.
       // We already call applyContainerStyles, so let's ensure it works with the new types.
       this.applyContainerStyles(control, mergedProps);
+    }
+  }
+
+  /**
+   * Applies styles to a control with site context for material background handling
+   */  async applyStylesWithSiteContext(control: Control, styles: Style[], siteContent?: SiteContent | null): Promise<void> {
+    console.log(`Applying ${styles.length} styles to control: ${control.name}`);
+    for (const style of styles) {
+      await this.applyStyleWithSiteContext(control, style, siteContent);
+    }
+  }
+
+  /**
+   * Apply a single style to a control with site context
+   */  private async applyStyleWithSiteContext(control: Control, style: Style, siteContent?: SiteContent | null): Promise<void> {
+    if (!style.properties) return;
+
+    const props = style.properties;
+    console.log(`[DEBUG] applyStyleWithSiteContext - control: ${control.name}, style: ${style.name || 'Unnamed'}`);
+    console.log(`[DEBUG] siteContent?.site?.backgroundType: ${siteContent?.site?.backgroundType}`);
+    console.log(`[DEBUG] props.backgroundColor: ${props.backgroundColor}`);    // Handle material backgrounds when site has material background type
+    if (siteContent?.site?.backgroundType === 'material') {
+      console.log(`[DEBUG] *** SKIPPING BACKGROUND APPLICATION - Site uses materials for: ${control.name} ***`);
+      // Don't apply any solid backgrounds when site uses materials
+      // The mesh material provides the background
+    } else {
+      console.log(`[DEBUG] Site doesn't use materials, applying regular background styles for: ${control.name}`);
+      // Apply regular background styles only when site doesn't use materials
+      this.applyBackgroundStyles(control, props);
+    }
+
+    // Apply other styles (positioning, text, borders, etc.)
+    this.applyOtherStyles(control, props);
+  }
+
+  /**
+   * Apply material background with color tinting to a control
+   */  private async applyMaterialBackgroundWithTint(control: Control, props: Style['properties'], siteContent: SiteContent): Promise<void> {
+    if (!(control instanceof Rectangle)) {
+      console.warn(`Material background with tint only supported for Rectangle controls, skipping for ${control.constructor.name}`);
+      return;
+    }
+
+    console.log(`Applying material background with tint color: ${props.backgroundColor}`);
+    
+    // For GUI controls, we make them transparent so the material'd mesh shows through
+    control.background = "transparent";
+    
+    // The actual material tinting should be applied to the mesh, not the GUI
+    // This will be handled by the mesh creation process in PageLayoutService
+    console.log(`Set GUI control to transparent, material mesh should show the tinted material underneath`);
+  }  /**
+   * Apply non-background styles to a control
+   */
+  private applyOtherStyles(control: Control, props: Style['properties']): void {
+    // Apply text styles if it's a TextBlock
+    if (control instanceof TextBlock) {
+      this.applyTextStyles(control, props);
+    }
+    
+    // Apply basic styles (positioning, etc.)
+    this.applyBasicStyles(control, props);
+    
+    // Apply border styles
+    this.applyBorderStyles(control, props);
+    
+    // Apply container styles if it's a Rectangle
+    if (control instanceof Rectangle) {
+      this.applyContainerStyles(control, props);
+    }
+    
+    // Apply other properties
+    if (props.alpha !== undefined) {
+      control.alpha = props.alpha;
     }
   }
 
@@ -219,17 +316,32 @@ export class StyleService {
    * Applies background styles to a Babylon.js GUI control based on backgroundType.
    * @param control The GUI control to apply styles to.
    * @param props The style properties.
-   */
-  private applyBackgroundStyles(control: Control, props: Style['properties']): void {
+   */  private applyBackgroundStyles(control: Control, props: Style['properties']): void {
     const backgroundType = props.backgroundType || 'solid'; // Default to 'solid'
-    console.log(`Applying background style: ${backgroundType} to control: ${control.name}`);
+    console.log(`[DEBUG] applyBackgroundStyles called - control: ${control.name}, backgroundType: ${backgroundType}`);
+    console.log(`[DEBUG] props.backgroundColor: ${props.backgroundColor}`);
+
+    // Check if site uses materials and force transparency for GUI controls
+    if (this.siteContent?.site?.backgroundType === 'material') {
+      console.log(`[DEBUG] *** FORCING TRANSPARENT BACKGROUND - Site uses materials for: ${control.name} ***`);
+      if (control instanceof Rectangle) {
+        control.background = "transparent";
+        console.log(`[DEBUG] Set Rectangle background to transparent due to material mode`);
+        return; // Skip all other background application
+      }
+      if (control instanceof TextBlock) {
+        // TextBlocks don't have a background property, but we can skip applying any background-related styles
+        console.log(`[DEBUG] Skipping background application for TextBlock due to material mode`);
+        return;
+      }
+    }
 
     switch (backgroundType) {
       case 'solid':
         const solidColor = props.backgroundColor || '#222'; // Default to #222
         if (control instanceof Rectangle) {
           control.background = solidColor;
-          console.log(`  Solid background color: ${solidColor}`);
+          console.log(`[DEBUG] *** APPLIED SOLID BACKGROUND: ${solidColor} to ${control.name} ***`);
         }
         break;
       case 'gradient':
@@ -254,11 +366,15 @@ export class StyleService {
         if (control instanceof Rectangle) {
           // In Babylon.js GUI, setting an image background for a Rectangle directly isn't straightforward.
           // A common approach is to create an Image control and add it as a child behind other elements.
+          // and setting it as a background, or using AdvancedDynamicTexture.CreateForMesh
+          // if this is a mesh-attached GUI.        if (control instanceof Rectangle) {
+          // In Babylon.js GUI, setting an image background for a Rectangle directly isn't straightforward.
+          // A common approach is to create an Image control and add it as a child behind other elements.
           // For simplicity, we'll log for now.
           console.warn(`  Image background is not directly supported by BabylonJS GUI Rectangle control. Falling back to solid color.`);
           control.background = 'transparent'; // Fallback to transparent
         } else {
-          console.warn(`  Image background is only applicable to Rectangle controls. Skipping for ${control.constructor.name}.`);
+          console.warn(`  Image background is only applicable to Rectangle controls. Skipping for ${control.name || 'unnamed control'}.`);
         }
         break;
       case 'material':
@@ -507,5 +623,38 @@ export class StyleService {
       current = current.parent;
     }
     return chain;
+  }
+
+  /**
+   * Apply hover styles without overriding material backgrounds
+   * This method applies only border, text, and layout styles while preserving material backgrounds
+   */
+  applyHoverStyles(control: Control, styles: Style[]): void {
+    // Merge all style properties, resolving 'inherit' by walking up the chain
+    const mergedProps: any = {};
+    for (const style of styles) {
+      for (const key of Object.keys(style.properties)) {
+        const value = style.properties[key];
+        if (value === 'inherit') {
+          // Do not overwrite, keep parent value if present
+          continue;
+        }
+        mergedProps[key] = value;
+      }
+    }
+    
+    // Apply styles but skip background colors to preserve material
+    this.applyBasicStyles(control, mergedProps);
+    
+    // Apply only border styles, skip background styles for material preservation
+    this.applyBorderStyles(control, mergedProps);
+    
+    if (control instanceof TextBlock) {
+      this.applyTextStyles(control, mergedProps);
+    }
+    
+    if (control instanceof Rectangle) {
+      this.applyContainerStyles(control, mergedProps);
+    }
   }
 }
