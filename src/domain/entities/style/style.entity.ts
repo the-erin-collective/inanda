@@ -50,7 +50,6 @@ export interface Style {
 
     // Material properties (for both background and border, when type is 'material')
     materialType?: string;
-    materialTextureUrl?: string;
     materialName?: string;
     tintIntensity?: number; // For tinting the material with the background color
 

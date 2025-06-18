@@ -28,7 +28,6 @@ export class ClientStylesheetRepository implements StylesheetRepository {
           properties: {
             materialType: "material",
             materialName: "wood",
-            materialTextureUrl: "assets/textures/light-wood-boards.jpg",
             alpha: 1.0,
           }
         },

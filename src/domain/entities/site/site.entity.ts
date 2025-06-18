@@ -11,7 +11,6 @@ export class Site {    constructor(
       public backdrop?: string,
       public backgroundType?: 'solid' | 'gradient' | 'image' | 'material',
       public materialType?: string,
-      public materialTextureUrl?: string,
       public borderType?: 'solid' | 'gradient' | 'material'
     ) {}
     static fromJSON(json: {
@@ -23,7 +22,6 @@ export class Site {    constructor(
       backdrop?: string;
       backgroundType?: 'solid' | 'gradient' | 'image' | 'material';
       materialType?: string;
-      materialTextureUrl?: string;
       borderType?: 'solid' | 'gradient' | 'material';
     }): Site {
       return new Site(
@@ -36,7 +34,6 @@ export class Site {    constructor(
         json.backdrop,
         json.backgroundType,
         json.materialType,
-        json.materialTextureUrl,
         json.borderType
       );
     }
@@ -52,7 +49,6 @@ export class Site {    constructor(
         backdrop: this.backdrop,
         backgroundType: this.backgroundType,
         materialType: this.materialType,
-        materialTextureUrl: this.materialTextureUrl,
         borderType: this.borderType
       };
     }
