@@ -40,7 +40,7 @@ export class PlatformService {
     // Create the light
     this.light = new HemisphericLight(
       'light1',
-      new Vector3(0, 0.5, 0),
+      new Vector3(0.0, 0.0, 0),
       this.scene
     );
 
