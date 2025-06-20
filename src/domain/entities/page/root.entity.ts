@@ -31,24 +31,13 @@ export class RootNode implements ElementNode {
 
     return new RootNode(base, core, preview, script);
   }
-
   toJSON(): Record<string, unknown> {
-    const safeToJSON = (obj: any) => {
-      if (obj && typeof obj === 'object') {
-        return obj.toJSON ? obj.toJSON() : {
-          type: obj.type,
-          children: Array.isArray(obj.children) ? obj.children.map(safeToJSON) : obj.children,
-          styleIds: obj.styleIds
-        };
-      }
-      return obj;
-    };
-
+    // Simply call toJSON on each property, with null checking
     return {
-      base: safeToJSON(this.base),
-      core: safeToJSON(this.core),
-      preview: safeToJSON(this.preview),
-      script: safeToJSON(this.script),
+      base: this.base?.toJSON() ?? null,
+      core: this.core?.toJSON() ?? null,
+      preview: this.preview?.toJSON() ?? null,
+      script: this.script?.toJSON() ?? null,
       type: this.type,
     };
   }

@@ -5,10 +5,10 @@ export abstract class TextNode extends ItemNode {
     super(type);
   }
 
-  override toJSON(): Record<string, unknown> {
+  override  toJSON(): Record<string, unknown> {
     return {
       type: this.type,
-      text: this.text,
+      text: this.text ?? '',
     };
   }
 }

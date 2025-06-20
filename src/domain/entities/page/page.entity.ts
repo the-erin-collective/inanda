@@ -42,25 +42,13 @@ export class Page {
       json.styles
     );
   }
-
   toJSON(): Record<string, unknown> {
     return {
       _id: this.id,
-      title: this.title,
-      root:
-        this.root && typeof this.root === 'object'
-          ? this.root.toJSON
-            ? this.root.toJSON()
-            : {
-                base: this.root.base,
-                core: this.root.core,
-                preview: this.root.preview,
-                script: this.root.script,
-                type: this.root.type,
-              }
-          : this.root,
+      title: this.title ?? '',
+      root: this.root?.toJSON?.() ?? null,
       siteId: this.siteId,
-      styles: this.styles,
+      styles: this.styles ?? undefined,
     };
   }
 }

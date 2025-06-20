@@ -10,18 +10,11 @@ export class BaseNode implements ContainerNode {
     this.type = 'base';
     this.children = children;
     this.styleIds = [];
-  }
-
-  toJSON(): { type: string; children: any[]; styleIds?: string[] } {
+  }  toJSON(): Record<string, unknown> {
     return {
       type: this.type,
-      children: this.children.map(child => {
-        if (child && typeof child === 'object') {
-          return child.toJSON ? child.toJSON() : child;
-        }
-        return child;
-      }),
-      styleIds: this.styleIds
+      children: this.children?.map(child => child?.toJSON?.() ?? child) ?? [],
+      styleIds: this.styleIds ?? []
     };
   }
 }
