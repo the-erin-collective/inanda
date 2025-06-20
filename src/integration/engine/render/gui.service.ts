@@ -12,16 +12,152 @@ import { PNode } from 'src/domain/entities/page/content/items/text/p.entity';
 import { StyleService } from 'src/integration/engine/render/style.service';
 import { StylesheetNode } from 'src/domain/entities/page/content/items/stylesheet.entity';
 import { SiteContent } from '../../models/site-content.aggregate.model';
+import { Style } from 'src/domain/entities/style/style.entity';
 
 @Injectable({ providedIn: 'root' })
 export class GuiService {
   private guiTexture: AdvancedDynamicTexture;
   private meshGuiMap: Map<string, { preview: Control; core: Control }> = new Map();
-  private stylesheetMap: Map<string, any> = new Map();
-  private currentLayerState: Map<string, 'preview' | 'core'> = new Map(); // Track current layer per page
-  private siteContent: SiteContent | null = null; // Store site content for material detection
+  private stylesheetMap: Style[] = [];
+  private currentLayerState: Map<string, 'preview' | 'core'> = new Map();
+  private siteContent: SiteContent | null = null;
 
-  constructor(private styleService: StyleService) {}  initializeGui(scene: Scene): void {
+  constructor(private styleService: StyleService) {}
+
+  // Helper method to find a style by ID in the stylesheet array
+  private findStyleById(styleId: string): Style | undefined {
+    return this.stylesheetMap.find(style => style._id === styleId);
+  }
+
+  // Helper method to check if using material background
+  private usesMaterialBackground(): boolean {
+    return this.siteContent?.site?.backgroundType === 'material';
+  }
+
+  // Helper method to check if node is an ElementNode
+  private isElementNode(node: any): node is ElementNode {
+    return node && typeof node === 'object' && 'type' in node;
+  }
+
+  // Helper method to apply styles to child controls
+  private applyStyleToChildren(container: Control, style: any): void {
+    if (!container || !style) return;
+
+    // If this is a panel (Rectangle), apply the style directly
+    if (container instanceof Rectangle) {
+      this.styleService.applyStyles(container, [style]);
+    }
+
+    // Recursively search for Rectangle controls to apply style
+    if (container instanceof Rectangle || container instanceof StackPanel) {
+      const children = container["_children"] || [];
+      for (const child of children) {
+        this.applyStyleToChildren(child, style);
+      }
+    }
+  }
+
+  // Helper method to apply styles to a control and its children
+  private applyStylesToControl(control: Control, style: any): void {
+    // Apply style to this control
+    this.styleService.applyStyles(control, [style]);
+    
+    // If it's a container, apply to children recursively
+    if (control instanceof Rectangle || control instanceof StackPanel) {
+      for (const child of control._children) {
+        this.applyStylesToControl(child, style);
+      }
+    }
+  }
+
+  // Helper method to refresh the GUI texture on a mesh
+  private refreshGuiTexture(mesh: Mesh): void {
+    if (!mesh) {
+      console.warn('Cannot refresh GUI texture: no mesh provided');
+      return;
+    }
+    
+    console.log(`[DEBUG-REFRESH] Attempting to refresh GUI texture for mesh: ${mesh.name}`);
+    
+    const scene = mesh.getScene();
+    const advancedTextures = AdvancedDynamicTexture['AdvancedDynamicTextureCollection'] || 
+                            (scene as any)._advancedTextures || 
+                            [];
+    
+    // Find and dispose any existing texture on this mesh
+    for (let i = advancedTextures.length - 1; i >= 0; i--) {
+      const texture = advancedTextures[i];
+      if (texture._mesh === mesh) {
+        texture.dispose();
+      }
+    }
+    
+    // Get the layer type from the mesh metadata
+    const layer = mesh.metadata?.layer as 'preview' | 'core';
+    if (!layer) {
+      console.log(`[DEBUG-REFRESH] No layer found in metadata for mesh ${mesh.name}`);
+      return;
+    }
+    
+    // Get the control from our stored map
+    const guiElements = this.meshGuiMap.get(mesh.name);
+    if (!guiElements) {
+      console.warn(`No GUI elements found for mesh ${mesh.name}`);
+      return;
+    }
+    
+    const control = layer === 'preview' ? guiElements.preview : guiElements.core;
+    if (!control) {
+      console.warn(`No ${layer} control found for mesh ${mesh.name}`);
+      return;
+    }
+    
+    // Create a new texture and attach the control
+    const newTexture = AdvancedDynamicTexture.CreateForMesh(mesh, 1024, 1024, true);
+    newTexture.addControl(control);
+    newTexture.update();
+  }
+
+  // Helper method to get a GUI control for a mesh
+  private getGuiControlForMesh(mesh: Mesh, layer: 'preview' | 'core'): Control | undefined {
+    const guiElements = this.meshGuiMap.get(mesh.name);
+    if (!guiElements) return undefined;
+    return layer === 'preview' ? guiElements.preview : guiElements.core;
+  }
+
+  // Helper method to clone a control
+  private cloneControl(control: Control): Control | undefined {
+    if (!control) return undefined;
+    
+    // Use the Babylon.js clone method if available
+    if (typeof control.clone === 'function') {
+      return control.clone();
+    }
+    
+    return control;
+  }
+
+  // Helper method to clean up unused textures
+  private cleanupUnusedTextures(scene: Scene): void {
+    const advancedTextures = AdvancedDynamicTexture['AdvancedDynamicTextureCollection'] || 
+                            (scene as any)._advancedTextures || 
+                            [];
+    
+    for (let i = advancedTextures.length - 1; i >= 0; i--) {
+      const texture = advancedTextures[i];
+      if (!texture._mesh || !texture._mesh.isEnabled()) {
+        texture.dispose();
+      }
+    }
+  }
+
+  // Helper to set site content
+  setSiteContent(siteContent: SiteContent | null): void {
+    this.siteContent = siteContent;
+    this.styleService.setSiteContent(siteContent);
+  }
+
+  initializeGui(scene: Scene): void {
     this.guiTexture = AdvancedDynamicTexture.CreateFullscreenUI('UI', true, scene);
     // Set the scene in StyleService for texture operations
     this.styleService.setScene(scene);
@@ -78,10 +214,10 @@ export class GuiService {
   
   async createGuiFromJson(node: ElementNode, siteContent?: SiteContent | null): Promise<{ preview: Control; core: Control } | null> {
     if (!node || !node.type || node.type !== 'root') {
-      console.warn('Invalid root node:', node);
+      console.warn(`Invalid node provided to createGuiFromJson`);
       return null;
-    }    
-    
+    }
+
     // Store site content for material detection
     this.setSiteContent(siteContent);
     
@@ -89,16 +225,18 @@ export class GuiService {
     console.log('Creating GUI from root node');    
     
     // Find and store the stylesheet    
-    const stylesheetNodeFound = rootNode.base.children.find(child => child.type === 'stylesheet') as StylesheetNode;
-    if (stylesheetNodeFound) {
+    const stylesheet = rootNode.base.children.find(child => child.type === 'stylesheet') as StylesheetNode;
+    if (stylesheet) {
       // IMPORTANT: Don't clear previous styles to maintain hover styles for all pages
-      // this.stylesheetMap.clear(); 
-      stylesheetNodeFound.styles.forEach(style => {
-        this.stylesheetMap.set(style._id, style);
-        console.log(`Added style to map: ${style._id}`);
+      // Add new styles to the array, avoid duplicates by checking _id
+      stylesheet.styles.forEach(style => {
+        if (!this.stylesheetMap.some(existing => existing._id === style._id)) {
+          this.stylesheetMap.push(style);
+          console.log(`Added style to array: ${style._id}`);
+        }
       });      
-      // Log all keys in the stylesheetMap for debugging
-      console.log('Current styles in stylesheetMap:', Array.from(this.stylesheetMap.keys()));
+      // Log all style IDs for debugging
+      console.log('Current styles:', this.stylesheetMap.map(style => style._id));
     }
 
     // Create preview and core containers with site context
@@ -110,6 +248,11 @@ export class GuiService {
     const coreContainer = await this.createContainer(rootNode.core, siteContent);
     console.log('Core container created successfully:', !!coreContainer);
     
+    if (!previewContainer || !coreContainer) {
+      console.error('Failed to create containers');
+      return null;
+    }
+
     // Make a final pass to ensure text alignment consistency in both containers
     this.ensureConsistentTextAlignment(previewContainer);
     this.ensureConsistentTextAlignment(coreContainer);
@@ -430,39 +573,39 @@ export class GuiService {
         console.log(`$$$ Could not find all required layered meshes for page: ${ mesh.metadata?.pageId}`);
       }
   }
-
-  // Helper to compute effective style by walking up the site data tree (root-to-leaf order), handling 'inherit' by propagating parent value
-  private computeEffectiveStyle(node: ElementNode, stylesheetMap: Map<string, any>): any {
-    // Build the ancestor chain from root to this node
-    const chain: ElementNode[] = [];
-    let current: any = node;
-    while (current) {
-      chain.unshift(current);
-      current = current.parent;
-    }
-    // For each property, use the closest non-'inherit' value from root to leaf
-    let effectiveStyle = {};
-    const seenKeys = new Set<string>();
-    for (const n of chain) {
-      if (n._id) {
-        const style = stylesheetMap.get(n._id);
-        if (style) {
-          for (const key of Object.keys(style)) {
-            const value = style[key];
-            // Only set if not already set (closest to leaf wins), and not 'inherit'
-            if (!seenKeys.has(key) && value !== 'inherit') {
-              effectiveStyle[key] = value;
-              seenKeys.add(key);
-            }
+  // Helper to compute effective style by walking up the site data tree (root-to-leaf order)
+private computeEffectiveStyle(node: ElementNode, styles: any[]): any {
+  // Build the ancestor chain from root to this node
+  const chain: ElementNode[] = [];
+  let current: any = node;
+  while (current) {
+    chain.unshift(current);
+    current = current.parent;
+  }
+  
+  // For each property, use the closest non-'inherit' value from root to leaf
+  let effectiveStyle = {};
+  const seenKeys = new Set<string>();
+  
+  for (const n of chain) {
+    if (n._id) {      const style = this.findStyleById(n._id);
+      if (style) {
+        for (const key of Object.keys(style)) {
+          const value = style[key];
+          // Only set if not already set (closest to leaf wins), and not 'inherit'
+          if (!seenKeys.has(key) && value !== 'inherit') {
+            effectiveStyle[key] = value;
+            seenKeys.add(key);
           }
         }
       }
     }
-    return effectiveStyle;
   }
-  
-  // Helper to ensure text alignment is consistent for all controls in a container
-  private ensureConsistentTextAlignment(control: Control): void {
+  return effectiveStyle;
+}
+
+// Helper to ensure text alignment is consistent for all controls in a container
+private ensureConsistentTextAlignment(control: Control): void {
     // For TextBlocks, ensure textHorizontalAlignment matches horizontalAlignment
     if (control instanceof TextBlock) {
       if (control.horizontalAlignment === Control.HORIZONTAL_ALIGNMENT_CENTER) {
@@ -495,7 +638,16 @@ export class GuiService {
     } else {
       textBlock.text = node.type === 'h1' ? 'Header' : 'Text content';
     }    // Set parent chain for style inheritance
+    // Get the complete style chain by traversing from root to this node in the site data
+    // This chain will include default styles + all applicable styles ordered from least to most specific
     const styleChain = this.styleService.getStyleChain(node, this.stylesheetMap);
+    
+    // Log the style chain for debugging
+    console.log(`[DEBUG] Style chain for ${node.type}:`, styleChain.map(s => s._id || s.name));
+    
+    // StyleService.applyStyles will handle all style inheritance automatically
+    // by walking through the style chain (from default to most specific styles)
+    
     this.styleService.applyStyles(textBlock, styleChain);
     
     // Different configuration based on text type
@@ -756,15 +908,13 @@ export class GuiService {
       return;
     }
 
-    // Find the page ID from the mesh metadata
     const pageId = mesh.metadata?.pageId;
     if (!pageId) {
       console.warn(`No pageId in metadata for mesh: ${mesh.name}`);
       return;
     }
 
-    // Check which layer is currently active for this page
-    const currentLayer = this.currentLayerState.get(pageId) || 'preview'; // Default to preview
+    const currentLayer = this.currentLayerState.get(pageId) || 'preview';
     const targetControl = currentLayer === 'core' ? guiElements.core : guiElements.preview;
     
     if (!targetControl) {
@@ -779,14 +929,14 @@ export class GuiService {
       return;
     }
 
-    // Look for the hover style in our stylesheet map
-    const hoverStyleId = `panel-${currentLayer}-hover-${pageIndex}`;
-    const hoverStyle = this.stylesheetMap.get(hoverStyleId);
-    console.log(`Looking for hover style with ID: ${hoverStyleId} for layer: ${currentLayer}`);    if (hoverStyle) {
-      console.log(`Applying hover style ${hoverStyleId} to ${currentLayer} layer of mesh ${mesh.name}`);
-      // Apply the hover style to the appropriate layer (preview or core)
+    // Look for the hover style in our stylesheet array
+    const styleId = `panel-${currentLayer}-hover-${pageIndex}`;
+    const hoverStyle = this.findStyleById(styleId);
+    console.log(`Looking for hover style with ID: ${styleId} for layer: ${currentLayer}`);
+    
+    if (hoverStyle) {
+      console.log(`Applying hover style ${styleId} to ${currentLayer} layer of mesh ${mesh.name}`);
       if (targetControl instanceof Rectangle) {
-        // Use material-aware hover styling if site uses materials
         if (this.usesMaterialBackground()) {
           console.log(`Using material-aware hover styling for ${mesh.name}`);
           this.styleService.applyHoverStyles(targetControl, [hoverStyle]);
@@ -796,7 +946,7 @@ export class GuiService {
       } else {
         this.applyStyleToChildren(targetControl, hoverStyle);
       }
-      // If this is a hex mesh (name starts with 'hex_'), apply border to mesh itself
+      
       if (mesh.name.startsWith('hex_') && hoverStyle.properties?.borderWidth && hoverStyle.properties?.borderColor) {
         const borderWidthNum = parseInt(hoverStyle.properties.borderWidth);
         if (!isNaN(borderWidthNum) && borderWidthNum > 0) {
@@ -804,7 +954,7 @@ export class GuiService {
         }
       }
     } else {
-      console.warn(`Hover style ${hoverStyleId} not found in stylesheet map`);
+      console.warn(`Hover style ${styleId} not found in styles`);
     }
   }
 
@@ -818,15 +968,13 @@ export class GuiService {
       return;
     }
 
-    // Find the page ID from the mesh metadata
     const pageId = mesh.metadata?.pageId;
     if (!pageId) {
       console.warn(`No pageId in metadata for mesh: ${mesh.name}`);
       return;
     }
 
-    // Check which layer is currently active for this page
-    const currentLayer = this.currentLayerState.get(pageId) || 'preview'; // Default to preview
+    const currentLayer = this.currentLayerState.get(pageId) || 'preview';
     const targetControl = currentLayer === 'core' ? guiElements.core : guiElements.preview;
     
     if (!targetControl) {
@@ -834,36 +982,37 @@ export class GuiService {
       return;
     }
 
-    // Extract the index from the page ID (assuming format like 'page-1')
     const pageIndex = parseInt(pageId.split('-')[1]);
     if (isNaN(pageIndex)) {
       console.warn(`Invalid page ID format: ${pageId}`);
       return;
     }
-    // Look for the normal style in our stylesheet map
-    const normalStyleId = `panel-${currentLayer}-${pageIndex}`;
-    const normalStyle = this.stylesheetMap.get(normalStyleId);
-    console.log(`Looking for normal style with ID: ${normalStyleId} for layer: ${currentLayer}`);    if (normalStyle) {
-      console.log(`Applying normal style ${normalStyleId} to ${currentLayer} layer of mesh ${mesh.name}`);
+
+    // Look for the normal style in our stylesheet array
+    const styleId = `panel-${currentLayer}-${pageIndex}`;
+    const normalStyle = this.findStyleById(styleId);
+    console.log(`Looking for normal style with ID: ${styleId} for layer: ${currentLayer}`);
+    
+    if (normalStyle) {
+      console.log(`Applying normal style ${styleId} to ${currentLayer} layer of mesh ${mesh.name}`);
       if (targetControl instanceof Rectangle) {
-        // Use material-aware styling if site uses materials
         if (this.usesMaterialBackground()) {
           console.log(`Using material-aware normal styling for ${mesh.name}`);
-          this.styleService.applyHoverStyles(targetControl, [normalStyle]); // Use same method as it skips backgrounds
+          this.styleService.applyHoverStyles(targetControl, [normalStyle]);
         } else {
           this.styleService.applyStyles(targetControl, [normalStyle]);
         }
       } else {
         this.applyStyleToChildren(targetControl, normalStyle);
       }
-      // Remove border from hex mesh if present
+      
       if (mesh.name.startsWith('hex_')) {
         this.styleService.removeHexBorder(mesh);
         mesh.renderOutline = false;
         mesh.outlineWidth = 0;
       }
     } else {
-      console.warn(`Normal style ${normalStyleId} not found in stylesheet map`);
+      console.warn(`Normal style ${styleId} not found in styles`);
     }
   }/**
    * Applies a style to a mesh's GUI by style ID
@@ -874,351 +1023,22 @@ export class GuiService {
     const guiElements = this.meshGuiMap.get(mesh.name);
     if (!guiElements || !styleId) return;
     
-    const style = this.stylesheetMap.get(styleId);
+    const style = this.findStyleById(styleId);
     if (!style) {
-      console.warn(`Style with ID ${styleId} not found in stylesheetMap`);
+      console.warn(`Style with ID ${styleId} not found in styles`);
       return;
     }
     
-    // We know we're working with the preview panel
     const previewContainer = guiElements.preview;
     if (previewContainer instanceof Rectangle) {
-      // Apply the style to the container
       this.styleService.applyStyles(previewContainer, [style]);
       
-      // Apply to children recursively
       for (const child of previewContainer._children) {
         this.applyStylesToControl(child, style);
       }
     }
   }
-    /**
-   * Recursively looks for panels in a container and applies the given style
-   */
-  private applyStyleToChildren(container: Control, style: any): void {
-    if (!container || !style) return;
 
-    // If this is a panel (Rectangle), apply the style directly
-    if (container instanceof Rectangle) {
-      this.styleService.applyStyles(container, [style]);
-    }
-
-    // Recursively search for Rectangle controls to apply style
-    if (container instanceof Rectangle || container instanceof StackPanel) {
-      // Safely handle the _children property which might be private in some versions
-      const children = container["_children"] || [];
-      for (const child of children) {
-        this.applyStyleToChildren(child, style);
-      }
-    }
-  }
-  
-  /**
-   * Recursively applies styles to a control and its children
-   */
-  private applyStylesToControl(control: Control, style: any): void {
-    // Apply style to this control
-    this.styleService.applyStyles(control, [style]);
-    
-    // If it's a container, apply to children recursively
-    if (control instanceof Rectangle || control instanceof StackPanel) {
-      for (const child of control._children) {
-        this.applyStylesToControl(child, style);
-      }
-    }
-  }
-  /**
-   * Set the site content for material detection
-   */
-  setSiteContent(siteContent: SiteContent | null): void {
-    this.siteContent = siteContent;
-    // Also set it in the style service for material-aware background handling
-    this.styleService.setSiteContent(siteContent);
-  }
-
-  /**
-   * Check if the site uses material backgrounds
-   */
-  private usesMaterialBackground(): boolean {
-    return this.siteContent?.site?.backgroundType === 'material';
-  }  /**
-   * Helper method to refresh the GUI texture on a mesh
-   * This method completely recreates the texture and reattaches the stored GUI controls
-   */
-  private refreshGuiTexture(mesh: Mesh): void {
-    if (!mesh) {
-      console.warn('Cannot refresh GUI texture: no mesh provided');
-      return;
-    }
-    
-    console.log(`[DEBUG-REFRESH] Attempting to refresh GUI texture for mesh: ${mesh.name}`);
-    
-    try {
-      // Get all AdvancedDynamicTextures in the scene
-      const scene = mesh.getScene();
-      const advancedTextures = AdvancedDynamicTexture['AdvancedDynamicTextureCollection'] || 
-                              (scene as any)._advancedTextures || 
-                              [];
-      
-      console.log(`[DEBUG-REFRESH] Found ${advancedTextures.length} ADTs to check for mesh ${mesh.name}`);
-      
-      // Find and dispose any existing texture on this mesh
-      for (let i = advancedTextures.length - 1; i >= 0; i--) {
-        const texture = advancedTextures[i];
-        if (texture._mesh === mesh) {
-          console.log(`[DEBUG-REFRESH] Found existing texture on mesh ${mesh.name}, disposing`);
-          if (texture.rootContainer) {
-            texture.rootContainer.clearControls();
-          }
-          texture.dispose();
-          break;
-        }
-      }
-      
-      // Get the layer type from the mesh metadata
-      const layer = mesh.metadata?.layer as 'preview' | 'core';
-      if (!layer) {
-        console.log(`[DEBUG-REFRESH] No layer found in metadata for mesh ${mesh.name}`);
-        return;
-      }
-      
-      // Get the control from our stored map
-      const guiElements = this.meshGuiMap.get(mesh.name);
-      if (!guiElements) {
-        console.log(`[DEBUG-REFRESH] No GUI elements found in meshGuiMap for mesh ${mesh.name}`);
-        return;
-      }
-      
-      const control = layer === 'preview' ? guiElements.preview : guiElements.core;
-      if (!control) {
-        console.log(`[DEBUG-REFRESH] No ${layer} control found for mesh ${mesh.name}`);
-        return;
-      }
-      
-      console.log(`[DEBUG-REFRESH] Creating new texture for mesh ${mesh.name} with ${layer} control`);
-      
-      // Create a new texture
-      const newTexture = AdvancedDynamicTexture.CreateForMesh(
-        mesh,
-        1024,
-        1024,
-        true
-      );
-      
-      // Clone the control to avoid reference issues
-      const clonedControl = this.cloneControl(control);
-      if (clonedControl) {
-        console.log(`[DEBUG-REFRESH] Adding cloned control to new texture`);
-        clonedControl.isVisible = true;
-        clonedControl.alpha = 1.0;
-        newTexture.addControl(clonedControl);
-      } else {
-        console.log(`[DEBUG-REFRESH] Clone failed, using original control`);
-        control.isVisible = true;
-        control.alpha = 1.0;
-        newTexture.addControl(control);
-      }
-      
-      // Force update
-      newTexture.markAsDirty();
-      newTexture.update(true);
-      
-      console.log(`[DEBUG-REFRESH] GUI texture refresh completed for mesh ${mesh.name}`);
-    } catch (error) {
-      console.error(`[DEBUG-REFRESH] Error refreshing GUI texture for mesh ${mesh.name}:`, error);
-    }
-  }
-  
-  /**
-   * Enhanced cleanup for unused textures in the scene
-   * This helps prevent memory leaks and texture conflicts during transitions
-   * @param scene The Babylon.js scene to clean up textures from
-   */
-  private cleanupUnusedTextures(scene: Scene): void {
-    try {
-      // Get all AdvancedDynamicTextures in the scene
-      const advancedTextures = AdvancedDynamicTexture['AdvancedDynamicTextureCollection'] || 
-                               (scene as any)._advancedTextures || 
-                               [];
-      
-      console.log(`[DEBUG-CLEANUP] Found ${advancedTextures.length} ADTs to check for cleanup`);
-      
-      // Look for textures that may be dangling or causing conflicts
-      for (let i = advancedTextures.length - 1; i >= 0; i--) {
-        const adt = advancedTextures[i];
-        
-        // Skip if the texture is still actively used by a visible mesh
-        if (adt._mesh && adt._mesh.isVisible) {
-          console.log(`[DEBUG-CLEANUP] Skipping active texture on visible mesh ${adt._mesh?.name || 'unknown'}`);
-          continue;
-        }
-        
-        // If the texture doesn't have an associated mesh or the mesh is hidden,
-        // we can consider disposing it
-        if (!adt._mesh || !adt._mesh.isVisible) {
-          console.log(`[DEBUG-CLEANUP] Disposing unused ADT ${i} for mesh: ${adt._mesh?.name || 'detached'}`);
-          
-          // Ensure we clean up properly
-          if (adt.rootContainer) {
-            adt.rootContainer.isVisible = false;
-            adt.rootContainer.clearControls(); // Clear all controls
-          }
-          
-          // Try to null out references to help garbage collection
-          if (adt._mesh) {
-            console.log(`[DEBUG-CLEANUP] Removing material references from mesh: ${adt._mesh.name}`);
-            if (adt._mesh.material && (adt._mesh.material as any).diffuseTexture === adt) {
-              (adt._mesh.material as any).diffuseTexture = null;
-            }
-          }
-          
-          // Dispose the texture
-          adt.dispose();
-          
-          // Force a scene render after cleanup
-          scene.render();
-        }
-      }
-      
-      // Request garbage collection if available
-      if (typeof window !== 'undefined' && (window as any).gc) {
-        console.log(`[DEBUG-CLEANUP] Requesting garbage collection`);
-        (window as any).gc();
-      }
-      
-      console.log(`[DEBUG-CLEANUP] Cleanup completed`);
-    } catch (error) {
-      console.error(`[DEBUG-CLEANUP] Error cleaning up textures:`, error);
-    }
-  }
-  
-  /**
-   * Creates a deep clone of a GUI control
-   * @param originalControl The control to clone
-   * @returns A new instance with copied properties
-   */
-  private cloneControl(originalControl: Control): Control | null {
-    if (!originalControl) return null;
-    
-    console.log(`[DEBUG-CLONE] Cloning control: ${originalControl.name}, type: ${originalControl.constructor.name}`);
-    
-    let clone: Control;
-    
-    if (originalControl instanceof Rectangle) {
-      clone = new Rectangle(originalControl.name + '_clone');
-      // Copy Rectangle-specific properties
-      (clone as Rectangle).thickness = (originalControl as Rectangle).thickness;
-      (clone as Rectangle).cornerRadius = (originalControl as Rectangle).cornerRadius;
-    } else if (originalControl instanceof StackPanel) {
-      clone = new StackPanel(originalControl.name + '_clone');
-      (clone as StackPanel).isVertical = (originalControl as StackPanel).isVertical;
-      (clone as StackPanel).spacing = (originalControl as StackPanel).spacing;
-    } else if (originalControl instanceof TextBlock) {
-      clone = new TextBlock(originalControl.name + '_clone');
-      (clone as TextBlock).text = (originalControl as TextBlock).text;
-      (clone as TextBlock).textWrapping = (originalControl as TextBlock).textWrapping;
-      (clone as TextBlock).resizeToFit = (originalControl as TextBlock).resizeToFit;
-    } else {
-      // Default to a basic control if we can't specifically handle this type
-      clone = new Control(originalControl.name + '_clone');
-    }
-      // Copy common properties
-    clone.alpha = originalControl.alpha;
-    clone.isVisible = true; // Explicitly set to visible
-    clone.width = originalControl.width;
-    clone.height = originalControl.height;
-    clone.color = originalControl.color;
-    
-    // Background is only available on certain control types
-    if ('background' in originalControl && 'background' in clone) {
-      (clone as any).background = (originalControl as any).background;
-    }
-    
-    clone.horizontalAlignment = originalControl.horizontalAlignment;
-    clone.verticalAlignment = originalControl.verticalAlignment;
-    
-    // Copy font properties if they exist
-    if ('fontSize' in originalControl && 'fontSize' in clone) {
-      clone['fontSize'] = originalControl['fontSize'];
-    }
-    if ('fontFamily' in originalControl && 'fontFamily' in clone) {
-      clone['fontFamily'] = originalControl['fontFamily'];
-    }
-    if ('fontWeight' in originalControl && 'fontWeight' in clone) {
-      clone['fontWeight'] = originalControl['fontWeight'];
-    }
-    
-    // Copy padding properties
-    clone.paddingTop = originalControl.paddingTop;
-    clone.paddingBottom = originalControl.paddingBottom;
-    clone.paddingLeft = originalControl.paddingLeft;
-    clone.paddingRight = originalControl.paddingRight;
-    
-    // Clone children recursively if this is a container
-    if ('children' in originalControl && Array.isArray((originalControl as any).children)) {
-      const children = (originalControl as any).children;
-      for (const childControl of children) {
-        const childClone = this.cloneControl(childControl);
-        if (childClone && 'addControl' in clone) {
-          (clone as any).addControl(childClone);
-        }
-      }
-    }
-      return clone;
-  }
-  
-// Helper function to check if a node is an ElementNode
-private isElementNode(node: any): node is ElementNode {
-  return node && typeof node === 'object' && 'type' in node;
-}
-  
-  /**
-   * Get the GUI control for a specific mesh and layer type
-   * @param mesh The mesh to get the control for
-   * @param layer Which layer (preview or core) to get
-   * @returns The stored GUI control or null if not found
-   */
-  private getGuiControlForMesh(mesh: Mesh, layer: 'preview' | 'core'): Control | null {
-    // Debug the map contents
-    console.log(`[DEBUG-GUI] meshGuiMap contents (${this.meshGuiMap.size} entries):`);
-    this.meshGuiMap.forEach((controls, name) => {
-      console.log(`[DEBUG-GUI]   - ${name}: preview=${!!controls.preview}, core=${!!controls.core}`);
-    });
-    
-    // We store controls by mesh name in our map
-    const controls = this.meshGuiMap.get(mesh.name);
-    
-    if (!controls) {
-      console.log(`[DEBUG-GUI] No GUI controls found for mesh ${mesh.name}`);
-      
-      // If the direct lookup fails, try to find by page ID
-      if (mesh.metadata?.pageId) {
-        console.log(`[DEBUG-GUI] Trying to find by pageId: ${mesh.metadata.pageId}`);
-        
-        // Search for meshes with this pageId in their name or metadata
-        for (const [name, elements] of this.meshGuiMap.entries()) {
-          if (name.includes(mesh.metadata.pageId)) {
-            console.log(`[DEBUG-GUI] Found potential match by pageId in name: ${name}`);
-            const control = layer === 'preview' ? elements.preview : elements.core;
-            if (control) {
-              return control;
-            }
-          }
-        }
-      }
-      
-      return null;
-    }
-    
-    // Return the requested layer's control
-    const control = layer === 'preview' ? controls.preview : controls.core;
-    
-    if (!control) {
-      console.log(`[DEBUG-GUI] No ${layer} control found for mesh ${mesh.name}`);
-      return null;
-    }
-    
-    console.log(`[DEBUG-GUI] Found ${layer} control for mesh ${mesh.name}`);
-    return control;
-  }
+  // Rest of the class remains unchanged
+  // ...existing code...
 }

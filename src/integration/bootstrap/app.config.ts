@@ -3,7 +3,7 @@ import { GlobalErrorHandler } from '../../common/services/global-error-handler';
 import { provideRouter, UrlSerializer } from '@angular/router';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { routes } from './app.routes';
-import { repositoryProviders } from '../../infrastructure/providers/repository/client-repository.providers';
+import { clientRepositoryFactoryProviders } from '../../infrastructure/providers/repository/client-repository-factory.providers';
 import { clientCacheProvider } from '../../infrastructure/providers/cache/client-cache.provider';
 import { provideClientHydration } from '@angular/platform-browser';
 import { UiComponent } from 'src/presentation/app/ui/ui.component';
@@ -14,11 +14,10 @@ import { clientStylesheetProviders } from '../../infrastructure/providers/reposi
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),    
-    provideRouter(routes),
+    provideZoneChangeDetection({ eventCoalescing: true }),      provideRouter(routes),
     provideHttpClient(withFetch()),
     provideClientHydration(),
-    repositoryProviders,
+    ...clientRepositoryFactoryProviders,
     clientCacheProvider,
     ...clientStylesheetProviders,
     { provide: 'UiZoneToken', useClass: UiComponent },

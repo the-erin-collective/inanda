@@ -5,7 +5,6 @@ import { SITE_REPOSITORY } from '../../../domain/repository/site.repository.inte
 import { ServerSiteRepository } from '../../repository/server/site.repository.server';
 import { CACHE_PROVIDER } from '../cache/cache.tokens';
 import { CacheData } from '../../../domain/data/cache.interface';
-import { ServerStylesheetRepository } from '../../repository/server/stylesheet.repository.server';
 
 export const repositoryProviders: StaticProvider[] = [
   {
@@ -27,14 +26,6 @@ export const repositoryProviders: StaticProvider[] = [
     provide: ServerPageRepository,
     useFactory: (cache: CacheData) => {
       return new ServerPageRepository(cache);
-    },
-    deps: [CACHE_PROVIDER]
-  },
-  // Provide the ServerStylesheetRepository as a standalone provider
-  {
-    provide: ServerStylesheetRepository,
-    useFactory: (cache: CacheData) => {
-      return new ServerStylesheetRepository(cache);
     },
     deps: [CACHE_PROVIDER]
   }

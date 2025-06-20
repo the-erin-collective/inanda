@@ -12,7 +12,7 @@
           "viewEncapsulation": "None"
         }
       },
-      "root": "",
+      "root": ".",
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
@@ -146,6 +146,19 @@
               "src/**/*.ts",
               "src/**/*.html"
             ]
+          }
+        },
+         "migrate": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "tools/build",
+            "main": "tools/migrate.ts",
+            "tsConfig": "tsconfig.app.json"
+          },
+          "configurations": {
+            "production": {
+              "optimization": false
+            }
           }
         }
       }

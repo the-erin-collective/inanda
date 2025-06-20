@@ -48,3 +48,5 @@ tools/**/*.js
 src/**/*.js
 package-lock.json
 /cache
+/tools/dist
+/data/repository
