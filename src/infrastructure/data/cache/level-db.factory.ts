@@ -10,6 +10,12 @@ let db: Level<string, any> | null = null;
  * This should ONLY be called during server bootstrap.
  */
 export async function createLevelDB(): Promise<Level<string, any>> {
+  // Check if LevelDB is disabled
+  if (process.env['USE_LEVEL_DB'] === 'false') {
+    console.log('LevelDB is disabled by configuration');
+    return null;
+  }
+
   // If already initialized, return existing instance
   if (db) {
     console.log('LevelDB already initialized, reusing existing instance');
@@ -42,7 +48,6 @@ export async function createLevelDB(): Promise<Level<string, any>> {
       await db.close();
       db = null;
     }
-    
     // Create a new LevelDB instance
     db = new Level(join(cachePath, 'db'), { 
       valueEncoding: 'json',
@@ -66,9 +71,14 @@ export async function createLevelDB(): Promise<Level<string, any>> {
 
 /**
  * Returns the initialized LevelDB instance.
- * This will throw an error if called before createLevelDB().
+ * This will throw an error if called before createLevelDB() unless LevelDB is disabled.
  */
 export function getLevelDB(): Level<string, any> {
+  // If LevelDB is disabled, return null without error
+  if (process.env['USE_LEVEL_DB'] === 'false') {
+    return null;
+  }
+  
   if (!db) {
     throw new Error('LevelDB not initialized. Call createLevelDB() during server bootstrap.');
   }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Style } from '../../../domain/entities/style/style.entity';
-import { Stylesheet } from '../../../domain/entities/style/stylesheet.entity';
+
 import { Control, TextBlock, Rectangle } from '@babylonjs/gui';
 import { Color3 } from '@babylonjs/core/Maths/math.color';
 import { DynamicTexture, Scene } from '@babylonjs/core';
@@ -12,9 +12,7 @@ import { TextureService } from './texture.service';
 @Injectable({
   providedIn: 'root'
 })
-export class StyleService {
-  private stylesheetCache: Map<string, Stylesheet> = new Map();
-  private scene: Scene | null = null;
+export class StyleService {  private scene: Scene | null = null;
   private siteContent: SiteContent | null = null;
 
   constructor(
@@ -35,56 +33,54 @@ export class StyleService {
   setSiteContent(siteContent: SiteContent | null): void {
     this.siteContent = siteContent;
   }
-
   /**
-   * Loads a stylesheet and all its imported stylesheets recursively
+   * Load styles from a page's embedded styles node
    */
-  async loadStylesheet(stylesheetId: string): Promise<Style[]> {
-    // Check cache first
-    if (this.stylesheetCache.has(stylesheetId)) {
-      return this.getStylesFromStylesheet(this.stylesheetCache.get(stylesheetId)!);
-    }
-
-    // TODO: Replace with actual API call to fetch stylesheet
-    const stylesheet = await this.fetchStylesheet(stylesheetId);
-    this.stylesheetCache.set(stylesheetId, stylesheet);
-
-    // Load all imported stylesheets recursively
-    const importedStyles: Style[] = [];
-    for (const importedId of stylesheet.importedStylesheetIds) {
-      const importedStylesheetStyles = await this.loadStylesheet(importedId);
-      importedStyles.push(...importedStylesheetStyles);
-    }
-
-    // Combine imported styles with local styles
-    return [...importedStyles, ...stylesheet.styles];
+  async loadStyles(styles: Style[]): Promise<Style[]> {
+    return styles;
   }
 
   /**
    * Applies styles to a Babylon.js GUI control, resolving 'inherit' by walking up the style chain.
    * The 'styles' array should be ordered from parent to child (lowest to highest specificity).
-   */
-  applyStyles(control: Control, styles: Style[]): void {
-    // Merge all style properties, resolving 'inherit' by walking up the chain
+   */  applyStyles(control: Control, styles: Style[]): void {
+    // Log out the incoming styles to help with debugging
+    console.log(`[DEBUG] ApplyStyles called for ${control instanceof TextBlock ? 'TextBlock' : 'Control'} with ${styles.length} styles`);
+    styles.forEach((style, index) => {
+      if (style.properties && style.properties.foregroundColor) {
+        console.log(`[DEBUG] Style ${index}: ${style.name || style._id} has foregroundColor: ${style.properties.foregroundColor}`);
+      }
+    });
+    
+    // Merge all style properties, handling non-inherit values first
     const mergedProps: any = {};
+    
+    // First pass: collect non-inherit values (except for foregroundColor)
+    // Process from least to most specific
     for (const style of styles) {
+      if (!style.properties) continue;
+      
       for (const key of Object.keys(style.properties)) {
+        if (key === 'foregroundColor') continue; // Handle separately below
+        
         const value = style.properties[key];
-        if (value === 'inherit') {
-          // Do not overwrite, keep parent value if present
-          continue;
+        if (value !== 'inherit') {
+          mergedProps[key] = value;
         }
-        mergedProps[key] = value;
       }
     }
-    // Apply styles based on control type and properties
+    
+    // Special handling for foregroundColor using resolveInheritedProperties
+    // This ensures we use the style chain for inheritance, not the BabylonJS controls
+    this.resolveInheritedProperties(control, mergedProps, styles);// Apply styles based on control type and properties
     this.applyBasicStyles(control, mergedProps);
     
     // Apply background and border styles based on their types
     this.applyBackgroundStyles(control, mergedProps);
     this.applyBorderStyles(control, mergedProps);
-    
-    if (control instanceof TextBlock) {
+      if (control instanceof TextBlock) {
+      // For TextBlocks, we've already resolved inherited properties
+      // Just apply the text styles with what we have
       this.applyTextStyles(control, mergedProps);
     }
     
@@ -213,12 +209,18 @@ export class StyleService {
           control.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
           break;
       }
+    }  }  private applyTextStyles(textBlock: TextBlock, props: Style['properties']): void {    // Text-specific properties
+    // Apply foreground color - this should already be resolved by resolveInheritedProperties
+    // but we add extra safeguards to ensure it's never 'inherit' at this point
+    if (props.foregroundColor && props.foregroundColor !== 'inherit') {
+      textBlock.color = props.foregroundColor;
+      console.log(`[DEBUG] Setting text color to ${props.foregroundColor} for TextBlock ${textBlock.name || ''}`);
+    } else {
+      // Use white as default
+      textBlock.color = 'white';
+      console.log(`[DEBUG] Missing or inherit foregroundColor for TextBlock ${textBlock.name || ''}, using default white`);
     }
-  }
-
-  private applyTextStyles(textBlock: TextBlock, props: Style['properties']): void {
-    // Text-specific properties
-    if (props.foregroundColor) textBlock.color = props.foregroundColor;
+    
     if (props.fontSize) textBlock.fontSize = parseInt(props.fontSize);
     if (props.fontWeight) textBlock.fontWeight = props.fontWeight;
     if (props.fontFamily) textBlock.fontFamily = props.fontFamily;
@@ -522,139 +524,203 @@ export class StyleService {
 
   /**
    * Removes the border line for a BabylonJS hex mesh.
-   */
-  removeHexBorder(mesh: any): void {
+   */  removeHexBorder(mesh: any): void {
     if (!mesh) return;
     if (mesh._borderLine) {
       mesh._borderLine.dispose();
       mesh._borderLine = null;
     }
   }
-
-  // Only applies to BabylonJS GUI Rectangle controls, not 3D meshes. For hex meshes, use applyHexBorder.
-  private applyContainerStyles(container: Rectangle, props: Style['properties']): void {
+    /**
+   * Only applies to BabylonJS GUI Rectangle controls, not 3D meshes. For hex meshes, use applyHexBorder.
+   */  private applyContainerStyles(container: Rectangle, props: Style['properties']): void {
     // Container-specific properties
     if (props.fillSpace) {
       container.width = "120%";  // Special case for hex panels
       container.height = "120%";
     }
+    
+    // Store foregroundColor in metadata FOR DEBUGGING ONLY
+    // Child controls should NEVER read this value - instead they should use their own
+    // style chain to resolve inheritance
+    container.metadata = container.metadata || {};
+    container.metadata.styleMeta = container.metadata.styleMeta || {};
+    
+    if (props.foregroundColor) {
+      // Store in nested metadata to make it super clear this is just for debugging
+      container.metadata.styleMeta.foregroundColor = props.foregroundColor;
+      console.log(`[DEBUG] Stored foregroundColor in container metadata: ${props.foregroundColor} (${container.name || ''}) - FOR REFERENCE ONLY`);
+    }
+    
     // Background color is now handled by applyBackgroundStyles
-    // if (props.backgroundColor) {
-    //   container.background = props.backgroundColor;
-    // }
-
     // Border styles are now handled by applyBorderStyles
-    // if (props.borderWidth && props.borderColor) {
-    //   const borderWidthNum = parseInt(props.borderWidth);
-
-    //   if (isNaN(borderWidthNum) || borderWidthNum <= 0) {
-    //     container.thickness = 0;
-    //     container.color = "transparent";
-    //   } else {
-    //     container.thickness = borderWidthNum;
-    //     container.color = props.borderColor;
-
-    //     if (props.fillSpace) {
-    //       container.paddingLeft = "0px";
-    //       container.paddingRight = "0px";
-    //       container.paddingTop = "0px";
-    //       container.paddingBottom = "0px";
-
-    //       console.log(
-    //         `Border for fillSpace container (name: ${container.name || 'undefined'}): ` +
-    //         `width=${borderWidthNum}, color=${props.borderColor}. ` +
-    //         `Padding after adjustment: L=${container.paddingLeft}, R=${container.paddingRight}, T=${container.paddingTop}, B=${container.paddingBottom}`
-    //       );
-    //     }
-    //   }
-    // } else {
-    //   container.thickness = 0;
-    //   container.color = "transparent";
-    // }
 
     if (props.borderStyle) {
       // Log if borderStyle is provided, though BabylonJS Rectangle doesn't directly use it like CSS.
       console.log(`Border style specified: ${props.borderStyle} for container ${container.name || 'undefined'} (Note: BabylonJS Rectangle does not directly support CSS-like border-style).`);
     }
   }
-
-  private async fetchStylesheet(stylesheetId: string): Promise<Stylesheet> {
-    // For now, return a default stylesheet
-    return {
-      _id: stylesheetId,
-      name: 'Default Stylesheet',
-      styles: [
-        {
-          _id: 'default-style',
-          name: 'Default Style',
-          properties: {
-            fontSize: '16px',
-            fontWeight: 'normal',
-            fontFamily: 'Arial',
-            foregroundColor: 'white',
-            backgroundColor: 'transparent',
-            paddingLeft: '10px',
-            paddingRight: '10px',
-            paddingTop: '5px',
-            paddingBottom: '5px'
-          }
+    private getDefaultStyles(): Style[] {
+    return [
+      {
+        _id: 'default-style',
+        name: 'Default Style',
+        properties: {
+          fontWeight: 'normal',
+          fontFamily: 'Arial',
+          foregroundColor: 'white',
+          backgroundColor: 'transparent',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          paddingTop: '5px',
+          paddingBottom: '5px'
         }
-      ],
-      importedStylesheetIds: []
-    };
-  }
-
-  private getStylesFromStylesheet(stylesheet: Stylesheet): Style[] {
-    return stylesheet.styles;
-  }
-
-  /**
-   * Returns the style chain for a node, from root to leaf, based on site data hierarchy.
-   * This should be used to resolve inheritance (e.g., 'inherit' values) correctly.
-   */
-  getStyleChain(node: any, stylesheetMap: Map<string, any>): Style[] {
-    const chain: Style[] = [];
-    let current = node;
-    while (current) {
-      if (current._id) {
-        const style = stylesheetMap.get(current._id);
-        if (style) chain.unshift(style);
       }
+    ];
+  }
+    /**
+   * Returns the style chain for a node, from root to leaf, based on site data hierarchy.
+   * This is the KEY method for resolving inheritance correctly.
+   * The chain includes DEFAULT styles first, then all PARENT styles in order, 
+   * and finally the NODE's own styles.
+   */
+  getStyleChain(node: any, styles: any[]): Style[] {
+    // Start with the default styles (always applied as base styles)
+    const chain: Style[] = [...this.getDefaultStyles()];
+    
+    if (!node) return chain;
+    
+    // Helper function to get styles for a single node
+    const getStylesForNode = (n: any): Style[] => {
+      const nodeStyles: Style[] = [];
+      
+      // First check styleIds array, which takes priority
+      if (n.styleIds && Array.isArray(n.styleIds)) {
+        for (const styleId of n.styleIds) {
+          // Handle both Map and Array of styles
+          const style = styles instanceof Map 
+            ? styles.get(styleId)
+            : styles.find(s => s._id === styleId);
+            
+          if (style) nodeStyles.push(style);
+        }
+      }
+      // Fallback to _id if styleIds is not present
+      else if (n._id) {
+        const style = styles instanceof Map 
+          ? styles.get(n._id) 
+          : styles.find(s => s._id === n._id);
+          
+        if (style) nodeStyles.push(style);
+      }
+      
+      return nodeStyles;
+    };
+    
+    // Build the parent chain from root to this node
+    const parentChain = [];
+    let current: any = node.parent; // Start with the parent
+    
+    // Walk up the data tree to collect ancestor nodes
+    while (current) {
+      parentChain.unshift(current); // Add parents first-to-last
       current = current.parent;
     }
+    
+    // Add all parent styles in order from root to direct parent
+    for (const parentNode of parentChain) {
+      chain.push(...getStylesForNode(parentNode));
+    }
+    
+    // Finally, add this node's own styles
+    chain.push(...getStylesForNode(node));
+    
+    // Log the chain for debugging
+    console.log(`[DEBUG] Style chain for ${node.type || 'node'} contains ${chain.length} styles`);
+    
     return chain;
-  }
-
-  /**
+  }  /**
    * Apply hover styles without overriding material backgrounds
    * This method applies only border, text, and layout styles while preserving material backgrounds
    */
   applyHoverStyles(control: Control, styles: Style[]): void {
-    // Merge all style properties, resolving 'inherit' by walking up the chain
+    // Merge all style properties, handling non-inherit values first
     const mergedProps: any = {};
+    
+    // Process from least to most specific for most properties
     for (const style of styles) {
+      if (!style.properties) continue;
+      
       for (const key of Object.keys(style.properties)) {
+        if (key === 'foregroundColor') continue; // Handle separately below
+        
         const value = style.properties[key];
-        if (value === 'inherit') {
-          // Do not overwrite, keep parent value if present
-          continue;
+        if (value !== 'inherit') {
+          mergedProps[key] = value;
         }
-        mergedProps[key] = value;
       }
     }
+    
+    // Special handling for foregroundColor using resolveInheritedProperties
+    // This ensures we use the style chain for inheritance, not the BabylonJS controls
+    this.resolveInheritedProperties(control, mergedProps, styles);
     
     // Apply styles but skip background colors to preserve material
     this.applyBasicStyles(control, mergedProps);
     
-    // Apply only border styles, skip background styles for material preservation
+    // Apply only border styles, skip background styles for material preservation    
     this.applyBorderStyles(control, mergedProps);
-    
-    if (control instanceof TextBlock) {
+      if (control instanceof TextBlock) {
+      // Apply text styles with the resolved properties
       this.applyTextStyles(control, mergedProps);
     }
-    
+      
     if (control instanceof Rectangle) {
       this.applyContainerStyles(control, mergedProps);
+    }
+      if (control instanceof Rectangle) {
+      this.applyContainerStyles(control, mergedProps);
+    }
+  }  /**
+   * Resolves 'inherit' values for specific properties by looking at parent element styles in the style chain.
+   * This is called by applyStyles to ensure inherited values are properly resolved.
+   * IMPORTANT: This method ONLY uses the style chain (JSON data), NEVER traverses the BabylonJS control hierarchy.
+   */
+  resolveInheritedProperties(control: Control, props: any, styleChain: Style[]): void {
+    // Check if we need to handle foregroundColor inheritance specifically
+    const needsColorResolution = !props.foregroundColor || props.foregroundColor === 'inherit';
+    
+    if (needsColorResolution) {
+      // Log current style chain for debugging
+      console.log(`[DEBUG] Resolving foregroundColor from style chain with ${styleChain.length} styles for ${control.name || 'unnamed'}`);
+      
+      // Clone the chain so we don't modify the original
+      const workingChain = [...styleChain];
+      
+      // Add a default style at the beginning if needed
+      if (!workingChain.some(s => s._id === 'default-style')) {
+        workingChain.unshift(this.getDefaultStyles()[0]);
+      }
+      
+      // Start from the most specific (highest index) and work backward for foregroundColor
+      let resolvedColor = null;
+      for (let i = workingChain.length - 1; i >= 0; i--) {
+        const style = workingChain[i];
+        if (style && style.properties && style.properties.foregroundColor && 
+            style.properties.foregroundColor !== 'inherit') {
+          resolvedColor = style.properties.foregroundColor;
+          console.log(`[DEBUG] Found foregroundColor: ${resolvedColor} from style: ${style.name || style._id}`);
+          break;
+        }
+      }
+      
+      // If we found a color, use it; otherwise, use default white
+      if (resolvedColor) {
+        props.foregroundColor = resolvedColor;
+        console.log(`[DEBUG] Set foregroundColor to: ${resolvedColor} for ${control.name || ''}`);      } else {
+        props.foregroundColor = 'white'; // Fallback default
+        console.log(`[DEBUG] No foregroundColor found in chain, using default white for ${control.name || ''}`);
+      }
     }
   }
 }

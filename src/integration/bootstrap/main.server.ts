@@ -75,6 +75,13 @@ const checkMongoDBConnectivity = async (): Promise<boolean> => {
 // MongoDB connection factory
 const connectToDatabase = async (): Promise<boolean> => {
   try {
+    // Check storage type first - if using file storage, don't try to connect to MongoDB
+    const storageType = process.env['PERSISTENT_STORAGE'];
+    if (storageType === 'FILE') {
+      console.log('Using FILE storage, skipping MongoDB connection');
+      return false;
+    }
+    
     const MONGO_URI = process.env['MONGO_URI'];
     
     if (!MONGO_URI) {
@@ -94,29 +101,71 @@ const connectToDatabase = async (): Promise<boolean> => {
     
     console.log('Connecting to MongoDB...');
     
-    // Set a longer timeout for initial connection
-    const connectionOptions = { 
+    // Set up connection options with longer timeouts
+    const connectionOptions: mongoose.ConnectOptions = { 
       useNewUrlParser: true, 
       useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 10000, // 10 seconds timeout
-      connectTimeoutMS: 10000,
-      socketTimeoutMS: 45000
+      serverSelectionTimeoutMS: 30000, // 30 seconds timeout
+      connectTimeoutMS: 30000,
+      socketTimeoutMS: 45000,
+      family: 4 as 4 // Force IPv4
     };
-    
-    console.log('Debugging: Mongoose object before connect:', mongoose); // New debugging line
 
-    // Connect to MongoDB
-    await mongoose.connect(MONGO_URI, connectionOptions);
+    // Create a promise that resolves when the connection is ready
+    const connectionPromise = new Promise<boolean>((resolve, reject) => {
+      let isResolved = false;
+      const timeoutId = setTimeout(() => {
+        if (!isResolved) {
+          isResolved = true;
+          reject(new Error('MongoDB connection timeout after 30 seconds'));
+        }
+      }, 30000);
 
-    // Verify connection is actually established after the connect call
-    if (!mongoose.connection || mongoose.connection.readyState !== 1) {
-      console.error(`MongoDB connection not in connected state after connect call, current state: ${mongoose.connection?.readyState}`);
-      throw new Error(`MongoDB connection not established, current state: ${mongoose.connection?.readyState}`);
-    }
+      // Set up connection event handlers
+      function onConnected() {
+        if (!isResolved) {
+          isResolved = true;
+          clearTimeout(timeoutId);
+          console.log('Mongoose connected event received');
+          // Give a small delay to ensure connection state is updated
+          setTimeout(() => {
+            if (mongoose.connection.readyState === 1) {
+              cleanup();
+              resolve(true);
+            } else {
+              cleanup();
+              reject(new Error(`MongoDB connection state invalid after connected event: ${mongoose.connection.readyState}`));
+            }
+          }, 100);
+        }
+      }
 
-    console.log('Debugging: mongoose.connection state before attaching listeners:', mongoose.connection); // Debugging line
+      function onConnectionError(err: Error) {
+        if (!isResolved) {
+          isResolved = true;
+          clearTimeout(timeoutId);
+          console.error('Mongoose connection error:', err);
+          cleanup();
+          reject(err);
+        }
+      }
 
-    // Now that connection is established and verified, attach event listeners
+      function cleanup() {
+        mongoose.connection.off('connected', onConnected);
+        mongoose.connection.off('error', onConnectionError);
+      }
+
+      // Set up event handlers before connecting
+      mongoose.connection.once('connected', onConnected);
+      mongoose.connection.once('error', onConnectionError);
+
+      // Also handle disconnect events
+      mongoose.connection.on('disconnected', () => {
+        console.log('Mongoose disconnected');
+      });
+    });
+
+    // Set up permanent event listeners before connecting
     mongoose.connection.on('connecting', () => {
       console.log('Mongoose connecting...');
     });
@@ -128,6 +177,17 @@ const connectToDatabase = async (): Promise<boolean> => {
     mongoose.connection.on('error', (err) => {
       console.error('Mongoose connection error:', err);
     });
+
+    // Connect to MongoDB
+    await mongoose.connect(MONGO_URI, connectionOptions);
+
+    // Wait for the connection to be fully established
+    await connectionPromise;
+
+    // Final verification
+    if (mongoose.connection.readyState !== 1) {
+      throw new Error(`MongoDB connection verification failed, current state: ${mongoose.connection.readyState}`);
+    }
     
     console.log('Connected to MongoDB successfully');
     return true;
@@ -143,6 +203,13 @@ const connectToDatabase = async (): Promise<boolean> => {
 // Check if we need MongoDB by checking cache for required data
 const checkCacheForRequiredData = async (): Promise<boolean> => {
   try {
+    // If using FILE storage, we never need MongoDB
+    const storageType = process.env['PERSISTENT_STORAGE'];
+    if (storageType === 'FILE') {
+      console.log('Using FILE storage, no need to check cache for MongoDB requirements');
+      return false;
+    }
+    
     const db = getLevelDB();
     
     // Check if we have the main site content cached
@@ -226,6 +293,13 @@ const checkCacheForRequiredData = async (): Promise<boolean> => {
 // We'll check cache first, then decide whether to connect to MongoDB
 const bootstrapFn = async () => {
   try {
+    // Check storage type first
+    const storageType = process.env['PERSISTENT_STORAGE'];
+    const useFileStorage = storageType === 'FILE';
+
+    // Log storage configuration for debugging
+    console.log(`Storage configuration: PERSISTENT_STORAGE=${storageType || 'not set (using MongoDB)'}`);
+
     // Always initialize LevelDB first, regardless of RESET_CACHE
     await createLevelDB();
 
@@ -240,35 +314,41 @@ const bootstrapFn = async () => {
       }
     }
     
-    // Check MongoDB connectivity early
+    // Skip MongoDB checks if using file storage
+    if (useFileStorage) {
+      console.log('Using file-based storage, skipping MongoDB connection');
+      return bootstrapApplication(AppComponent, {
+        providers: [
+          provideServerRendering(),
+          ...config.providers,
+          { provide: MONGO_CONNECTION_FACTORY, useValue: async () => false }
+        ],
+      });
+    }
+
+    // MongoDB-specific bootstrap logic
     const mongodbAccessible = await checkMongoDBConnectivity();
     console.log(`MongoDB connectivity: ${mongodbAccessible ? 'ACCESSIBLE' : 'NOT ACCESSIBLE'}`);
     
-    // Check if we need MongoDB by checking cache
     const needsMongoDB = await checkCacheForRequiredData();
     
-    // If we need MongoDB but it's not accessible, fail fast
     if (needsMongoDB && !mongodbAccessible) {
       console.error('FATAL ERROR: MongoDB connection required but connectivity test failed.');
       console.error('Please ensure MongoDB server is running and accessible before starting the application.');
       process.exit(1);
     } else if (!mongodbAccessible) {
-      // MongoDB is not accessible but we don't need it - just a warning
       console.warn('MongoDB is not accessible, but all required data is available in cache.');
       console.warn('The application will run in offline mode using cached data.');
     }
     
-    // Only try MongoDB connection if needed
     let mongoConnected = false;
     if (needsMongoDB) {
       console.log('Cache missing required data, attempting MongoDB connection');
       mongoConnected = await connectToDatabase();
       
-      // Critical check: If we need MongoDB but couldn't connect, exit process
       if (!mongoConnected) {
         console.error('FATAL ERROR: MongoDB connection required but failed. Required data is missing from cache and MongoDB is unavailable.');
-        // Force process to exit immediately, not waiting for anything
-        process.exit(1); // Exit with error code
+        process.exit(1);
       }
     } else {
       console.log('Cache has required data, skipping MongoDB connection');

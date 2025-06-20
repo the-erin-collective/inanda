@@ -17,8 +17,7 @@ interface CacheEntry<T> {
 @Injectable({ providedIn: 'root' })
 export class ServerCacheService implements CacheData {
   private db: Level<string, any>;
-  
-  constructor(@Inject(PLATFORM_ID) platformId: Object) {
+    constructor(@Inject(PLATFORM_ID) platformId: Object) {
     // Ensure this service is only used on the server
     if (!isPlatformServer(platformId)) {
       throw new Error('ServerCacheService can only be used on the server side');
@@ -26,7 +25,13 @@ export class ServerCacheService implements CacheData {
     
     // Get the LevelDB instance that was initialized during server bootstrap
     this.db = getLevelDB();
-    console.log('ServerCacheService initialized');
+    
+    // If LevelDB is disabled, throw an error as this service should not be used
+    if (!this.db) {
+      throw new Error('ServerCacheService cannot be used when LevelDB is disabled');
+    }
+    
+    console.log('ServerCacheService initialized with LevelDB');
   }
 
   /**
