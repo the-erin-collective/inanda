@@ -10,8 +10,6 @@ import { UiComponent } from 'src/presentation/app/ui/ui.component';
 import { PlatformComponent } from 'src/presentation/app/platform/platform.component';
 import { CustomUrlSerializer } from '../../infrastructure/routing/custom-url-serializer';
 
-import { clientStylesheetProviders } from '../../infrastructure/providers/repository/client-stylesheet.providers';
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),    
@@ -20,7 +18,6 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     repositoryProviders,
     clientCacheProvider,
-    ...clientStylesheetProviders,
     { provide: 'UiZoneToken', useClass: UiComponent },
     { provide: 'EngineZoneToken', useClass: PlatformComponent },
     { provide: UrlSerializer, useClass: CustomUrlSerializer },

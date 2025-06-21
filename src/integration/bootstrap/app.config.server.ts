@@ -7,7 +7,6 @@ import { CustomUrlSerializer } from '../../infrastructure/routing/custom-url-ser
 import { repositoryProviders } from '../../infrastructure/providers/repository/server-repository.providers';
 import { serverCacheProvider } from '../../infrastructure/providers/cache/server-cache.provider';
 import { provideClientHydration } from '@angular/platform-browser';
-import { serverStylesheetProviders } from '../../infrastructure/providers/repository/server-stylesheet.providers';
 
 const serverConfig: ApplicationConfig = {
   providers: [
@@ -16,7 +15,6 @@ const serverConfig: ApplicationConfig = {
     provideClientHydration(),
     repositoryProviders,
     serverCacheProvider,
-    ...serverStylesheetProviders,
     { provide: UrlSerializer, useClass: CustomUrlSerializer },
     { provide: ErrorHandler, useClass: GlobalErrorHandler }
   ]
