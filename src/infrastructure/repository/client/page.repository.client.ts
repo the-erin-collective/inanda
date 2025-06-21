@@ -2,22 +2,28 @@ import { Injectable } from '@angular/core';
 import { PageRepository } from '../../../domain/repository/page.repository.interface';
 import { Page } from '../../../domain/entities/page/page.entity';
 import { SiteContent } from 'src/domain/aggregates/site-content.aggregate';
-import { makeStateKey } from '@angular/core';
 import { TransferState } from '@angular/core';
-
-const SITE_CONTENT_KEY = makeStateKey<SiteContent>('siteContent');
+import { SITE_CONTENT_KEY } from '../../../common/tokens/transfer-state.tokens';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClientPageRepository implements PageRepository {
-  constructor(private transferState: TransferState) {}
-  findById(id: string): Promise<Page | null> {
+  constructor(private transferState: TransferState) {
+    console.log('ClientPageRepository constructor - SITE_CONTENT_KEY:', SITE_CONTENT_KEY);
+  }  findById(id: string): Promise<Page | null> {
+    console.log(`ClientPageRepository: Finding page by ID: ${id}`);
+    
+    if (!this.transferState.hasKey(SITE_CONTENT_KEY)) {
+      console.warn('ClientPageRepository: No site content found in TransferState. Key not present:', SITE_CONTENT_KEY);
+      return Promise.resolve(null);
+    }
+    
     const siteContent = this.transferState.get(SITE_CONTENT_KEY, null);
     console.log('ClientPageRepository: Fetching page by ID from preloaded site content:', siteContent);
 
     if (!siteContent) {
-      console.warn('ClientPageRepository: No site content found in TransferState.');
+      console.warn('ClientPageRepository: Site content is null in TransferState.');
       return Promise.resolve(null);
     }
 

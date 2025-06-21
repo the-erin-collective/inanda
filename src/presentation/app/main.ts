@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 import { ConfigService } from './config.service';
 import { provideRouter } from '@angular/router';
 import { routes } from '../../integration/bootstrap/app.routes';
-import { repositoryProviders } from '../../integration/providers/client-repository.provider'; 
+import { clientRepositoryProviders } from '../../infrastructure/providers/repository/client-repository.providers'; 
 
 const configService = new ConfigService();
 if (configService.get('showGithubBanner')) {
@@ -19,6 +19,6 @@ bootstrapApplication(AppComponent, {
   providers: [
     provideClientHydration(withEventReplay()),
     provideRouter(routes),
-    ...repositoryProviders, 
+    ...clientRepositoryProviders, 
   ],
 }).catch(err => console.log(err));

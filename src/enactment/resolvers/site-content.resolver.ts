@@ -1,41 +1,43 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-import { isPlatformServer } from '@angular/common';
-import { makeStateKey, TransferState } from '@angular/core';
+import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { TransferState } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { SiteContentService } from '../services/site-content.service';
 import { SiteContent } from '../../domain/aggregates/site-content.aggregate';
 import { DEFAULT_SITE_ID } from '../../domain/constants/site.constants';
-
-const SITE_CONTENT_KEY = makeStateKey<SiteContent | null>('siteContent');
+import { SITE_CONTENT_KEY } from '../../common/tokens/transfer-state.tokens';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SiteContentResolver implements Resolve<Promise<SiteContent>> {
   private siteContentSubject = new BehaviorSubject<SiteContent | null>(null);
-
   constructor(
     private siteContentService: SiteContentService,
     private transferState: TransferState,
     @Inject(PLATFORM_ID) private platformId: object
-  ) {}
+  ) {
+    console.log(`SiteContentResolver constructor - Platform: ${isPlatformServer(this.platformId) ? 'SERVER' : 'CLIENT'}`);
+  }
 
   get siteContent$() {
     return this.siteContentSubject.asObservable();
   }
-
   async resolve(route: ActivatedRouteSnapshot): Promise<SiteContent> {
-    console.log('Resolving site content...');
+    console.log(`Resolving site content on: ${isPlatformServer(this.platformId) ? 'SERVER' : 'CLIENT'}`);
 
     // Check if data is available in TransferState
     if (this.transferState.hasKey(SITE_CONTENT_KEY)) {
+      console.log('FOUND site content in TransferState with key:', SITE_CONTENT_KEY);
       const siteContent = this.transferState.get(SITE_CONTENT_KEY, null);
       console.log('Using preloaded site content:', siteContent);
       if (siteContent) {
         this.siteContentSubject.next(siteContent); // Emit the data
         return siteContent;
       }
+    } else {
+      console.log('NO site content found in TransferState with key:', SITE_CONTENT_KEY);
     }
 
     // Fetch data from the service
@@ -50,15 +52,26 @@ export class SiteContentResolver implements Resolve<Promise<SiteContent>> {
       // If the consumer of this resolver handles null, then 'return null;' would be simpler.
       // For now, returning a dummy object to ensure the promise resolves without crashing.
       return Promise.resolve(null); 
-    }
-
-    try {
+    }    try {
       const siteContent = await this.siteContentService.getSiteContent(siteId);
       console.log('Resolved site content:', siteContent);
-
-      // Store data in TransferState for server-side rendering
-      if (isPlatformServer(this.platformId)) {
-        this.transferState.set(SITE_CONTENT_KEY, siteContent);
+        // Store data in TransferState for server-side rendering
+      if (isPlatformServer(this.platformId) && siteContent) {
+        console.log('Setting site content in TransferState for hydration');
+        
+        // Create a fully serializable version by removing any methods or circular references
+        const serializableSiteContent = JSON.parse(JSON.stringify({
+          site: siteContent.site,
+          pages: siteContent.pages
+        }));
+          console.log('Serialized site content for TransferState, using key:', SITE_CONTENT_KEY);
+        
+        // Set the content in TransferState
+        this.transferState.set(SITE_CONTENT_KEY, serializableSiteContent);
+        
+        // Verify it was set correctly
+        const verifySet = this.transferState.hasKey(SITE_CONTENT_KEY);
+        console.log('Verified TransferState key exists after setting:', verifySet);
       }
 
       this.siteContentSubject.next(siteContent); // Emit the data

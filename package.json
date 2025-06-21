@@ -32,6 +32,7 @@
     "@babylonjs/materials": "^8.4.0",
     "@types/express": "^5.0.3",
     "bootstrap": "^5.3.3",
+    "chalk": "^5.4.1",
     "core-js": "^3.41.0",
     "dotenv": "^16.5.0",
     "earcut": "^3.0.1",

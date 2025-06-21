@@ -1,15 +1,43 @@
 import * as net from 'net';
+import * as fs from 'fs';
+import * as path from 'path';
+
+// Helper function to load configuration
+function loadConfig() {
+  try {
+    const isProd = process.env['NODE_ENV'] === 'production';
+    const configPath = isProd 
+      ? path.join(process.cwd(), 'config.prod.json')
+      : path.join(process.cwd(), 'config.dev.json');
+    
+    console.log(`Loading config from ${configPath} for MongoDB check`);
+    const configData = fs.readFileSync(configPath, 'utf8');
+    return JSON.parse(configData);
+  } catch (err) {
+    console.error(`Error loading config for MongoDB check:`, err);
+    return {};
+  }
+}
 
 /**
  * Simple TCP port checker that tests if MongoDB port is open
  * This runs before the actual app bootstrap to detect basic connectivity issues
  */
 export async function checkMongoDBConnectivity(): Promise<boolean> {
-  // Get MongoDB URI from environment variables
-  const MONGO_URI = process.env['MONGO_URI'];
+  // Load config first
+  const config = loadConfig();
+  
+  // Check if we're using MongoDB storage
+  if (config.PERSISTENT_STORAGE !== 'MONGODB') {
+    console.log(`MongoDB connectivity check skipped - using ${config.PERSISTENT_STORAGE} storage`);
+    return false;
+  }
+  
+  // Get MongoDB URI from config
+  const MONGO_URI = config.MONGO_URI || process.env['MONGO_URI'];
   
   if (!MONGO_URI) {
-    console.log('No MONGO_URI environment variable set, skipping connectivity check');
+    console.log('No MONGO_URI found in config or environment, skipping connectivity check');
     return false;
   }
   

@@ -1,9 +1,27 @@
 import { Level } from 'level';
 import { join } from 'path';
-import { mkdir, access, rm } from 'fs/promises';
+import { mkdir, access, rm, readFile } from 'fs/promises';
+import * as path from 'path';
 
 // This is a singleton that holds the LevelDB instance
 let db: Level<string, any> | null = null;
+
+// Helper function to load configuration
+async function loadConfig() {
+  try {
+    const isProd = process.env['NODE_ENV'] === 'production';
+    const configPath = isProd 
+      ? path.join(process.cwd(), 'config.prod.json')
+      : path.join(process.cwd(), 'config.dev.json');
+    
+    console.log(`Loading config from ${configPath} for LevelDB initialization`);
+    const configData = await readFile(configPath, 'utf8');
+    return JSON.parse(configData);
+  } catch (err) {
+    console.error(`Error loading config for LevelDB initialization:`, err);
+    return {};
+  }
+}
 
 /**
  * Creates and initializes the LevelDB instance.
@@ -14,6 +32,13 @@ export async function createLevelDB(): Promise<Level<string, any>> {
   if (db) {
     console.log('LevelDB already initialized, reusing existing instance');
     return db;
+  }
+  
+  // Check configuration before initializing
+  const config = await loadConfig();
+  if (config.USE_LEVEL_DB === false) {
+    console.log('LevelDB initialization skipped - USE_LEVEL_DB=false in config');
+    throw new Error('LevelDB is disabled in configuration (USE_LEVEL_DB=false)');
   }
 
   // Use process.cwd() which is reliable in Node.js environments
