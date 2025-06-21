@@ -1,0 +1,7 @@
+{
+  "dataPath": "/assets/data/repository/sites",
+  "USE_LEVEL_DB": false,
+  "PERSISTENT_STORAGE": "FILE",
+  "SHOW_GITHUB_BANNER": true,
+  "GITHUB_BANNER_URL": "https://github.com/the-erin-collective/web-home"
+}

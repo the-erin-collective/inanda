@@ -2,5 +2,7 @@
   <canvas #rendererCanvas id="renderCanvas"></canvas>
 </div>
 <div *ngIf="!isBabylonJsAvailable" #fallback id="fallback">
-  no babylonjs
+</div>
+<div *ngIf="showGithubBanner" class="github-banner-corner">
+  <a [href]="githubBannerUrl" target="_blank" rel="noopener noreferrer">View on GitHub</a>
 </div>

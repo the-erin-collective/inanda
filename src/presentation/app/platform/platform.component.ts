@@ -15,6 +15,8 @@ import { EngineService } from '../../../integration/engine/engine.service';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { SiteContent } from '../../../integration/models/site-content.aggregate.model';
 
+import { ConfigService } from '../config.service';
+
 @Component({
   selector: 'app-platform',
   standalone: true,
@@ -36,8 +38,18 @@ export class PlatformComponent implements OnChanges {
   constructor(
     private engServ: EngineService,
     @Inject(PLATFORM_ID) private platformId: object,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private configService: ConfigService
   ) {}
+
+  get showGithubBanner(): boolean {
+    return this.configService.get('showGithubBanner');
+  }
+
+  get githubBannerUrl(): string {
+    return this.configService.get('githubBannerUrl');
+  }
+
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('EngineComponent - ngOnChanges triggered:', changes);

@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose';
-import * as dotenv from 'dotenv';
+import * as fs from 'fs';
+import * as path from 'path';
 import { createLevelDB, getLevelDB, closeLevelDB, resetCache } from '../src/infrastructure/data/cache/level-db.factory';
 
 import { Site } from '../src/domain/entities/site/site.entity';
@@ -17,10 +18,20 @@ import { Style } from '../src/domain/entities/style/style.entity';
 import { StylesheetNode } from '../src/domain/entities/page/content/items/stylesheet.entity';
 import { SitemapType } from '../src/domain/entities/site/sitemap-type.enum';
 
-// Load .env if present
-dotenv.config();
+// Load server runtime configuration
+const isProd = process.env['NODE_ENV'] === 'production';
+const cfgFile = isProd ? 'config.prod.json' : 'config.dev.json';
+let serverConfig: any = {};
+try {
+  serverConfig = JSON.parse(
+    fs.readFileSync(path.join(process.cwd(), cfgFile), 'utf-8')
+  );
+  console.log(`Loaded server config for seed from ${cfgFile}`);
+} catch (err) {
+  console.error(`Failed to load server config (${cfgFile}):`, err);
+}
 
-const MONGODB_URI = process.env['MONGO_URI'];
+const MONGODB_URI = serverConfig.MONGO_URI;
 
 if (!MONGODB_URI) {
   console.error('❌ MONGO_URI is not set in .env file.');

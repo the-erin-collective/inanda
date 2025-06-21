@@ -1,1 +1,3 @@
-export * from '../../infrastructure/environments/environment';
+import { ConfigService } from '../../presentation/app/config.service';
+
+export const configService = new ConfigService();

@@ -1,12 +1,17 @@
 import { enableProdMode } from '@angular/core';
 import { bootstrapApplication, provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { environment } from './../../integration/bootstrap/app.environment';
+import { ConfigService } from './config.service';
 import { provideRouter } from '@angular/router';
 import { routes } from '../../integration/bootstrap/app.routes';
 import { repositoryProviders } from '../../integration/providers/client-repository.provider'; 
 
-if (environment.production) {
+const configService = new ConfigService();
+if (configService.get('showGithubBanner')) {
+  console.log('Production environment detected');
+}
+
+if (configService.get('production')) {
   enableProdMode();
 }
 

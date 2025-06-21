@@ -8,6 +8,7 @@ import { UiSidebarRightComponent } from './ui-sidebar-right/ui-sidebar-right.com
 
 @Component({
     selector: 'app-ui',
+    standalone: true,
     templateUrl: './ui.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,

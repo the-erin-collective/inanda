@@ -8,5 +8,11 @@ import packageInfo from 'package.json';
 export const environment = {
   production: false,
   version: packageInfo.version,
-  mongoEnvKey: 'MONGO_URI'
+  mongoEnvKey: 'MONGO_URI',
+  SHOW_GITHUB_BANNER: true,
+  GITHUB_BANNER_URL: 'https://github.com/the-erin-collective/web-home',
+  dataPath: 'data/repository/sites',
+  USE_LEVEL_DB: false,
+  PERSISTENT_STORAGE: 'FILE',
+  MONGO_URI: 'mongodb://localhost:27017/webhomedb',
 };

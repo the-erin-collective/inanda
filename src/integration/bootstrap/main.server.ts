@@ -283,6 +283,7 @@ const bootstrapFn = async () => {
         ...config.providers,
         { provide: MONGO_CONNECTION_FACTORY, useValue: async () => mongoConnected }
       ],
+      // Removed 'url' property as it is not valid in ApplicationConfig
     });
   } catch (err) {
     console.error('FATAL ERROR during bootstrap:', err);

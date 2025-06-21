@@ -1,0 +1,173 @@
+{
+  "_id": "page-2",
+  "title": "Page 2",
+  "root": {
+    "base": {
+      "type": "base",
+      "children": [
+        {
+          "_id": "stylesheet-stylesheet-2",
+          "type": "stylesheet",
+          "styles": [
+            {
+              "_id": "panel-preview-2",
+              "name": "Preview Panel Style",
+              "properties": {
+                "backgroundColor": "#5e3637ff",
+                "foregroundColor": "#ffffff",
+                "paddingLeft": "20px",
+                "paddingRight": "20px",
+                "paddingTop": "15px",
+                "paddingBottom": "15px",
+                "horizontalAlignment": "center",
+                "verticalAlignment": "center",
+                "fillSpace": true,
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "panel-preview-hover-2",
+              "name": "Preview Panel Hover Style",
+              "properties": {
+                "backgroundColor": "#5e3637ff",
+                "foregroundColor": "#ffffff",
+                "paddingLeft": "20px",
+                "paddingRight": "20px",
+                "paddingTop": "15px",
+                "paddingBottom": "15px",
+                "horizontalAlignment": "center",
+                "verticalAlignment": "center",
+                "fillSpace": true,
+                "borderWidth": "4",
+                "borderColor": "#FFFFFF",
+                "borderStyle": "solid",
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "h1-preview-2",
+              "name": "Preview Heading Style",
+              "properties": {
+                "fontSize": "92",
+                "fontWeight": "bold",
+                "marginTop": "30px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "p-preview-2",
+              "name": "Preview Paragraph Style",
+              "properties": {
+                "fontSize": "48",
+                "fontWeight": "bold",
+                "marginTop": "15px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "panel-core-2",
+              "name": "Core Panel Style",
+              "properties": {
+                "backgroundColor": "#ffadad",
+                "foregroundColor": "#000000",
+                "paddingLeft": "20px",
+                "paddingRight": "20px",
+                "paddingTop": "15px",
+                "paddingBottom": "15px",
+                "horizontalAlignment": "center",
+                "verticalAlignment": "center",
+                "fillSpace": true
+              }
+            },
+            {
+              "_id": "h1-2",
+              "name": "Heading Style",
+              "properties": {
+                "fontSize": "52",
+                "fontWeight": "bold",
+                "marginTop": "30px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center"
+              }
+            },
+            {
+              "_id": "p-2",
+              "name": "Paragraph Style",
+              "properties": {
+                "fontSize": "28",
+                "marginTop": "15px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center"
+              }
+            }
+          ]
+        }
+      ],
+      "styleIds": []
+    },
+    "core": {
+      "type": "core",
+      "children": [
+        {
+          "_id": "panel-core-2",
+          "type": "panel",
+          "children": [
+            {
+              "type": "h1",
+              "text": "About Our Platform",
+              "_id": "h1-2"
+            },
+            {
+              "type": "p",
+              "text": "Our platform combines cutting-edge 3D navigation with seamless content delivery for a truly unique web experience.",
+              "_id": "p-2"
+            },
+            {
+              "type": "p",
+              "text": "Built using Angular and Babylon.js, we've created an immersive environment that breaks the mold of traditional websites.",
+              "_id": "p-2"
+            },
+            {
+              "type": "p",
+              "text": "The hexagonal design represents our interconnected approach to digital solutions.",
+              "_id": "p-2"
+            }
+          ]
+        }
+      ]
+    },
+    "preview": {
+      "type": "preview",
+      "children": [
+        {
+          "_id": "panel-preview-2",
+          "type": "panel",
+          "children": [
+            {
+              "type": "h1",
+              "text": "Platform",
+              "_id": "h1-preview-2"
+            },
+            {
+              "type": "p",
+              "text": "Discover the technology behind our unique approach.",
+              "_id": "p-preview-2"
+            }
+          ]
+        }
+      ]
+    },
+    "script": {
+      "type": "script",
+      "children": []
+    },
+    "type": "root"
+  },
+  "siteId": "site-001"
+}

@@ -1,0 +1,173 @@
+{
+  "_id": "page-3",
+  "title": "Page 3",
+  "root": {
+    "base": {
+      "type": "base",
+      "children": [
+        {
+          "_id": "stylesheet-stylesheet-3",
+          "type": "stylesheet",
+          "styles": [
+            {
+              "_id": "panel-preview-3",
+              "name": "Preview Panel Style",
+              "properties": {
+                "backgroundColor": "#55422fff",
+                "foregroundColor": "#ffffff",
+                "paddingLeft": "20px",
+                "paddingRight": "20px",
+                "paddingTop": "15px",
+                "paddingBottom": "15px",
+                "horizontalAlignment": "center",
+                "verticalAlignment": "center",
+                "fillSpace": true,
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "panel-preview-hover-3",
+              "name": "Preview Panel Hover Style",
+              "properties": {
+                "backgroundColor": "#55422fff",
+                "foregroundColor": "#ffffff",
+                "paddingLeft": "20px",
+                "paddingRight": "20px",
+                "paddingTop": "15px",
+                "paddingBottom": "15px",
+                "horizontalAlignment": "center",
+                "verticalAlignment": "center",
+                "fillSpace": true,
+                "borderWidth": "4",
+                "borderColor": "#FFFFFF",
+                "borderStyle": "solid",
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "h1-preview-3",
+              "name": "Preview Heading Style",
+              "properties": {
+                "fontSize": "92",
+                "fontWeight": "bold",
+                "marginTop": "30px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "p-preview-3",
+              "name": "Preview Paragraph Style",
+              "properties": {
+                "fontSize": "48",
+                "fontWeight": "bold",
+                "marginTop": "15px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "panel-core-3",
+              "name": "Core Panel Style",
+              "properties": {
+                "backgroundColor": "#ffd6a5",
+                "foregroundColor": "#000000",
+                "paddingLeft": "20px",
+                "paddingRight": "20px",
+                "paddingTop": "15px",
+                "paddingBottom": "15px",
+                "horizontalAlignment": "center",
+                "verticalAlignment": "center",
+                "fillSpace": true
+              }
+            },
+            {
+              "_id": "h1-3",
+              "name": "Heading Style",
+              "properties": {
+                "fontSize": "52",
+                "fontWeight": "bold",
+                "marginTop": "30px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center"
+              }
+            },
+            {
+              "_id": "p-3",
+              "name": "Paragraph Style",
+              "properties": {
+                "fontSize": "28",
+                "marginTop": "15px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center"
+              }
+            }
+          ]
+        }
+      ],
+      "styleIds": []
+    },
+    "core": {
+      "type": "core",
+      "children": [
+        {
+          "_id": "panel-core-3",
+          "type": "panel",
+          "children": [
+            {
+              "type": "h1",
+              "text": "Our Services",
+              "_id": "h1-3"
+            },
+            {
+              "type": "p",
+              "text": "We offer a wide range of digital services including web development, 3D modeling, and interactive design.",
+              "_id": "p-3"
+            },
+            {
+              "type": "p",
+              "text": "Each project is custom tailored to meet your specific needs and vision, ensuring a result that stands out.",
+              "_id": "p-3"
+            },
+            {
+              "type": "p",
+              "text": "Our team combines technical expertise with creative insight to deliver exceptional results.",
+              "_id": "p-3"
+            }
+          ]
+        }
+      ]
+    },
+    "preview": {
+      "type": "preview",
+      "children": [
+        {
+          "_id": "panel-preview-3",
+          "type": "panel",
+          "children": [
+            {
+              "type": "h1",
+              "text": "Services",
+              "_id": "h1-preview-3"
+            },
+            {
+              "type": "p",
+              "text": "Explore our range of digital offerings and expertise.",
+              "_id": "p-preview-3"
+            }
+          ]
+        }
+      ]
+    },
+    "script": {
+      "type": "script",
+      "children": []
+    },
+    "type": "root"
+  },
+  "siteId": "site-001"
+}
