@@ -1,0 +1,21 @@
+.github-banner-corner {
+  position: fixed;
+  top: 0;
+  right: 0;
+  background: #24292f;
+  color: #fff;
+  padding: 8px 20px 8px 12px;
+  border-bottom-left-radius: 6px;
+  z-index: 1000;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.github-banner-corner a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+.github-banner-corner a:hover {
+  text-decoration: underline;
+}

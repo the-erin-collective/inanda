@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEnca
 import { SiteContentResolver } from '../../enactment/resolvers/site-content.resolver';
 import { SiteContent } from '../../integration/models/site-content.aggregate.model';
 import { PlatformComponent } from './platform/platform.component';
-import { UiComponent } from './ui/ui.component';
+import { SourcecodeLinkComponent } from './ui/sourcecode-link/sourcecode-link.component';
 
 @Component({
   selector: 'app-root',
   standalone: true, // Standalone component
-  imports: [PlatformComponent, UiComponent], // Import required components
+  imports: [PlatformComponent, SourcecodeLinkComponent], // Import required components
   styleUrls: [],
   templateUrl: './app.component.html',
   encapsulation: ViewEncapsulation.None,
