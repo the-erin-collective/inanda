@@ -7,6 +7,7 @@ import { githubBannerConfigProvider } from '../../../../infrastructure/providers
     selector: 'sourcecode-link',
     standalone: true,
     templateUrl: './sourcecode-link.component.html',
+    styleUrl: './sourcecode-link.component.scss',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
