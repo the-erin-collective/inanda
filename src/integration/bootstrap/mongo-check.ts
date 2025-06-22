@@ -1,40 +1,22 @@
 import * as net from 'net';
-import * as fs from 'fs';
-import * as path from 'path';
-
-// Helper function to load configuration
-function loadConfig() {
-  try {
-    const isProd = process.env['NODE_ENV'] === 'production';
-    const configPath = isProd 
-      ? path.join(process.cwd(), 'config.prod.json')
-      : path.join(process.cwd(), 'config.dev.json');
-    
-    console.log(`Loading config from ${configPath} for MongoDB check`);
-    const configData = fs.readFileSync(configPath, 'utf8');
-    return JSON.parse(configData);
-  } catch (err) {
-    console.error(`Error loading config for MongoDB check:`, err);
-    return {};
-  }
-}
+import { environment } from '../../infrastructure/environments/environment.server';
 
 /**
  * Simple TCP port checker that tests if MongoDB port is open
  * This runs before the actual app bootstrap to detect basic connectivity issues
  */
 export async function checkMongoDBConnectivity(): Promise<boolean> {
-  // Load config first
-  const config = loadConfig();
-  
+  // Load config directly from file
+
+  console.log(`[MongoDB Check] Using environment:`, environment);
   // Check if we're using MongoDB storage
-  if (config.PERSISTENT_STORAGE !== 'MONGODB') {
-    console.log(`MongoDB connectivity check skipped - using ${config.PERSISTENT_STORAGE} storage`);
+  if (environment.PERSISTENT_STORAGE !== 'MONGODB') {
+    console.log(`MongoDB connectivity check skipped - using ${environment.PERSISTENT_STORAGE} storage`);
     return false;
   }
   
   // Get MongoDB URI from config
-  const MONGO_URI = config.MONGO_URI || process.env['MONGO_URI'];
+  const MONGO_URI = environment.MONGO_URI || process.env['MONGO_URI'];
   
   if (!MONGO_URI) {
     console.log('No MONGO_URI found in config or environment, skipping connectivity check');

@@ -4,8 +4,7 @@ import { Site } from '../../../domain/entities/site/site.entity';
 import { SiteContent } from '../../../domain/aggregates/site-content.aggregate';
 import { CacheData } from '../../../domain/data/cache.interface';
 import { CACHE_PROVIDER } from '../../providers/cache/cache.tokens';
-import * as fs from 'fs/promises';
-import * as path from 'path';
+import { FileFetchService } from '../../services/file-fetch.service';
 import { APP_CONFIG, AppConfig } from '../../providers/config/app-config.token';
 
 @Injectable({
@@ -17,9 +16,11 @@ export class FileSiteRepository implements SiteRepository {
   
   constructor(
     @Inject(CACHE_PROVIDER) private readonly cache: CacheData,
-    @Inject(APP_CONFIG) private readonly config: AppConfig
+    @Inject(APP_CONFIG) private readonly config: AppConfig,
+    private readonly fileFetchService: FileFetchService
   ) {
-    this.dataPath = this.config.DATA_PATH || 'data/repository/sites';
+    this.dataPath = config.DATA_PATH;
+    console.log(`FileSiteRepository initialized with dataPath: ${this.dataPath}`);
   }
 
   async findById(id: string): Promise<Site | null> {
@@ -61,64 +62,36 @@ export class FileSiteRepository implements SiteRepository {
     
     return siteContent;
   }
+
   async save(site: Site): Promise<Site> {
-    const siteId = site.id || this.defaultSiteId;
-    const siteDirPath = path.join(process.cwd(), this.dataPath, siteId);
-    const filePath = path.join(siteDirPath, `${siteId}.json`);
-    
-    try {
-      // Ensure directory exists
-      await fs.mkdir(siteDirPath, { recursive: true });
-      
-      // Write site data to file
-      await fs.writeFile(filePath, JSON.stringify(site, null, 2));
-      
-      // Invalidate cache
-      await this.cache.invalidate(`site:${siteId}`);
-      await this.cache.invalidate(`site-content:${siteId}`);
-      
-      console.log(`Site ${siteId} saved to file: ${filePath}`);
-      return site;
-    } catch (error) {
-      console.error(`Error saving site ${siteId} to file:`, error);
-      throw error;
-    }
+    throw new Error('FileSiteRepository.save is not implemented in read-only mode.');
   }
+
   async delete(id: string): Promise<void> {
-    const filePath = path.join(process.cwd(), this.dataPath, id, `${id}.json`);
-    
-    try {
-      await fs.unlink(filePath);
-      
-      // Invalidate cache
-      await this.cache.invalidate(`site:${id}`);
-      await this.cache.invalidate(`site-content:${id}`);
-      
-      console.log(`Site ${id} deleted from file: ${filePath}`);
-    } catch (error) {
-      console.error(`Error deleting site ${id} from file:`, error);
-      throw error;
-    }
+    throw new Error('FileSiteRepository.delete is not implemented in read-only mode.');
   }
 
   // Private helper methods
   private async loadSiteFromFile(id: string): Promise<Site | null> {
-    // Use site ID as both folder name and file name
-    const filePath = path.join(process.cwd(), this.dataPath, id, `${id}.json`);
+    // Path should use the correct repository structure
+    // The correct path should include /repository/sites/ before the site ID
+    const fileUrl = `presentation/assets/${this.dataPath}/${id}/${id}.json`;
+    console.log(`Loading site data for ID ${id} from file: ${fileUrl}`);
     
     try {
-      const fileData = await fs.readFile(filePath, 'utf8');
-      const siteData = JSON.parse(fileData);
-      
+      const siteData = await this.fileFetchService.fetchJson<Site>(fileUrl);
       return siteData as Site;
-    } catch (error) {
+    } catch (error: any) {
       // File not found or invalid JSON
-      if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-        console.log(`Site file not found: ${filePath}`);
-        return null;
+      console.error(`Site file not found: ${fileUrl}`, error);
+      
+      // Try the alternative path structure as a fallback
+      if (error.status === 404) {
+        console.log(`Site file not found at primary location.`);
+        throw error;
       }
       
-      console.error(`Error loading site from file ${filePath}:`, error);
+      console.error(`Error loading site from file ${fileUrl}:`, error);
       throw error;
     }
   }

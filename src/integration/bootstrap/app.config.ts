@@ -9,19 +9,20 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { SourcecodeLinkComponent } from 'src/presentation/app/ui/sourcecode-link/sourcecode-link.component';
 import { PlatformComponent } from 'src/presentation/app/platform/platform.component';
 import { CustomUrlSerializer } from '../../infrastructure/routing/custom-url-serializer';
-import {appConfigProvider} from '../../infrastructure/providers/config/app-config.provider';
-import { githubBannerConfigProvider } from '../../infrastructure/providers/config/github-banner-config.provider';
+import { provideConfig } from '../../infrastructure/providers/config/config.provider';
+import { provideAppConfig } from '../../infrastructure/providers/config/app-config.provider';
+import { provideGithubBannerConfig } from '../../infrastructure/providers/config/github-banner-config.provider';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),    
     provideRouter(routes),
-    provideHttpClient(withFetch()),
-    provideClientHydration(),
+    provideHttpClient(withFetch()),    provideClientHydration(),
     ...clientRepositoryProviders,
     clientCacheProvider,
-    appConfigProvider,
-    githubBannerConfigProvider,
+    provideConfig(),
+    provideAppConfig(),
+    provideGithubBannerConfig(),
     { provide: 'UiZoneToken', useClass: SourcecodeLinkComponent },
     { provide: 'EngineZoneToken', useClass: PlatformComponent },
     { provide: UrlSerializer, useClass: CustomUrlSerializer },

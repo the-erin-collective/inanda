@@ -6,32 +6,10 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
-import * as fs from 'fs';
-import * as path from 'path';
-// The manifest will be loaded automatically from angular-app-engine-manifest.mjs
-// by the AngularNodeAppEngine during initialization
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
-// Load configuration to pass to client
-function loadConfig() {
-  try {
-    const isProd = process.env['NODE_ENV'] === 'production';
-    const configPath = isProd 
-      ? path.join(process.cwd(), 'config.prod.json')
-      : path.join(process.cwd(), 'config.dev.json');
-    
-    console.log(`Loading config from ${configPath} for client hydration`);
-    const configData = fs.readFileSync(configPath, 'utf8');
-    return JSON.parse(configData);
-  } catch (err) {
-    console.error(`Error loading config for client hydration:`, err);
-    return {};
-  }
-}
-
 const app = express();
-// Create Angular Node App Engine - it will use the manifest automatically
 const angularApp = new AngularNodeAppEngine();
 
 /**
@@ -61,25 +39,11 @@ app.use(
  * Handle all other requests by rendering the Angular application.
  */
 app.use((req, res, next) => {
-  // Load config for client hydration
-  const config = loadConfig();
-    angularApp
+  angularApp
     .handle(req)
-    .then((response) => {
-      if (response) {
-        // Inject the configuration into the rendered HTML
-        const html = response.body.toString();
-        const configScript = `<script>window.__APP_CONFIG__ = ${JSON.stringify(config)};</script>`;
-        const htmlWithConfig = html.replace('</head>', `${configScript}</head>`);
-        
-        // Write the modified HTML directly to the response
-        res.setHeader('Content-Type', 'text/html');
-        res.setHeader('Content-Length', Buffer.byteLength(htmlWithConfig));
-        res.status(response.status || 200).send(htmlWithConfig);
-      } else {
-        next();
-      }
-    })
+    .then((response) =>
+      response ? writeResponseToNodeResponse(response, res) : next(),
+    )
     .catch(next);
 });
 

@@ -2,8 +2,8 @@ import { FactoryProvider, PLATFORM_ID } from '@angular/core';
 import { CACHE_PROVIDER } from './cache.tokens';
 import { ServerCacheService } from '../../data/cache/server-cache.service';
 import { MemoryCacheService } from '../../data/cache/memory-cache.service';
-import { APP_CONFIG, AppConfig } from '../config/app-config.token';
-import { isPlatformServer } from '@angular/common';
+import { environment } from '../../environments/environment.server';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 
 /**
  * Provider for cache implementation based on configuration
@@ -12,22 +12,17 @@ import { isPlatformServer } from '@angular/common';
  */
 export const configCacheProvider: FactoryProvider = {
   provide: CACHE_PROVIDER,
-  useFactory: (config: AppConfig, platformId: Object) => {
-    // Log the actual config value to verify it's being read correctly
-    console.log(`Creating cache provider based on USE_LEVEL_DB=${config.USE_LEVEL_DB}`);
-    
-    // Defensive check in case config isn't loaded properly
-    if (!config) {
-      console.error('No config provided to cache factory! Defaulting to MemoryCacheService');
-      return new MemoryCacheService();
-    }
-    
+  useFactory: (platformId: Object) => {
     // Only use ServerCacheService on server-side AND when USE_LEVEL_DB=true
-    if (isPlatformServer(platformId) && config.USE_LEVEL_DB === true) {
+    if (isPlatformBrowser(platformId)){
+      return new MemoryCacheService();
+    } 
+    
+    if(environment.USE_LEVEL_DB === true) {
       console.log('Using LevelDB cache implementation (ServerCacheService)');
       try {
         // Pass both platformId and config to ServerCacheService
-        return new ServerCacheService(platformId, config);
+        return new ServerCacheService(platformId);
       } catch (err) {
         // If there's any error creating ServerCacheService, fall back to memory
         console.error('Error creating ServerCacheService, falling back to MemoryCacheService:', err);
@@ -38,5 +33,5 @@ export const configCacheProvider: FactoryProvider = {
       return new MemoryCacheService();
     }
   },
-  deps: [APP_CONFIG, PLATFORM_ID]
+  deps: [PLATFORM_ID]
 };

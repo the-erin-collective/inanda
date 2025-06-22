@@ -7,6 +7,8 @@ import { CacheData } from '../../../domain/data/cache.interface';
 import { ServerSiteRepository } from '../../repository/server/site.repository.server';
 import { ServerPageRepository } from '../../repository/server/page.repository.server';
 import { MONGO_CONNECTION_FACTORY, MongoConnectionFactory } from '../../data/db/mongo.factory';
+import { FileFetchService } from '../../../infrastructure/services/file-fetch.service';
+import { environment } from '../../../infrastructure/environments/environment.server';
 
 /**
  * Factory provider for the page repository.
@@ -17,19 +19,24 @@ import { FileSiteRepository } from '../../repository/file/site.repository.file';
 
 export const configPageRepositoryProvider: FactoryProvider = {
   provide: PAGE_REPOSITORY,
-  useFactory: (config: AppConfig, cache: CacheData, mongoConnectionFactory?: MongoConnectionFactory) => {
-    console.log(`Creating page repository with PERSISTENT_STORAGE=${config.PERSISTENT_STORAGE}`);
+  useFactory: (config: AppConfig, cache: CacheData, fileFetchService :FileFetchService, mongoConnectionFactory?: MongoConnectionFactory) => {
+    console.log('[configPageRepositoryProvider] Factory called');
+    console.log('[configPageRepositoryProvider] config:', config);
+    console.log('[configPageRepositoryProvider] cache:', cache);
+    console.log('[configPageRepositoryProvider] fileFetchService:', fileFetchService);
+    console.log('[configPageRepositoryProvider] mongoConnectionFactory:', mongoConnectionFactory);
+    console.log(`[configPageRepositoryProvider] Creating page repository with PERSISTENT_STORAGE=${environment.PERSISTENT_STORAGE}`);
     
     // Create the appropriate repository based on config
-    if (config.PERSISTENT_STORAGE === 'FILE') {
-      console.log('Using FilePageRepository');
-      return new FilePageRepository(cache, config);
+    if (environment.PERSISTENT_STORAGE === 'FILE') {
+      console.log('[configPageRepositoryProvider] Using FilePageRepository');
+      return new FilePageRepository(cache, config, fileFetchService);
     } else {
-      console.log('Using ServerPageRepository with MongoDB');
+      console.log('[configPageRepositoryProvider] Using ServerPageRepository with MongoDB');
       return new ServerPageRepository(cache, mongoConnectionFactory);
     }
   },
-  deps: [APP_CONFIG, CACHE_PROVIDER, [new Optional(), MONGO_CONNECTION_FACTORY]]
+  deps: [APP_CONFIG, CACHE_PROVIDER, FileFetchService, [new Optional(), MONGO_CONNECTION_FACTORY]]
 };
 
 /**
@@ -41,22 +48,29 @@ export const configSiteRepositoryProvider: FactoryProvider = {
   useFactory: (
     config: AppConfig, 
     cache: CacheData, 
+    fileFetchService: FileFetchService,
     pageRepository: any,  // Use any type to support both repo types
     mongoConnectionFactory?: MongoConnectionFactory
   ) => {
-    console.log(`Creating site repository with PERSISTENT_STORAGE=${config.PERSISTENT_STORAGE}`);
+    console.log('[configSiteRepositoryProvider] Factory called');
+    console.log('[configSiteRepositoryProvider] config:', config);
+    console.log('[configSiteRepositoryProvider] cache:', cache);
+    console.log('[configSiteRepositoryProvider] fileFetchService:', fileFetchService);
+    console.log('[configSiteRepositoryProvider] pageRepository:', pageRepository);
+    console.log('[configSiteRepositoryProvider] mongoConnectionFactory:', mongoConnectionFactory);
+    console.log(`[configSiteRepositoryProvider] Creating site repository with PERSISTENT_STORAGE=${environment.PERSISTENT_STORAGE}`);
     
     // Create the appropriate repository based on config
-    if (config.PERSISTENT_STORAGE === 'FILE') {
-      console.log('Using FileSiteRepository');
-      return new FileSiteRepository(cache, config);
+    if (environment.PERSISTENT_STORAGE === 'FILE') {
+      console.log('[configSiteRepositoryProvider] Using FileSiteRepository');
+      return new FileSiteRepository(cache, config, fileFetchService);
     } else {
-      console.log('Using ServerSiteRepository with MongoDB');
+      console.log('[configSiteRepositoryProvider] Using ServerSiteRepository with MongoDB');
       // The ServerSiteRepository expects a ServerPageRepository specifically
       return new ServerSiteRepository(pageRepository, cache, mongoConnectionFactory);
     }
   },
-  deps: [APP_CONFIG, CACHE_PROVIDER, PAGE_REPOSITORY, [new Optional(), MONGO_CONNECTION_FACTORY]]
+  deps: [APP_CONFIG, CACHE_PROVIDER, FileFetchService, PAGE_REPOSITORY, [new Optional(), MONGO_CONNECTION_FACTORY]]
 };
 
 /**
@@ -65,7 +79,7 @@ export const configSiteRepositoryProvider: FactoryProvider = {
 export const serverPageRepositoryProvider: FactoryProvider = {
   provide: ServerPageRepository,
   useFactory: (config: AppConfig, cache: CacheData, mongoConnectionFactory?: MongoConnectionFactory) => {
-    console.log(`Creating standalone ServerPageRepository with PERSISTENT_STORAGE=${config.PERSISTENT_STORAGE}`);
+    console.log(`Creating standalone ServerPageRepository with PERSISTENT_STORAGE=${environment.PERSISTENT_STORAGE}`);
     
     // Still create this regardless of config for compatibility
     // The dependency injection system will only use this when needed

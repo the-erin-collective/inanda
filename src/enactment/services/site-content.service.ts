@@ -22,7 +22,7 @@ export class SiteContentService {
     }
 
     console.log(`Found site:`, site);
-    const pages = await this.pageRepository.findByIds(site.pageOrder);
+    const pages = await this.pageRepository.findByIds(id, site.pageOrder);
     console.log(`Fetched pages for site:`, pages);
 
     return new SiteContent(site, pages);

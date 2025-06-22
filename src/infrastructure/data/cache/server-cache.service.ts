@@ -3,7 +3,7 @@ import { createLevelDB, getLevelDB } from './level-db.factory';
 import { Level } from 'level';
 import { isPlatformServer } from '@angular/common';
 import { Inject, Injectable, Optional, PLATFORM_ID } from '@angular/core';
-import { APP_CONFIG, AppConfig } from '../../providers/config/app-config.token';
+import { environment } from '../../environments/environment.server';
 
 interface CacheEntry<T> {
   data: T;
@@ -21,8 +21,7 @@ export class ServerCacheService implements CacheData {
   private initialized = false;
   
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
-    @Optional() @Inject(APP_CONFIG) private config?: AppConfig
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     // Ensure this service is only used on the server
     if (!isPlatformServer(platformId)) {
@@ -43,7 +42,7 @@ export class ServerCacheService implements CacheData {
     }
     
     // Check if we should use LevelDB based on config
-    const shouldUseLevelDB = this.config?.USE_LEVEL_DB !== false;
+    const shouldUseLevelDB = environment.USE_LEVEL_DB !== false;
     
     if (!shouldUseLevelDB) {
       throw new Error('ServerCacheService is configured not to use LevelDB (USE_LEVEL_DB=false), but it was invoked anyway');

@@ -11,7 +11,9 @@ import { SITE_CONTENT_KEY } from '../../../common/tokens/transfer-state.tokens';
 export class ClientPageRepository implements PageRepository {
   constructor(private transferState: TransferState) {
     console.log('ClientPageRepository constructor - SITE_CONTENT_KEY:', SITE_CONTENT_KEY);
-  }  findById(id: string): Promise<Page | null> {
+  }  
+  
+  findById(siteId: string, id: string): Promise<Page | null> {
     console.log(`ClientPageRepository: Finding page by ID: ${id}`);
     
     if (!this.transferState.hasKey(SITE_CONTENT_KEY)) {
@@ -30,7 +32,7 @@ export class ClientPageRepository implements PageRepository {
     const page = siteContent.pages.find((page) => page._id === id) || null;
     return Promise.resolve(page);
   }
-  findByIds(ids: string[]): Promise<Page[]> {
+  findByIds(siteId: string, ids: string[]): Promise<Page[]> {
     const siteContent = this.transferState.get(SITE_CONTENT_KEY, null);
     console.log('ClientPageRepository: Returning preloaded site content:', siteContent);
 
@@ -39,14 +41,14 @@ export class ClientPageRepository implements PageRepository {
     return Promise.resolve(pages);
   }
 
-  async save(site: Page): Promise<Page> {
+  async save(siteId: string, site: Page): Promise<Page> {
     console.debug('ClientPageRepository save called for site: ', site);
 
     console.warn('ClientSiteRepository: Save operation is not supported on the client.');
     throw new Error('Save operation is not supported on the client.');
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(siteId: string, id: string): Promise<void> {
     console.debug('ClientPageRepository delete called for site id: ', id);
     
     console.warn('ClientSiteRepository: Delete operation is not supported on the client.');

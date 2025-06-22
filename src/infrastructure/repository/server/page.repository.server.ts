@@ -36,7 +36,7 @@ export class ServerPageRepository implements PageRepository {
     return this.mongoConnected;
   }
 
-  async findById(id: string): Promise<Page | null> {
+  async findById(siteId: string, id: string): Promise<Page | null> {
     const cacheKey = `page:${id}`;
     const hasCachedData = await this.cache.exists(cacheKey);
     
@@ -74,7 +74,7 @@ export class ServerPageRepository implements PageRepository {
     });
   }
 
-  async save(page: Page): Promise<Page> {
+  async save(siteId: string, page: Page): Promise<Page> {
     // Check MongoDB connection
     const dbAvailable = await this.ensureMongoConnection();
     if (!dbAvailable) {
@@ -119,7 +119,7 @@ export class ServerPageRepository implements PageRepository {
     });
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(siteId: string, id: string): Promise<void> {
     // Check MongoDB connection
     const dbAvailable = await this.ensureMongoConnection();
     if (!dbAvailable) {
@@ -131,7 +131,7 @@ export class ServerPageRepository implements PageRepository {
     await this.cache.invalidate(`page:${id}`);
   }
 
-  async findByIds(ids: string[]): Promise<Page[]> {
+  async findByIds(siteId: string, ids: string[]): Promise<Page[]> {
     // An early return if there are no IDs to avoid expensive operations
     if (!ids || ids.length === 0) {
       return [];

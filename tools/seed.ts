@@ -17,6 +17,7 @@ import { Stylesheet } from '../src/domain/entities/style/stylesheet.entity';
 import { StylesheetNode } from '../src/domain/entities/page/content/items/stylesheet.entity';
 import { SitemapType } from '../src/domain/entities/site/sitemap-type.enum';
 import { AppConfig } from '../src/infrastructure/providers/config/app-config.token';
+import { environment } from 'src/infrastructure/environments/environment.server';
 
 // Load server runtime configuration
 const isProd = process.env['NODE_ENV'] === 'production';
@@ -36,7 +37,7 @@ if(!serverConfig){
   process.exit(1);
 }
 
-const MONGODB_URI = serverConfig.MONGO_URI;
+const MONGODB_URI = environment.MONGO_URI;
 
 if (!MONGODB_URI) {
   console.error('❌ MONGO_URI is not set in config.json file.');
@@ -290,7 +291,7 @@ function createPage(index: number, siteId: string): Page {
 
 async function seed() {
   try {
-    if(serverConfig.USE_LEVEL_DB){
+    if(environment.USE_LEVEL_DB){
     // Initialize LevelDB and clear cache
       await createLevelDB();
       await resetCache();
@@ -335,7 +336,7 @@ async function seed() {
     console.error('❌ Error seeding:', err);
   } finally {
     await mongoose.disconnect();
-    if(serverConfig.USE_LEVEL_DB){
+    if(environment.USE_LEVEL_DB){
       await closeLevelDB();
     }
     console.log('Disconnected from MongoDB and closed cache');

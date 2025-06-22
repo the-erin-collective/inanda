@@ -1,7 +1,7 @@
 import { FactoryProvider } from '@angular/core';
-import { APP_CONFIG, AppConfig } from '../../providers/config/app-config.token';
 import { MONGO_CONNECTION_FACTORY } from './mongo.factory';
 import mongoose from 'mongoose';
+import { environment } from '../../environments/environment.server';
 
 /**
  * Factory provider for MongoDB connection
@@ -9,7 +9,7 @@ import mongoose from 'mongoose';
  */
 export const mongoConnectionProvider: FactoryProvider = {
   provide: MONGO_CONNECTION_FACTORY,
-  useFactory: (config: AppConfig) => {
+  useFactory: () => {
     // Store connection status
     let connectionStatus: boolean = false;
 
@@ -21,24 +21,24 @@ export const mongoConnectionProvider: FactoryProvider = {
       }
 
       // If MongoDB is not the configured storage type, return false
-      if (config.PERSISTENT_STORAGE !== 'MONGODB') {
+      if (environment.PERSISTENT_STORAGE !== 'MONGODB') {
         console.log('MongoDB connection not needed based on configuration - using FILE storage');
         connectionStatus = false;
         return false;
       }
 
       // Ensure we have a MongoDB URI
-      if (!config.MONGO_URI) {
+      if (!environment.MONGO_URI) {
         console.error('MongoDB URI not provided in configuration');
         connectionStatus = false;
         return false;
       }
 
       try {
-        console.log('Attempting to connect to MongoDB:', config.MONGO_URI);
+        console.log('Attempting to connect to MongoDB:', environment.MONGO_URI);
         
         // Attempt to connect to MongoDB
-        await mongoose.connect(config.MONGO_URI, {
+        await mongoose.connect(environment.MONGO_URI, {
           useNewUrlParser: true,
           useUnifiedTopology: true,
         });
@@ -53,5 +53,5 @@ export const mongoConnectionProvider: FactoryProvider = {
       }
     };
   },
-  deps: [APP_CONFIG]
+  deps: []
 };

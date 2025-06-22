@@ -3,8 +3,7 @@ import { PageRepository } from '../../../domain/repository/page.repository.inter
 import { Page } from '../../../domain/entities/page/page.entity';
 import { CacheData } from '../../../domain/data/cache.interface';
 import { CACHE_PROVIDER } from '../../providers/cache/cache.tokens';
-import * as fs from 'fs/promises';
-import * as path from 'path';
+import { FileFetchService } from '../../services/file-fetch.service';
 import { APP_CONFIG, AppConfig } from '../../providers/config/app-config.token';
 
 @Injectable({
@@ -12,27 +11,34 @@ import { APP_CONFIG, AppConfig } from '../../providers/config/app-config.token';
 })
 export class FilePageRepository implements PageRepository {
   private dataPath: string;
-    constructor(
+  
+  constructor(
     @Inject(CACHE_PROVIDER) private readonly cache: CacheData,
-    @Inject(APP_CONFIG) private readonly config: AppConfig
+    @Inject(APP_CONFIG) private readonly config: AppConfig,
+    private readonly fileFetchService: FileFetchService
   ) {
-    this.dataPath = this.config.DATA_PATH || 'data/repository/sites';
+    // Ensure we're using the proper path format without leading ./ which causes path resolution issues
+    this.dataPath = this.config.DATA_PATH ? 
+      this.config.DATA_PATH.replace(/^\.\//g, '') : 
+      'data/repository/sites';
+    
+    console.log(`FilePageRepository initialized with dataPath: ${this.dataPath}`);
     // Pages will be loaded from the site's directory structure
   }
 
-  async findById(id: string): Promise<Page | null> {
+  async findById(siteId: string, id: string): Promise<Page | null> {
     const cacheKey = `page:${id}`;
     const hasCachedData = await this.cache.exists(cacheKey);
     
     // If we have cached data, use it
     if (hasCachedData) {
       console.log(`Page data for ID ${id} found in cache`);
-      return this.cache.getData(cacheKey, () => this.loadPageFromFile(id));
+      return this.cache.getData(cacheKey, () => this.loadPageFromFile(siteId, id));
     }
     
     // Otherwise load from file and cache it
     console.log(`Loading page data for ID ${id} from file`);
-    const page = await this.loadPageFromFile(id);
+    const page = await this.loadPageFromFile(siteId, id);
     if (page) {
       await this.cache.put(cacheKey, page);
     }
@@ -40,7 +46,7 @@ export class FilePageRepository implements PageRepository {
     return page;
   }
 
-  async findByIds(ids: string[]): Promise<Page[]> {
+  async findByIds(siteId: string, ids: string[]): Promise<Page[]> {
     if (!ids || ids.length === 0) {
       return [];
     }
@@ -51,102 +57,52 @@ export class FilePageRepository implements PageRepository {
     // If we have cached data, use it
     if (hasCachedData) {
       console.log(`Page data for IDs ${ids.join(',')} found in cache`);
-      return this.cache.getData(cacheKey, () => this.loadPagesFromFile(ids));
+      return this.cache.getData(cacheKey, () => this.loadPagesFromFile(siteId, ids));
     }
     
     // Otherwise load from file and cache it
     console.log(`Loading page data for IDs ${ids.join(',')} from file`);
-    const pages = await this.loadPagesFromFile(ids);
+    const pages = await this.loadPagesFromFile(siteId, ids);
     if (pages && pages.length > 0) {
       await this.cache.put(cacheKey, pages);
     }
     
     return pages;
-  }
-  async save(page: Page): Promise<Page> {
-    if (!page.id) {
-      throw new Error('Page ID is required');
-    }
-    
-    const filePath = this.getFilePath(page.id);
-    
-    try {
-      // Ensure directory exists
-      await fs.mkdir(path.dirname(filePath), { recursive: true });
-      
-      // Write page data to file
-      await fs.writeFile(filePath, JSON.stringify(page, null, 2));
-      
-      // Invalidate cache
-      await this.cache.invalidate(`page:${page.id}`);
-      
-      console.log(`Page ${page.id} saved to file: ${filePath}`);
-      return page;
-    } catch (error) {
-      console.error(`Error saving page ${page.id} to file:`, error);
-      throw error;
-    }
+  }  async save(siteId: string, page: Page): Promise<Page> {
+    throw new Error('FilePageRepository.save is not implemented in read-only mode.');
   }
 
   async delete(id: string): Promise<void> {
-    const filePath = this.getFilePath(id);
-    
-    try {
-      await fs.unlink(filePath);
-      
-      // Invalidate cache
-      await this.cache.invalidate(`page:${id}`);
-      
-      console.log(`Page ${id} deleted from file: ${filePath}`);
-    } catch (error) {
-      console.error(`Error deleting page ${id} from file:`, error);
-      throw error;
-    }
-  }
-  // Private helper methods
-  private getFilePath(id: string): string {
-    // We need to extract the site ID, but our page IDs don't contain the site ID
-    // So we need to get the siteId from the page entity or use a default
-    
-    // Check if the page ID contains a site ID prefix (for backward compatibility)
-    if (id.includes('-page-')) {
-      const siteId = id.split('-page-')[0];
-      return path.join(process.cwd(), this.dataPath.replace('pages', ''), siteId, 'pages', `${id}.json`);
-    }
-    
-    // If we don't have a site ID in the page ID, use site-001 as default
-    // Ideally, we should pass the siteId as a parameter, but for now, we use a workaround
-    const siteId = 'site-001'; // Default site ID
-    
-    console.log(`Using default site ID ${siteId} for page ${id}`);
-    return path.join(process.cwd(), this.dataPath.replace('pages', ''), siteId, 'pages', `${id}.json`);
+    throw new Error('FilePageRepository.delete is not implemented in read-only mode.');
   }
 
-  private async loadPageFromFile(id: string): Promise<Page | null> {
-    const filePath = this.getFilePath(id);
-    
+  // Private helper methods
+  private getFilePath(siteId: string, id: string): string {
+    // Build the relative URL for HTTP fetch
+    return `presentation/assets/${this.dataPath}/${siteId}/pages/${id}.json`;
+  }
+
+  private async loadPageFromFile(siteId: string, id: string): Promise<Page | null> {
+    const fileUrl = this.getFilePath(siteId, id);
     try {
-      const fileData = await fs.readFile(filePath, 'utf8');
-      const pageData = JSON.parse(fileData);
-      
+      const pageData = await this.fileFetchService.fetchJson<Page>(fileUrl);
       return pageData as Page;
-    } catch (error) {
+    } catch (error: any) {
       // File not found or invalid JSON
-      if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-        console.log(`Page file not found: ${filePath}`);
+      if (error.status === 404) {
+        console.log(`Page file not found: ${fileUrl}`);
         return null;
       }
-      
-      console.error(`Error loading page from file ${filePath}:`, error);
+      console.error(`Error loading page from file ${fileUrl}:`, error);
       throw error;
     }
   }
 
-  private async loadPagesFromFile(ids: string[]): Promise<Page[]> {
+  private async loadPagesFromFile(siteId: string, ids: string[]): Promise<Page[]> {
     const pages: Page[] = [];
     
     for (const id of ids) {
-      const page = await this.loadPageFromFile(id);
+      const page = await this.loadPageFromFile(siteId, id);
       if (page) {
         pages.push(page);
       }

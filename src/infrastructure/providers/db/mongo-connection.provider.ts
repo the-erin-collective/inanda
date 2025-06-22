@@ -1,6 +1,6 @@
 import { FactoryProvider } from '@angular/core';
 import { MongoConnectionFactory, MONGO_CONNECTION_FACTORY } from '../../data/db/mongo.factory';
-import { APP_CONFIG, AppConfig } from '../config/app-config.token';
+import { environment } from '../../environments/environment.server';
 import mongoose from 'mongoose';
 
 /**
@@ -10,24 +10,24 @@ import mongoose from 'mongoose';
  */
 export const mongoConnectionFactoryProvider: FactoryProvider = {
   provide: MONGO_CONNECTION_FACTORY,
-  useFactory: (config: AppConfig): MongoConnectionFactory => {
+  useFactory: (): MongoConnectionFactory => {
     return async (): Promise<boolean> => {
       // Check if MongoDB is configured
-      if (config.PERSISTENT_STORAGE !== 'MONGODB' || !config.MONGO_URI) {
+      if (environment.PERSISTENT_STORAGE !== 'MONGODB' || !environment.MONGO_URI) {
         console.log('MongoDB connection not required based on configuration');
         return false;
       }
 
       try {
         // Attempt to connect to MongoDB
-        console.log('Attempting to connect to MongoDB:', config.MONGO_URI);
+        console.log('Attempting to connect to MongoDB:', environment.MONGO_URI);
         
         if (mongoose.connection.readyState === 1) {
           console.log('MongoDB already connected');
           return true;
         }
         
-        await mongoose.connect(config.MONGO_URI, {
+        await mongoose.connect(environment.MONGO_URI, {
           useNewUrlParser: true,
           useUnifiedTopology: true,
         });
@@ -40,5 +40,5 @@ export const mongoConnectionFactoryProvider: FactoryProvider = {
       }
     };
   },
-  deps: [APP_CONFIG]
+  deps: []
 };
