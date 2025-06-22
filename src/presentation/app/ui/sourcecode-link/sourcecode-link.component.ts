@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { GITHUB_BANNER_CONFIG, GithubBannerConfig } from '../../../../infrastructure/providers/config/github-banner-config.token';
+import { githubBannerConfigProvider } from '../../../../infrastructure/providers/config/github-banner-config.provider';
 
 @Component({
     selector: 'sourcecode-link',
@@ -9,16 +11,28 @@ import { CommonModule } from '@angular/common';
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         CommonModule
+    ],
+    providers: [
+        githubBannerConfigProvider
     ]
 })
 export class SourcecodeLinkComponent implements OnInit {
+  public showGithubBanner = false;
+  public githubBannerUrl = '';
 
-  public constructor() { 
-    console.debug('UiComponent constructor called');
+  constructor(
+    @Inject(GITHUB_BANNER_CONFIG) private bannerConfig: GithubBannerConfig,
+  ) {
+    console.debug('SourcecodeLinkComponent constructor called', bannerConfig);
   }
 
   public ngOnInit(): void {
-    console.debug('UiComponent ngOnInit called');
+    this.showGithubBanner = !!this.bannerConfig.SHOW_GITHUB_BANNER;
+    this.githubBannerUrl = this.bannerConfig.GITHUB_BANNER_URL || '';
+    console.debug('SourcecodeLinkComponent ngOnInit called', {
+      showGithubBanner: this.showGithubBanner,
+      githubBannerUrl: this.githubBannerUrl
+    });
   }
 
 }

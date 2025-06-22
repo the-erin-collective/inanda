@@ -1,8 +1,9 @@
 {
+  "production": false,
   "DATA_PATH": "data/repository/sites",
   "USE_LEVEL_DB": false,
   "PERSISTENT_STORAGE": "FILE",
-  "SHOW_GITHUB_BANNER": true,
+  "SHOW_GITHUB_BANNER": false,
   "GITHUB_BANNER_URL": "https://github.com/the-erin-collective/web-home",
   "MONGO_URI": "mongodb://localhost:27017/webhomedb"
 }
