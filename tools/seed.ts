@@ -14,14 +14,14 @@ import { H1Node } from '../src/domain/entities/page/content/items/text/h1.entity
 import { PNode } from '../src/domain/entities/page/content/items/text/p.entity';
 import { PreviewNode } from '../src/domain/entities/page/containers/preview.entity';
 import { Stylesheet } from '../src/domain/entities/style/stylesheet.entity';
-import { Style } from '../src/domain/entities/style/style.entity';
 import { StylesheetNode } from '../src/domain/entities/page/content/items/stylesheet.entity';
 import { SitemapType } from '../src/domain/entities/site/sitemap-type.enum';
+import { AppConfig } from '../src/infrastructure/providers/config/app-config.token';
 
 // Load server runtime configuration
 const isProd = process.env['NODE_ENV'] === 'production';
 const cfgFile = isProd ? 'config.prod.json' : 'config.dev.json';
-let serverConfig: any = {};
+let serverConfig: AppConfig;
 try {
   serverConfig = JSON.parse(
     fs.readFileSync(path.join(process.cwd(), cfgFile), 'utf-8')
@@ -31,10 +31,15 @@ try {
   console.error(`Failed to load server config (${cfgFile}):`, err);
 }
 
+if(!serverConfig){
+  console.error('❌ Unable to read config.json file.');
+  process.exit(1);
+}
+
 const MONGODB_URI = serverConfig.MONGO_URI;
 
 if (!MONGODB_URI) {
-  console.error('❌ MONGO_URI is not set in .env file.');
+  console.error('❌ MONGO_URI is not set in config.json file.');
   process.exit(1);
 }
 
@@ -56,20 +61,8 @@ const pageSchema = new mongoose.Schema({
   root: mongoose.Schema.Types.Mixed,
 });
 
-const stylesheetSchema = new mongoose.Schema({
-  _id: String,
-  name: String,
-  styles: [{
-    _id: String,
-    name: String,
-    properties: mongoose.Schema.Types.Mixed
-  }],
-  importedStylesheetIds: [String]
-});
-
 const SiteModel = mongoose.model('Site', siteSchema);
 const PageModel = mongoose.model('Page', pageSchema);
-const StylesheetModel = mongoose.model('Stylesheet', stylesheetSchema);
 
 // 2. Generate seed data
 function getPageContent(index: number) {
@@ -297,10 +290,12 @@ function createPage(index: number, siteId: string): Page {
 
 async function seed() {
   try {
+    if(serverConfig.USE_LEVEL_DB){
     // Initialize LevelDB and clear cache
-    await createLevelDB();
-    await resetCache();
-    console.log('Cache cleared successfully');
+      await createLevelDB();
+      await resetCache();
+      console.log('Cache cleared successfully');
+    }
 
     await mongoose.connect(MONGODB_URI);
     console.log('Connected to MongoDB');
@@ -308,7 +303,6 @@ async function seed() {
     // Clear database
     await SiteModel.deleteMany({});
     await PageModel.deleteMany({});
-    await StylesheetModel.deleteMany({});
 
     const siteId = 'site-001';    const site = new Site(
       siteId,
@@ -320,12 +314,8 @@ async function seed() {
       'PAINT'
     );
     const pages: Page[] = [];
-    const stylesheets: Stylesheet[] = [];
-
+    
     for (let i = 1; i <= 7; i++) {
-      const stylesheet = createStylesheet(i);
-      stylesheets.push(stylesheet);
-      
       const page = createPage(i, siteId);
       pages.push(page);
       site.pageOrder.push(page.id);
@@ -335,27 +325,19 @@ async function seed() {
     await SiteModel.create(site.toJSON());
     console.log('✅ Site created');
 
-    // Save stylesheets
-    const stylesheetDocs = stylesheets.map(s => ({
-      _id: s._id,
-      name: s.name,
-      styles: s.styles,
-      importedStylesheetIds: s.importedStylesheetIds
-    }));
-    await StylesheetModel.insertMany(stylesheetDocs);
-    console.log('✅ Stylesheets created');
-
     // Save pages
     const pageDocs = pages.map(p => p.toJSON());
     await PageModel.insertMany(pageDocs);
     console.log('✅ Pages created');
 
-    console.log('✅ Seeded site, 7 pages, and 7 stylesheets.');
+    console.log('✅ Seeded site and 7 pages.');
   } catch (err) {
     console.error('❌ Error seeding:', err);
   } finally {
     await mongoose.disconnect();
-    await closeLevelDB();
+    if(serverConfig.USE_LEVEL_DB){
+      await closeLevelDB();
+    }
     console.log('Disconnected from MongoDB and closed cache');
   }
 }
