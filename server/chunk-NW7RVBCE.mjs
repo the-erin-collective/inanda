@@ -1,2 +1,0 @@
-import './polyfills.server.mjs';
-var s=(()=>{class e{static GetShadersRepository(r=0){return r===0?e.ShadersRepository:e.ShadersRepositoryWGSL}static GetShadersStore(r=0){return r===0?e.ShadersStore:e.ShadersStoreWGSL}static GetIncludesShadersStore(r=0){return r===0?e.IncludesShadersStore:e.IncludesShadersStoreWGSL}}return e.ShadersRepository="src/Shaders/",e.ShadersStore={},e.IncludesShadersStore={},e.ShadersRepositoryWGSL="src/ShadersWGSL/",e.ShadersStoreWGSL={},e.IncludesShadersStoreWGSL={},e})();export{s as a};

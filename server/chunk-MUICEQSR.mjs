@@ -1,2 +1,0 @@
-import './polyfills.server.mjs';
-import{a as o}from"./chunk-BDB5PJ6I.mjs";import{d as i}from"./chunk-KTHBQP3E.mjs";import{a as e}from"./chunk-JBXNSZOT.mjs";var t=class extends o{constructor(a){super(a),this.animationToPause=this.registerDataInput("animationToPause",i)}_execute(a){this.animationToPause.getValue(a).pause(),this.out._activateSignal(a)}getClassName(){return"FlowGraphPauseAnimationBlock"}};e("FlowGraphPauseAnimationBlock",t);export{t as a};

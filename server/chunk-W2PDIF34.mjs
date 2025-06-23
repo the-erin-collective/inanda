@@ -1,2 +1,0 @@
-import './polyfills.server.mjs';
-import{a}from"./chunk-DR4QBYGL.mjs";var r=class extends a{constructor(t,s,e,i,o,h){super(e,h),this._operation=i,this._className=o,this.a=this.registerDataInput("a",t),this.b=this.registerDataInput("b",s)}_doOperation(t){let s=this.a.getValue(t),e=this.b.getValue(t);return this._operation(s,e)}getClassName(){return this._className}};export{r as a};
