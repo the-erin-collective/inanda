@@ -8,2228 +8,2228 @@ export default {
   entryPointToBrowserMapping: {
   "node_modules/@babylonjs/core/Shaders/rsmGlobalIllumination.fragment.js": [
     {
-      "path": "chunk-UTTQ62XB.js",
+      "path": "chunk-3MHUXXNK.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/rsmFullGlobalIllumination.fragment.js": [
     {
-      "path": "chunk-DXVOEMJ2.js",
+      "path": "chunk-4ZVKGRNW.js",
       "dynamicImport": false
     }
   ],
   "node_modules/xhr2/lib/browser.js": [
     {
-      "path": "chunk-KYPMZ3JD.js",
+      "path": "chunk-4DWC2G7R.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/fluidRenderingParticleDiffuse.fragment.js": [
     {
-      "path": "chunk-JJOHDGZ3.js",
+      "path": "chunk-LUXD6KGB.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/fluidRenderingParticleDiffuse.fragment.js": [
     {
-      "path": "chunk-2NZ5VGFE.js",
+      "path": "chunk-TGH3JTHN.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/bilateralBlur.fragment.js": [
     {
-      "path": "chunk-VFMSTTR5.js",
+      "path": "chunk-PFJ44NNR.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/bilateralBlurQuality.fragment.js": [
     {
-      "path": "chunk-4CHD4CV5.js",
+      "path": "chunk-XWCEY4XY.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/rsmGlobalIllumination.fragment.js": [
     {
-      "path": "chunk-M4X7PL7B.js",
+      "path": "chunk-XLLGD4WI.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/rsmFullGlobalIllumination.fragment.js": [
     {
-      "path": "chunk-FV3J3D2A.js",
+      "path": "chunk-WH3MNAFD.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/bilateralBlur.fragment.js": [
     {
-      "path": "chunk-EW22KTKC.js",
+      "path": "chunk-XKWXWI6B.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/bilateralBlurQuality.fragment.js": [
     {
-      "path": "chunk-GNE46DJ6.js",
+      "path": "chunk-X3N3QVXT.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/fluidRenderingParticleThickness.vertex.js": [
     {
-      "path": "chunk-QSEUJ3UX.js",
+      "path": "chunk-WDTCOIWO.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/fluidRenderingParticleThickness.fragment.js": [
     {
-      "path": "chunk-LMY4VDY2.js",
+      "path": "chunk-VTNJ7JQU.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/fluidRenderingStandardBlur.fragment.js": [
     {
-      "path": "chunk-Q7SM3KSL.js",
+      "path": "chunk-WABRKH3W.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/fluidRenderingStandardBlur.fragment.js": [
     {
-      "path": "chunk-5PCE2BA5.js",
+      "path": "chunk-EFHQ77T3.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/fluidRenderingBilateralBlur.fragment.js": [
     {
-      "path": "chunk-VOENDAEI.js",
+      "path": "chunk-QVTO3NDO.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/fluidRenderingBilateralBlur.fragment.js": [
     {
-      "path": "chunk-WGLYIT3B.js",
+      "path": "chunk-U7ZKUKCX.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/fluidRenderingRender.fragment.js": [
     {
-      "path": "chunk-MLFYW73W.js",
+      "path": "chunk-DDKZYKD2.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/fluidRenderingRender.fragment.js": [
     {
-      "path": "chunk-JUESPBY6.js",
+      "path": "chunk-FTFV7XNH.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/outline.fragment.js": [
     {
-      "path": "chunk-ZUNX665T.js",
+      "path": "chunk-732HPKEQ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/outline.vertex.js": [
     {
-      "path": "chunk-6UWUYFBA.js",
+      "path": "chunk-L6DJOPX5.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/fluidRenderingParticleDepth.vertex.js": [
     {
-      "path": "chunk-LXMO4SOP.js",
+      "path": "chunk-73CWC4QV.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/fluidRenderingParticleDepth.fragment.js": [
     {
-      "path": "chunk-BO7PDSXW.js",
+      "path": "chunk-YICVB7EH.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/fluidRenderingParticleDepth.vertex.js": [
     {
-      "path": "chunk-VXDUD3PB.js",
+      "path": "chunk-6AKLRLKK.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/fluidRenderingParticleDepth.fragment.js": [
     {
-      "path": "chunk-57RTIB76.js",
+      "path": "chunk-GUKKWITS.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/fluidRenderingParticleThickness.vertex.js": [
     {
-      "path": "chunk-PAGF27HS.js",
+      "path": "chunk-YPEOK3XI.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/fluidRenderingParticleThickness.fragment.js": [
     {
-      "path": "chunk-7UWBES3U.js",
+      "path": "chunk-X6MRXJHO.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/iblShadowSpatialBlur.fragment.js": [
     {
-      "path": "chunk-3RDWRROI.js",
+      "path": "chunk-SFBBMK5L.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/iblShadowSpatialBlur.fragment.js": [
     {
-      "path": "chunk-VDLRYHL3.js",
+      "path": "chunk-PD7ZV6NR.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/iblShadowAccumulation.fragment.js": [
     {
-      "path": "chunk-QIIEZTBY.js",
+      "path": "chunk-PLBXXA57.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/iblShadowAccumulation.fragment.js": [
     {
-      "path": "chunk-2MAHQINX.js",
+      "path": "chunk-TPD2WTE7.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/iblShadowGBufferDebug.fragment.js": [
     {
-      "path": "chunk-77VX2VRR.js",
+      "path": "chunk-X32YDUNZ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/iblShadowGBufferDebug.fragment.js": [
     {
-      "path": "chunk-SMU4IOAM.js",
+      "path": "chunk-BYCJCPFU.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/outline.fragment.js": [
     {
-      "path": "chunk-2JFVS2IT.js",
+      "path": "chunk-WKLG6IKU.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/outline.vertex.js": [
     {
-      "path": "chunk-U7XPKZEF.js",
+      "path": "chunk-ZKPIK3BC.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/iblVoxelSlabDebug.fragment.js": [
     {
-      "path": "chunk-NNVQYEPL.js",
+      "path": "chunk-JQMPFAZM.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/iblVoxelSlabDebug.vertex.js": [
     {
-      "path": "chunk-K74S53QO.js",
+      "path": "chunk-AQ3XGGOX.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/iblVoxelSlabDebug.fragment.js": [
     {
-      "path": "chunk-6ZJOPZJQ.js",
+      "path": "chunk-L6VYX2ZD.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/iblVoxelSlabDebug.vertex.js": [
     {
-      "path": "chunk-HFL3QXY3.js",
+      "path": "chunk-MG6JLWFP.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/iblShadowDebug.fragment.js": [
     {
-      "path": "chunk-2FOKTV64.js",
+      "path": "chunk-IR7ENKHY.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/iblShadowDebug.fragment.js": [
     {
-      "path": "chunk-FSP5SLTW.js",
+      "path": "chunk-YRDVHRRQ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/iblShadowVoxelTracing.fragment.js": [
     {
-      "path": "chunk-UCCBCRA2.js",
+      "path": "chunk-3EA7BIDO.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/iblShadowVoxelTracing.fragment.js": [
     {
-      "path": "chunk-PVUTS333.js",
+      "path": "chunk-4TJ3PQ2R.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/iblCombineVoxelGrids.fragment.js": [
     {
-      "path": "chunk-RQWIDW7M.js",
+      "path": "chunk-VIVHXBN4.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/iblCombineVoxelGrids.fragment.js": [
     {
-      "path": "chunk-MFRTLWKW.js",
+      "path": "chunk-C2PH5QL6.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/iblGenerateVoxelMip.fragment.js": [
     {
-      "path": "chunk-5II4CUUO.js",
+      "path": "chunk-T2VQ3MMZ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/iblGenerateVoxelMip.fragment.js": [
     {
-      "path": "chunk-PC4E2UXW.js",
+      "path": "chunk-57AZ6RBX.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/iblVoxelGrid.fragment.js": [
     {
-      "path": "chunk-LAGESHJW.js",
+      "path": "chunk-4A7PHJOX.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/iblVoxelGrid.vertex.js": [
     {
-      "path": "chunk-LENHRAL4.js",
+      "path": "chunk-FVZMDZTY.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/iblVoxelGrid.fragment.js": [
     {
-      "path": "chunk-BLHKOWT4.js",
+      "path": "chunk-Z6AL3RJL.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/iblVoxelGrid.vertex.js": [
     {
-      "path": "chunk-TUGIHK5W.js",
+      "path": "chunk-W4CTECH5.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/line.vertex.js": [
     {
-      "path": "chunk-MHHA4JMP.js",
+      "path": "chunk-ON6YBVA4.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/line.fragment.js": [
     {
-      "path": "chunk-OGVUSDXD.js",
+      "path": "chunk-GMH36FZX.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/iblVoxelGrid3dDebug.fragment.js": [
     {
-      "path": "chunk-WRI24BA2.js",
+      "path": "chunk-WF4LPIB5.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/iblVoxelGrid3dDebug.fragment.js": [
     {
-      "path": "chunk-2R27DW2U.js",
+      "path": "chunk-OPBBG5CG.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/iblVoxelGrid2dArrayDebug.fragment.js": [
     {
-      "path": "chunk-IODY25FX.js",
+      "path": "chunk-2ISZ4K6Z.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/iblVoxelGrid2dArrayDebug.fragment.js": [
     {
-      "path": "chunk-AXGWJEEL.js",
+      "path": "chunk-DNE6XXNK.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/copyTexture3DLayerToTexture.fragment.js": [
     {
-      "path": "chunk-JFLL4JYW.js",
+      "path": "chunk-WHZNVZQM.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/copyTexture3DLayerToTexture.fragment.js": [
     {
-      "path": "chunk-2523DEHY.js",
+      "path": "chunk-P7UMDMRK.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/boundingBoxRenderer.vertex.js": [
     {
-      "path": "chunk-3O4IQNZM.js",
+      "path": "chunk-2QCRBA4K.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/boundingBoxRenderer.fragment.js": [
     {
-      "path": "chunk-RZNUHFYT.js",
+      "path": "chunk-7OCJAP6L.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/oitBackBlend.fragment.js": [
     {
-      "path": "chunk-DE3FXXWV.js",
+      "path": "chunk-RZ7PIKXO.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/oitBackBlend.fragment.js": [
     {
-      "path": "chunk-HXZGSOMZ.js",
+      "path": "chunk-RWT5N5OY.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/oitFinal.fragment.js": [
     {
-      "path": "chunk-GCI3WPZB.js",
+      "path": "chunk-A2XYCIPH.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/oitFinal.fragment.js": [
     {
-      "path": "chunk-JI6SXVR2.js",
+      "path": "chunk-PLCPTQ23.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/line.vertex.js": [
     {
-      "path": "chunk-J62CHLA5.js",
+      "path": "chunk-P4CZCQRG.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/line.fragment.js": [
     {
-      "path": "chunk-U4Y6AVSL.js",
+      "path": "chunk-GMM6RXQD.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ssao2.fragment.js": [
     {
-      "path": "chunk-PAIM7KLL.js",
+      "path": "chunk-ZO2IS6FU.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ssao2.fragment.js": [
     {
-      "path": "chunk-35PGCZKO.js",
+      "path": "chunk-C3MZCM2U.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ssaoCombine.fragment.js": [
     {
-      "path": "chunk-LGJCY4Y5.js",
+      "path": "chunk-53UO57H6.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ssaoCombine.fragment.js": [
     {
-      "path": "chunk-QXHXBTM3.js",
+      "path": "chunk-N5A5U4JN.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/tonemap.fragment.js": [
     {
-      "path": "chunk-RSQM2OG6.js",
+      "path": "chunk-XQUC2KA7.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/tonemap.fragment.js": [
     {
-      "path": "chunk-ON6JPKLD.js",
+      "path": "chunk-CEOD3TUE.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/boundingBoxRenderer.vertex.js": [
     {
-      "path": "chunk-YQ25EUWA.js",
+      "path": "chunk-XWNCYDQ2.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/boundingBoxRenderer.fragment.js": [
     {
-      "path": "chunk-I4T6SVIF.js",
+      "path": "chunk-Z44Y5UGI.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/highlights.fragment.js": [
     {
-      "path": "chunk-POXHQILF.js",
+      "path": "chunk-NH3MLAM7.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/highlights.fragment.js": [
     {
-      "path": "chunk-V2E4AO5S.js",
+      "path": "chunk-FSIIKOU4.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/geometry.fragment.js": [
     {
-      "path": "chunk-UUXAOOGX.js",
+      "path": "chunk-4VR5LAAT.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/geometry.vertex.js": [
     {
-      "path": "chunk-U7OKQNVK.js",
+      "path": "chunk-LTUHNTEI.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/geometry.vertex.js": [
     {
-      "path": "chunk-GTE2XBIA.js",
+      "path": "chunk-62DOIRL5.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/geometry.fragment.js": [
     {
-      "path": "chunk-YIU5ZQGV.js",
+      "path": "chunk-NABRI75G.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/sharpen.fragment.js": [
     {
-      "path": "chunk-OBMTEOO5.js",
+      "path": "chunk-2K2XA3RV.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/sharpen.fragment.js": [
     {
-      "path": "chunk-UU6SI6JB.js",
+      "path": "chunk-KEEVMVJG.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/colorCorrection.fragment.js": [
     {
-      "path": "chunk-V4CFEC4M.js",
+      "path": "chunk-WH7M64TY.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/colorCorrection.fragment.js": [
     {
-      "path": "chunk-XVIDXLH6.js",
+      "path": "chunk-TPYYLNGU.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/convolution.fragment.js": [
     {
-      "path": "chunk-PIL377J7.js",
+      "path": "chunk-JTZ5T2QB.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/convolution.fragment.js": [
     {
-      "path": "chunk-UXJNSTD5.js",
+      "path": "chunk-RYQ7LYQE.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/displayPass.fragment.js": [
     {
-      "path": "chunk-PWWWKP4C.js",
+      "path": "chunk-YOCRDJNX.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/displayPass.fragment.js": [
     {
-      "path": "chunk-QCO3BQLY.js",
+      "path": "chunk-G57BNJBW.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/filter.fragment.js": [
     {
-      "path": "chunk-NFHM7PNX.js",
+      "path": "chunk-NPUXJK6L.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/filter.fragment.js": [
     {
-      "path": "chunk-4JLW2TZR.js",
+      "path": "chunk-R6U7OHKO.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/meshUVSpaceRendererMasker.vertex.js": [
     {
-      "path": "chunk-VB4MFXQA.js",
+      "path": "chunk-ECVLYRUU.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/meshUVSpaceRendererMasker.fragment.js": [
     {
-      "path": "chunk-JU4PYCLL.js",
+      "path": "chunk-KONDVDAV.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/meshUVSpaceRendererFinaliser.vertex.js": [
     {
-      "path": "chunk-GB4DSXE7.js",
+      "path": "chunk-4KLDH6HK.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/meshUVSpaceRendererFinaliser.fragment.js": [
     {
-      "path": "chunk-IERUYAXH.js",
+      "path": "chunk-3WM45BC4.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/particles.vertex.js": [
     {
-      "path": "chunk-EBJMCLRZ.js",
+      "path": "chunk-YBKL55DM.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/particles.fragment.js": [
     {
-      "path": "chunk-25JZXAKF.js",
+      "path": "chunk-WKMXYR2I.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/particles.vertex.js": [
     {
-      "path": "chunk-HH5VMZ3Z.js",
+      "path": "chunk-YRTZUJ36.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/particles.fragment.js": [
     {
-      "path": "chunk-W5ED5VJR.js",
+      "path": "chunk-KMWWRTWT.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/meshUVSpaceRenderer.vertex.js": [
     {
-      "path": "chunk-SKQFHHGR.js",
+      "path": "chunk-IMCJZQQY.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/meshUVSpaceRenderer.fragment.js": [
     {
-      "path": "chunk-OPEYFAXI.js",
+      "path": "chunk-2AGMH7TJ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/meshUVSpaceRendererMasker.vertex.js": [
     {
-      "path": "chunk-XL3Z7LKW.js",
+      "path": "chunk-7GUL5NZF.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/meshUVSpaceRendererMasker.fragment.js": [
     {
-      "path": "chunk-XF5XBII7.js",
+      "path": "chunk-TCOJMEHW.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/meshUVSpaceRendererFinaliser.vertex.js": [
     {
-      "path": "chunk-NDXJXGWD.js",
+      "path": "chunk-WVSKTENK.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/meshUVSpaceRendererFinaliser.fragment.js": [
     {
-      "path": "chunk-CA6X2XKA.js",
+      "path": "chunk-AZTGC4RH.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/meshUVSpaceRenderer.vertex.js": [
     {
-      "path": "chunk-FSNPJKKV.js",
+      "path": "chunk-65VCRZ76.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/meshUVSpaceRenderer.fragment.js": [
     {
-      "path": "chunk-AEPQFG7K.js",
+      "path": "chunk-DU6IZIZR.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/gaussianSplatting.fragment.js": [
     {
-      "path": "chunk-QQ5MJVCF.js",
+      "path": "chunk-7BA7SHKJ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/gaussianSplatting.vertex.js": [
     {
-      "path": "chunk-VWAWEG26.js",
+      "path": "chunk-TA3FKAGM.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/gaussianSplatting.fragment.js": [
     {
-      "path": "chunk-L32VF5NZ.js",
+      "path": "chunk-NATQ3UGX.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/gaussianSplatting.vertex.js": [
     {
-      "path": "chunk-CRIUAAD4.js",
+      "path": "chunk-XORWYIQD.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/greasedLine.vertex.js": [
     {
-      "path": "chunk-SLNNEL3A.js",
+      "path": "chunk-4GXGBERM.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/greasedLine.fragment.js": [
     {
-      "path": "chunk-54CHE5QC.js",
+      "path": "chunk-B6S3LHLE.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/greasedLine.vertex.js": [
     {
-      "path": "chunk-YBZ4GVHW.js",
+      "path": "chunk-FGY5GR3T.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/greasedLine.fragment.js": [
     {
-      "path": "chunk-L3TOL4PA.js",
+      "path": "chunk-45TWOWLY.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/hdrIrradianceFiltering.vertex.js": [
     {
-      "path": "chunk-NSHU2T3J.js",
+      "path": "chunk-7EMN4WHL.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/hdrIrradianceFiltering.fragment.js": [
     {
-      "path": "chunk-7VIYHCLB.js",
+      "path": "chunk-AWD3PF7Z.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/hdrIrradianceFiltering.vertex.js": [
     {
-      "path": "chunk-UL5OHYBT.js",
+      "path": "chunk-ECT2JO6W.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/hdrIrradianceFiltering.fragment.js": [
     {
-      "path": "chunk-4NJLUY5I.js",
+      "path": "chunk-ETYOBMIL.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/sprites.vertex.js": [
     {
-      "path": "chunk-VINQC7OS.js",
+      "path": "chunk-OG5Z5ERN.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/sprites.fragment.js": [
     {
-      "path": "chunk-UQFOUNNX.js",
+      "path": "chunk-GYLN3QUC.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/sprites.vertex.js": [
     {
-      "path": "chunk-MT5K2IZX.js",
+      "path": "chunk-P6T4NJ55.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/sprites.fragment.js": [
     {
-      "path": "chunk-CYGPYUZ5.js",
+      "path": "chunk-JZH5XHWD.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/iblCdfy.fragment.js": [
     {
-      "path": "chunk-B2V3OVTW.js",
+      "path": "chunk-EBIA3SRK.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/iblScaledLuminance.fragment.js": [
     {
-      "path": "chunk-7C6PVNVA.js",
+      "path": "chunk-QZWY64XZ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/iblIcdf.fragment.js": [
     {
-      "path": "chunk-74II66CR.js",
+      "path": "chunk-L3T5Y5Q2.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/iblDominantDirection.fragment.js": [
     {
-      "path": "chunk-OGBPLOON.js",
+      "path": "chunk-EUPDEWN7.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/iblIcdf.fragment.js": [
     {
-      "path": "chunk-C4H7ZOJK.js",
+      "path": "chunk-W5PCNWBU.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/iblDominantDirection.fragment.js": [
     {
-      "path": "chunk-RQG5YDL5.js",
+      "path": "chunk-CBBBK3OT.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/iblCdfDebug.fragment.js": [
     {
-      "path": "chunk-CZ7W33TZ.js",
+      "path": "chunk-B6K3PGBV.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/iblCdfDebug.fragment.js": [
     {
-      "path": "chunk-JM4DIY46.js",
+      "path": "chunk-SRB6AGF2.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/hdrFiltering.vertex.js": [
     {
-      "path": "chunk-2LBFV7PG.js",
+      "path": "chunk-V6NGZWN7.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/hdrFiltering.fragment.js": [
     {
-      "path": "chunk-XC2GUNEJ.js",
+      "path": "chunk-UOH4WBWO.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/hdrFiltering.vertex.js": [
     {
-      "path": "chunk-2FBOV4WU.js",
+      "path": "chunk-PNQTTSSI.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/hdrFiltering.fragment.js": [
     {
-      "path": "chunk-XKW7KRDF.js",
+      "path": "chunk-Z4EINMUL.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/iblCdfx.fragment.js": [
     {
-      "path": "chunk-2QP4XJ53.js",
+      "path": "chunk-352YOOTM.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/iblCdfy.fragment.js": [
     {
-      "path": "chunk-GMT23FIW.js",
+      "path": "chunk-47T6MQM2.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/iblScaledLuminance.fragment.js": [
     {
-      "path": "chunk-SSBT3YZK.js",
+      "path": "chunk-533T6AL6.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/iblCdfx.fragment.js": [
     {
-      "path": "chunk-EPFSMHUU.js",
+      "path": "chunk-CVMODMGR.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/layer.vertex.js": [
     {
-      "path": "chunk-HATQERAP.js",
+      "path": "chunk-5YYCVJ34.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/layer.fragment.js": [
     {
-      "path": "chunk-CG5O47KF.js",
+      "path": "chunk-2WAULE63.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/layer.vertex.js": [
     {
-      "path": "chunk-N4SKHNHJ.js",
+      "path": "chunk-ICM26GZU.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/layer.fragment.js": [
     {
-      "path": "chunk-36NHOJQ2.js",
+      "path": "chunk-T7EFLYUP.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/lensFlare.fragment.js": [
     {
-      "path": "chunk-DDUSO4NB.js",
+      "path": "chunk-7MHQWXXL.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/lensFlare.vertex.js": [
     {
-      "path": "chunk-JLYXYVOC.js",
+      "path": "chunk-KEVWDEBU.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/lensFlare.fragment.js": [
     {
-      "path": "chunk-Z4KHUFRN.js",
+      "path": "chunk-LR72SSER.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/lensFlare.vertex.js": [
     {
-      "path": "chunk-SQREY5UP.js",
+      "path": "chunk-25OZJVXE.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/background.vertex.js": [
     {
-      "path": "chunk-24WTBD6H.js",
+      "path": "chunk-QHHDBQVX.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/background.fragment.js": [
     {
-      "path": "chunk-HZAX3DR2.js",
+      "path": "chunk-U53YN7XG.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/pbr.vertex.js": [
     {
-      "path": "chunk-TXIFENOX.js",
+      "path": "chunk-BJQRQA6M.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/pbr.fragment.js": [
     {
-      "path": "chunk-NPTXSZMU.js",
+      "path": "chunk-PCT44FSK.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/pbr.vertex.js": [
     {
-      "path": "chunk-25PC4YSR.js",
+      "path": "chunk-T72JSMTI.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/pbr.fragment.js": [
     {
-      "path": "chunk-Q62IGNTA.js",
+      "path": "chunk-GKBPF76G.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/procedural.vertex.js": [
     {
-      "path": "chunk-ENSCUPT7.js",
+      "path": "chunk-A5JI74TN.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/procedural.vertex.js": [
     {
-      "path": "chunk-NYHMTIN6.js",
+      "path": "chunk-K56PTAZC.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/screenSpaceReflection2Blur.fragment.js": [
     {
-      "path": "chunk-NHLVD4UO.js",
+      "path": "chunk-HROXFXVD.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/screenSpaceReflection2Blur.fragment.js": [
     {
-      "path": "chunk-MKMV34MB.js",
+      "path": "chunk-SF7GM7DL.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/screenSpaceReflection2BlurCombiner.fragment.js": [
     {
-      "path": "chunk-4Z7TWLKP.js",
+      "path": "chunk-CXSUSWKI.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/screenSpaceReflection2BlurCombiner.fragment.js": [
     {
-      "path": "chunk-VZMVAOHQ.js",
+      "path": "chunk-5ZD23Y5Y.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/taa.fragment.js": [
     {
-      "path": "chunk-2KQBSC7V.js",
+      "path": "chunk-SLBS24JZ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/taa.fragment.js": [
     {
-      "path": "chunk-5JAH555V.js",
+      "path": "chunk-ALDBAHI6.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/background.vertex.js": [
     {
-      "path": "chunk-LSRK6H6S.js",
+      "path": "chunk-53W5FPC2.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/background.fragment.js": [
     {
-      "path": "chunk-F6VUF37C.js",
+      "path": "chunk-BWSHINYK.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/grain.fragment.js": [
     {
-      "path": "chunk-5BAS55RI.js",
+      "path": "chunk-RG4UUZ6K.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/grain.fragment.js": [
     {
-      "path": "chunk-OALLHV2Z.js",
+      "path": "chunk-7CMCPGWR.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/imageProcessing.fragment.js": [
     {
-      "path": "chunk-ODFXCTLV.js",
+      "path": "chunk-ASEHBIFL.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/imageProcessing.fragment.js": [
     {
-      "path": "chunk-HXDHI5OX.js",
+      "path": "chunk-WUYCPIYS.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/motionBlur.fragment.js": [
     {
-      "path": "chunk-ZKHYX7BQ.js",
+      "path": "chunk-ZFDY6V5G.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/motionBlur.fragment.js": [
     {
-      "path": "chunk-7LPYZHR7.js",
+      "path": "chunk-HOKE5SC5.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/screenSpaceReflection2.fragment.js": [
     {
-      "path": "chunk-A5XLE4MT.js",
+      "path": "chunk-EINRAZCR.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/screenSpaceReflection2.fragment.js": [
     {
-      "path": "chunk-TGEBREEG.js",
+      "path": "chunk-SABEBCYO.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/circleOfConfusion.fragment.js": [
     {
-      "path": "chunk-E3L5K2B3.js",
+      "path": "chunk-P3TYP5KC.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/circleOfConfusion.fragment.js": [
     {
-      "path": "chunk-EVOZK5EK.js",
+      "path": "chunk-65LENT2W.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/depthOfFieldMerge.fragment.js": [
     {
-      "path": "chunk-HZXDDQNQ.js",
+      "path": "chunk-CPEXPRXY.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/depthOfFieldMerge.fragment.js": [
     {
-      "path": "chunk-DWQZPYMX.js",
+      "path": "chunk-S3NRDOW7.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/fxaa.fragment.js": [
     {
-      "path": "chunk-X5WW4ZSM.js",
+      "path": "chunk-6DWAYDRG.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/fxaa.vertex.js": [
     {
-      "path": "chunk-QDZUBR34.js",
+      "path": "chunk-3NHS3IHT.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/fxaa.fragment.js": [
     {
-      "path": "chunk-HWBSO5KN.js",
+      "path": "chunk-2I2QOOW5.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/fxaa.vertex.js": [
     {
-      "path": "chunk-EE22MOHW.js",
+      "path": "chunk-PGXXZ4R6.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/blackAndWhite.fragment.js": [
     {
-      "path": "chunk-FXKF5RWC.js",
+      "path": "chunk-DYXMHKS5.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/blackAndWhite.fragment.js": [
     {
-      "path": "chunk-3N6REX5F.js",
+      "path": "chunk-52SVNAQY.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/bloomMerge.fragment.js": [
     {
-      "path": "chunk-Z5XHIG7E.js",
+      "path": "chunk-VWKOUZCZ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/bloomMerge.fragment.js": [
     {
-      "path": "chunk-TTA742FY.js",
+      "path": "chunk-25MU3XZP.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/extractHighlights.fragment.js": [
     {
-      "path": "chunk-XGAJAAX3.js",
+      "path": "chunk-A5DQK2Q2.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/extractHighlights.fragment.js": [
     {
-      "path": "chunk-IFCSPBDP.js",
+      "path": "chunk-WHQ6RKBZ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/chromaticAberration.fragment.js": [
     {
-      "path": "chunk-IBARPUXD.js",
+      "path": "chunk-ZRD6AFEU.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/chromaticAberration.fragment.js": [
     {
-      "path": "chunk-WT7DRYO5.js",
+      "path": "chunk-XAD5TZBU.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/glowMapGeneration.vertex.js": [
     {
-      "path": "chunk-FS4NDFOW.js",
+      "path": "chunk-7GAMFIT3.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/glowMapGeneration.fragment.js": [
     {
-      "path": "chunk-SKXI2AHD.js",
+      "path": "chunk-AO4TJ6RI.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/glowMapGeneration.vertex.js": [
     {
-      "path": "chunk-ATHGIDQK.js",
+      "path": "chunk-4BOVSNQY.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/glowMapGeneration.fragment.js": [
     {
-      "path": "chunk-534OIA5Y.js",
+      "path": "chunk-QZFYM6OP.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/glowMapMerge.fragment.js": [
     {
-      "path": "chunk-IW5E2JMM.js",
+      "path": "chunk-YFYKCSYK.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/glowMapMerge.vertex.js": [
     {
-      "path": "chunk-SJTBZJ4C.js",
+      "path": "chunk-X7VPFK7Z.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/glowMapMerge.fragment.js": [
     {
-      "path": "chunk-R7TXIV5P.js",
+      "path": "chunk-B33Q5SK3.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/glowMapMerge.vertex.js": [
     {
-      "path": "chunk-DP7K5JRX.js",
+      "path": "chunk-YTDS5KH5.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/depth.fragment.js": [
     {
-      "path": "chunk-XB2IST7K.js",
+      "path": "chunk-CLMDOQVZ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/depth.vertex.js": [
     {
-      "path": "chunk-CAQDJB5Q.js",
+      "path": "chunk-ABMFCGGW.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/depth.vertex.js": [
     {
-      "path": "chunk-YUFXNG6T.js",
+      "path": "chunk-3JATURXT.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/depth.fragment.js": [
     {
-      "path": "chunk-62JFXWS5.js",
+      "path": "chunk-K5MVNTRK.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/minmaxRedux.fragment.js": [
     {
-      "path": "chunk-TRIPUYH4.js",
+      "path": "chunk-FPSPHUDW.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/minmaxRedux.fragment.js": [
     {
-      "path": "chunk-RRRRBQEA.js",
+      "path": "chunk-CNXLQOAU.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/glowBlurPostProcess.fragment.js": [
     {
-      "path": "chunk-L2AB26VG.js",
+      "path": "chunk-B7VTSLJE.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/glowBlurPostProcess.fragment.js": [
     {
-      "path": "chunk-3SSLU4QX.js",
+      "path": "chunk-GLEE6NSX.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/depthBoxBlur.fragment.js": [
     {
-      "path": "chunk-YWMDZERR.js",
+      "path": "chunk-EYMRGFIC.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/shadowMapFragmentSoftTransparentShadow.js": [
     {
-      "path": "chunk-6CFAVVQQ.js",
+      "path": "chunk-QZI4FG67.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/shadowMapFragment.js": [
     {
-      "path": "chunk-PDKAZZIE.js",
+      "path": "chunk-W3QS4G7E.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/shadowMap.fragment.js": [
     {
-      "path": "chunk-MHJVYDT4.js",
+      "path": "chunk-2VWB2CWY.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/shadowMapVertexMetric.js": [
     {
-      "path": "chunk-ZHPTLGZA.js",
+      "path": "chunk-IZU2IIIL.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/shadowMap.vertex.js": [
     {
-      "path": "chunk-Z6Y5M644.js",
+      "path": "chunk-IX5L3CRB.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/depthBoxBlur.fragment.js": [
     {
-      "path": "chunk-TOEDARDW.js",
+      "path": "chunk-U5SSSO36.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/shadowMapFragmentSoftTransparentShadow.js": [
     {
-      "path": "chunk-7C2OC4WC.js",
+      "path": "chunk-CXEK4AYN.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/kernelBlur.vertex.js": [
     {
-      "path": "chunk-7CVMLR32.js",
+      "path": "chunk-UOGWMG2F.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/packingFunctions.js": [
     {
-      "path": "chunk-6IO77JXY.js",
+      "path": "chunk-S5SLHKBD.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/kernelBlur.fragment.js": [
     {
-      "path": "chunk-SZ4OOOP2.js",
+      "path": "chunk-A7GFUJEZ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/kernelBlur.vertex.js": [
     {
-      "path": "chunk-S5KCBXTN.js",
+      "path": "chunk-ED2WWBJZ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/shadowMapFragment.js": [
     {
-      "path": "chunk-XG4ZTARN.js",
+      "path": "chunk-6WUEBGDL.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/shadowMap.fragment.js": [
     {
-      "path": "chunk-EGDRG6JL.js",
+      "path": "chunk-MBC7F4W6.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/shadowMapVertexMetric.js": [
     {
-      "path": "chunk-CGKTXJJV.js",
+      "path": "chunk-Q42VT6JG.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/shadowMap.vertex.js": [
     {
-      "path": "chunk-AADMHH6D.js",
+      "path": "chunk-R7GV7NSJ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Data/Utils/flowGraphCodeExecutionBlock.js": [
     {
-      "path": "chunk-HBKDIWX5.js",
+      "path": "chunk-MDIBRKGA.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Data/Utils/flowGraphIndexOfBlock.js": [
     {
-      "path": "chunk-7AHV4WG4.js",
+      "path": "chunk-PCZE7C67.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Data/Utils/flowGraphFunctionReferenceBlock.js": [
     {
-      "path": "chunk-ZPWZRSCJ.js",
+      "path": "chunk-V425IZO5.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Data/flowGraphDataSwitchBlock.js": [
     {
-      "path": "chunk-2FNG3FVD.js",
+      "path": "chunk-YL73LJF3.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/copyTextureToTexture.fragment.js": [
     {
-      "path": "chunk-EETTSUOZ.js",
+      "path": "chunk-HNZHLL5I.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/copyTextureToTexture.fragment.js": [
     {
-      "path": "chunk-4KCVWUVF.js",
+      "path": "chunk-LAQ2NAUT.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/packingFunctions.js": [
     {
-      "path": "chunk-X4S2OVOC.js",
+      "path": "chunk-TX5LHNAQ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/kernelBlur.fragment.js": [
     {
-      "path": "chunk-Z7HUIT3D.js",
+      "path": "chunk-7OKQQBR5.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Data/Math/flowGraphMathCombineExtractBlocks.js": [
     {
-      "path": "chunk-IYEJYHB3.js",
+      "path": "chunk-M6LUV72U.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Data/Transformers/flowGraphTypeToTypeBlocks.js": [
     {
-      "path": "chunk-M3EO7WGC.js",
+      "path": "chunk-GTSAKQCJ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/Animation/flowGraphEasingBlock.js": [
     {
-      "path": "chunk-MW37AZER.js",
+      "path": "chunk-7EOXIHFV.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/Animation/flowGraphBezierCurveEasingBlock.js": [
     {
-      "path": "chunk-DCYSIJDV.js",
+      "path": "chunk-VJ7L7ASN.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Event/flowGraphPointerOverEventBlock.js": [
     {
-      "path": "chunk-PV2B7VNM.js",
+      "path": "chunk-4KFEVRRU.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Event/flowGraphPointerOutEventBlock.js": [
     {
-      "path": "chunk-YMPXGJIH.js",
+      "path": "chunk-CFOI4MKB.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Data/Utils/flowGraphContextBlock.js": [
     {
-      "path": "chunk-V3WAYGGG.js",
+      "path": "chunk-VHITOR66.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Data/Utils/flowGraphArrayIndexBlock.js": [
     {
-      "path": "chunk-VU5J3Q7J.js",
+      "path": "chunk-2KVUQR5Y.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Data/flowGraphConstantBlock.js": [
     {
-      "path": "chunk-PSU23KXC.js",
+      "path": "chunk-O6ZA6JKD.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Data/flowGraphTransformCoordinatesSystemBlock.js": [
     {
-      "path": "chunk-XATMJQY4.js",
+      "path": "chunk-ZOYLRQY6.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Data/flowGraphGetAssetBlock.js": [
     {
-      "path": "chunk-H3GOLFHI.js",
+      "path": "chunk-BGDHOU7C.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Data/flowGraphGetPropertyBlock.js": [
     {
-      "path": "chunk-KVLBMXM7.js",
+      "path": "chunk-BYSUPRQV.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/flowGraphSetPropertyBlock.js": [
     {
-      "path": "chunk-3QQDVVRV.js",
+      "path": "chunk-NDPIWZDH.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Data/flowGraphGetVariableBlock.js": [
     {
-      "path": "chunk-DVDWPVF4.js",
+      "path": "chunk-4WNYDQSX.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/flowGraphSetVariableBlock.js": [
     {
-      "path": "chunk-5D45SNJV.js",
+      "path": "chunk-BU753MG5.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Data/Transformers/flowGraphJsonPointerParserBlock.js": [
     {
-      "path": "chunk-3XAFWBVM.js",
+      "path": "chunk-4ZFPF6EI.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/ControlFlow/flowGraphForLoopBlock.js": [
     {
-      "path": "chunk-724IMR6U.js",
+      "path": "chunk-KC4HK5NS.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/ControlFlow/flowGraphMultiGateBlock.js": [
     {
-      "path": "chunk-LI3XB4CI.js",
+      "path": "chunk-SYQHXLQO.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/ControlFlow/flowGraphSequenceBlock.js": [
     {
-      "path": "chunk-2N6LCNYW.js",
+      "path": "chunk-RMS3IYJR.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/ControlFlow/flowGraphSwitchBlock.js": [
     {
-      "path": "chunk-QKCCXQ5K.js",
+      "path": "chunk-IH25XQMN.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/ControlFlow/flowGraphWaitAllBlock.js": [
     {
-      "path": "chunk-X2F3QJGX.js",
+      "path": "chunk-KBJW2ID6.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/ControlFlow/flowGraphWhileLoopBlock.js": [
     {
-      "path": "chunk-QNLOOEFG.js",
+      "path": "chunk-ERCUZ5ZA.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/flowGraphConsoleLogBlock.js": [
     {
-      "path": "chunk-Q5DJVPHO.js",
+      "path": "chunk-BNDDVCKQ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Data/flowGraphConditionalDataBlock.js": [
     {
-      "path": "chunk-CVDZAAGS.js",
+      "path": "chunk-ND5YBSVZ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/ControlFlow/flowGraphBranchBlock.js": [
     {
-      "path": "chunk-BEL5GNFO.js",
+      "path": "chunk-QZDS4VBW.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/ControlFlow/flowGraphSetDelayBlock.js": [
     {
-      "path": "chunk-NMLXBU7F.js",
+      "path": "chunk-ROW3IXAZ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/ControlFlow/flowGraphCancelDelayBlock.js": [
     {
-      "path": "chunk-TMERLF5M.js",
+      "path": "chunk-E7ZFHLDV.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/ControlFlow/flowGraphCounterBlock.js": [
     {
-      "path": "chunk-MZLHHQET.js",
+      "path": "chunk-OY7ISMVM.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/ControlFlow/flowGraphDebounceBlock.js": [
     {
-      "path": "chunk-VXQF5Z4Z.js",
+      "path": "chunk-S4WYDFNC.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/ControlFlow/flowGraphThrottleBlock.js": [
     {
-      "path": "chunk-UXQYGCPD.js",
+      "path": "chunk-6I7JBH75.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/ControlFlow/flowGraphDoNBlock.js": [
     {
-      "path": "chunk-7GLTAAPU.js",
+      "path": "chunk-FB2WIALF.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/ControlFlow/flowGraphFlipFlopBlock.js": [
     {
-      "path": "chunk-7SPYC3TH.js",
+      "path": "chunk-5DF5SIIS.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Event/flowGraphSceneReadyEventBlock.js": [
     {
-      "path": "chunk-ZTQQDHVP.js",
+      "path": "chunk-4A3UBHGF.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Event/flowGraphSceneTickEventBlock.js": [
     {
-      "path": "chunk-C5LJ7EGT.js",
+      "path": "chunk-6PBZSQOY.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Event/flowGraphSendCustomEventBlock.js": [
     {
-      "path": "chunk-GVUIH4BS.js",
+      "path": "chunk-M2E2DRK4.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Event/flowGraphReceiveCustomEventBlock.js": [
     {
-      "path": "chunk-FMFBZBWT.js",
+      "path": "chunk-AL4K67PY.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Event/flowGraphMeshPickEventBlock.js": [
     {
-      "path": "chunk-OKLGPO6P.js",
+      "path": "chunk-GNC35K7C.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Data/Math/flowGraphMathBlocks.js": [
     {
-      "path": "chunk-VR6K3MMQ.js",
+      "path": "chunk-FS3NHMDP.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Data/Math/flowGraphVectorMathBlocks.js": [
     {
-      "path": "chunk-L4KNTIRF.js",
+      "path": "chunk-5UZYUBLH.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Data/Math/flowGraphMatrixMathBlocks.js": [
     {
-      "path": "chunk-4IAMIZR2.js",
+      "path": "chunk-NGEIJLYP.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/color.vertex.js": [
     {
-      "path": "chunk-LCZH4ISG.js",
+      "path": "chunk-IEQ6EIYP.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/color.fragment.js": [
     {
-      "path": "chunk-3JZVQK5P.js",
+      "path": "chunk-VCHI66LK.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/color.vertex.js": [
     {
-      "path": "chunk-GYX2EWEN.js",
+      "path": "chunk-YJO5M4Z5.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/color.fragment.js": [
     {
-      "path": "chunk-UKVR2GTU.js",
+      "path": "chunk-PTUIEKQI.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/Animation/flowGraphPlayAnimationBlock.js": [
     {
-      "path": "chunk-X5QGFVPX.js",
+      "path": "chunk-U2MP6LL3.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/Animation/flowGraphStopAnimationBlock.js": [
     {
-      "path": "chunk-3C77T3U7.js",
+      "path": "chunk-VTKI5N3X.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/Animation/flowGraphPauseAnimationBlock.js": [
     {
-      "path": "chunk-YSB5BB4W.js",
+      "path": "chunk-XD6YOQQB.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/FlowGraph/Blocks/Execution/Animation/flowGraphInterpolationBlock.js": [
     {
-      "path": "chunk-LCRMCPYH.js",
+      "path": "chunk-NGE4DQOQ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/lightFragment.js": [
     {
-      "path": "chunk-7WFVBYAD.js",
+      "path": "chunk-IECY7PU3.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/default.fragment.js": [
     {
-      "path": "chunk-6DKCF6ZW.js",
+      "path": "chunk-PVK3MFTS.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/picking.fragment.js": [
     {
-      "path": "chunk-2QQCOG2X.js",
+      "path": "chunk-ECNWTVBN.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/picking.vertex.js": [
     {
-      "path": "chunk-ZC2KWO2R.js",
+      "path": "chunk-OSM6Z435.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/picking.fragment.js": [
     {
-      "path": "chunk-I7W2BWXI.js",
+      "path": "chunk-G3U3XO7E.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/picking.vertex.js": [
     {
-      "path": "chunk-5PIDYVHH.js",
+      "path": "chunk-OQKEOYFJ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Culling/Helper/computeShaderBoundingHelper.js": [
     {
-      "path": "chunk-YMLLYSX5.js",
+      "path": "chunk-BYPAJYXR.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Culling/Helper/transformFeedbackBoundingHelper.js": [
     {
-      "path": "chunk-TTKLWLC3.js",
+      "path": "chunk-BH5F3BFQ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/imageProcessingDeclaration.js": [
     {
-      "path": "chunk-VHWAZUQN.js",
+      "path": "chunk-WNBYO4EV.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/imageProcessingFunctions.js": [
     {
-      "path": "chunk-XPAT3CC2.js",
+      "path": "chunk-N3OHSBE7.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/bumpFragmentMainFunctions.js": [
     {
-      "path": "chunk-KTSCBR2C.js",
+      "path": "chunk-EUMM4GXL.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/bumpFragmentFunctions.js": [
     {
-      "path": "chunk-MXEAO4DB.js",
+      "path": "chunk-RRCSDL4R.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/clipPlaneFragmentDeclaration.js": [
     {
-      "path": "chunk-KIGWUFQS.js",
+      "path": "chunk-76MLLRFK.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/fogFragmentDeclaration.js": [
     {
-      "path": "chunk-NPUDEEPW.js",
+      "path": "chunk-QUMQVRVX.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/clipPlaneFragment.js": [
     {
-      "path": "chunk-DW5IIVYP.js",
+      "path": "chunk-3TRLXPEC.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/bumpFragment.js": [
     {
-      "path": "chunk-DLPTDQWI.js",
+      "path": "chunk-U6EGMKIV.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/clipPlaneVertex.js": [
     {
-      "path": "chunk-IJQ7EGV6.js",
+      "path": "chunk-3MV54EGB.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/shadowsVertex.js": [
     {
-      "path": "chunk-S6RRBWKN.js",
+      "path": "chunk-3LPXYHRW.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/default.vertex.js": [
     {
-      "path": "chunk-52NIDWUM.js",
+      "path": "chunk-WB5TY4C2.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/lightFragmentDeclaration.js": [
     {
-      "path": "chunk-JSFU2NZG.js",
+      "path": "chunk-MMP2K5NQ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/lightUboDeclaration.js": [
     {
-      "path": "chunk-7RGNEH3K.js",
+      "path": "chunk-CH2KMXFQ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/lightsFragmentFunctions.js": [
     {
-      "path": "chunk-M2JFHKRC.js",
+      "path": "chunk-72N3NZ2Z.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/shadowsFragmentFunctions.js": [
     {
-      "path": "chunk-755WUC74.js",
+      "path": "chunk-MOJ6FWHQ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/reflectionFunction.js": [
     {
-      "path": "chunk-7ZV66VR4.js",
+      "path": "chunk-FUOSVYLB.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/clipPlaneVertexDeclaration.js": [
     {
-      "path": "chunk-VN2BGNWI.js",
+      "path": "chunk-ELEFMJ6I.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/lightVxFragmentDeclaration.js": [
     {
-      "path": "chunk-HBMUO2QT.js",
+      "path": "chunk-ZMVDVOMQ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/lightVxUboDeclaration.js": [
     {
-      "path": "chunk-RLOX5KOA.js",
+      "path": "chunk-VHEFIVQX.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/morphTargetsVertexGlobalDeclaration.js": [
     {
-      "path": "chunk-RKVJMAFU.js",
+      "path": "chunk-P36ANL4H.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/morphTargetsVertexDeclaration.js": [
     {
-      "path": "chunk-QTP453SK.js",
+      "path": "chunk-7IPK4MMJ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/morphTargetsVertexGlobal.js": [
     {
-      "path": "chunk-7U3AWL7O.js",
+      "path": "chunk-WHB5SAMX.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/morphTargetsVertex.js": [
     {
-      "path": "chunk-VL74VZ2H.js",
+      "path": "chunk-LCBYETVL.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/bonesVertex.js": [
     {
-      "path": "chunk-3AW2PQT4.js",
+      "path": "chunk-DXWAAQSG.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/bumpFragmentFunctions.js": [
     {
-      "path": "chunk-GWBW5G7N.js",
+      "path": "chunk-FZLZXURY.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/clipPlaneFragmentDeclaration.js": [
     {
-      "path": "chunk-LRCI5X7I.js",
+      "path": "chunk-PTSHDONA.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/fogFragmentDeclaration.js": [
     {
-      "path": "chunk-6K5WH3PZ.js",
+      "path": "chunk-KSC2ANGT.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/clipPlaneFragment.js": [
     {
-      "path": "chunk-QN3N75M2.js",
+      "path": "chunk-DUXD5BVI.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/bumpFragment.js": [
     {
-      "path": "chunk-PIMF35LK.js",
+      "path": "chunk-X6Z565KR.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/lightFragment.js": [
     {
-      "path": "chunk-JZJB72QF.js",
+      "path": "chunk-IPIKURRC.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/default.fragment.js": [
     {
-      "path": "chunk-5CF6ZRJN.js",
+      "path": "chunk-LJVV2IE2.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/bonesDeclaration.js": [
     {
-      "path": "chunk-M4CWURVI.js",
+      "path": "chunk-Y2O77WP5.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/default.vertex.js": [
     {
-      "path": "chunk-3YDZ7K2X.js",
+      "path": "chunk-SVXL5RYW.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/lightUboDeclaration.js": [
     {
-      "path": "chunk-YDKNPY7L.js",
+      "path": "chunk-NDKW4HBE.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/lightsFragmentFunctions.js": [
     {
-      "path": "chunk-QO7NKBTM.js",
+      "path": "chunk-7IPTMULA.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/shadowsFragmentFunctions.js": [
     {
-      "path": "chunk-FCIQMCFZ.js",
+      "path": "chunk-QEJ4AB6S.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/reflectionFunction.js": [
     {
-      "path": "chunk-B3LS7TNO.js",
+      "path": "chunk-LS2IKSBR.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/imageProcessingDeclaration.js": [
     {
-      "path": "chunk-QPVU2U5V.js",
+      "path": "chunk-WCQOWZRF.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/imageProcessingFunctions.js": [
     {
-      "path": "chunk-JRTYR4S6.js",
+      "path": "chunk-AHUZXOTN.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/bumpFragmentMainFunctions.js": [
     {
-      "path": "chunk-7SN4T4SD.js",
+      "path": "chunk-LUSKMOC6.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/lightVxUboDeclaration.js": [
     {
-      "path": "chunk-QTMDDO4T.js",
+      "path": "chunk-MMK4QT43.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/morphTargetsVertexGlobalDeclaration.js": [
     {
-      "path": "chunk-CXOY33H3.js",
+      "path": "chunk-5BPFLGRN.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/morphTargetsVertexDeclaration.js": [
     {
-      "path": "chunk-OJW6NOY4.js",
+      "path": "chunk-7YFJ3L5L.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/morphTargetsVertexGlobal.js": [
     {
-      "path": "chunk-PRJHKAQS.js",
+      "path": "chunk-2P2DSII4.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/morphTargetsVertex.js": [
     {
-      "path": "chunk-UJYAY2Y4.js",
+      "path": "chunk-DASIX3RI.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/bonesVertex.js": [
     {
-      "path": "chunk-PYIGTU24.js",
+      "path": "chunk-JC7ZWDPI.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/clipPlaneVertex.js": [
     {
-      "path": "chunk-F4OUKBBI.js",
+      "path": "chunk-73QC2UYB.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/shadowsVertex.js": [
     {
-      "path": "chunk-D7MRVZ7L.js",
+      "path": "chunk-7LSNKT62.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/AudioV2/webAudio/webAudioSoundSource.js": [
     {
-      "path": "chunk-ZHDPPYKS.js",
+      "path": "chunk-WYMGWWIQ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/AudioV2/webAudio/webAudioStreamingSound.js": [
     {
-      "path": "chunk-P5PI26VJ.js",
+      "path": "chunk-BNKY343H.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/anaglyph.fragment.js": [
     {
-      "path": "chunk-HDVO6AVW.js",
+      "path": "chunk-4GBKNLVA.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/anaglyph.fragment.js": [
     {
-      "path": "chunk-5QNSRBF6.js",
+      "path": "chunk-FM4X57CT.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/vrDistortionCorrection.fragment.js": [
     {
-      "path": "chunk-VBCKARAV.js",
+      "path": "chunk-NAN7PYB6.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/vrDistortionCorrection.fragment.js": [
     {
-      "path": "chunk-ITQOD4K3.js",
+      "path": "chunk-CH345MDU.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/bonesDeclaration.js": [
     {
-      "path": "chunk-MX34DWDM.js",
+      "path": "chunk-XBCF36OY.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/clipPlaneVertexDeclaration.js": [
     {
-      "path": "chunk-ZX77H2MN.js",
+      "path": "chunk-OL3OTMWX.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Materials/Textures/Loaders/hdrTextureLoader.js": [
     {
-      "path": "chunk-VFKD26GM.js",
+      "path": "chunk-XPF6TS37.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Materials/Textures/Loaders/ktxTextureLoader.js": [
     {
-      "path": "chunk-HBH5WYMU.js",
+      "path": "chunk-WSVH4PTM.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Materials/Textures/Loaders/tgaTextureLoader.js": [
     {
-      "path": "chunk-XQEANC4J.js",
+      "path": "chunk-VK4VBWFC.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Materials/Textures/Loaders/exrTextureLoader.js": [
     {
-      "path": "chunk-X6OTEOQT.js",
+      "path": "chunk-R3ASN7BN.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Meshes/mesh.vertexData.functions.js": [
     {
-      "path": "chunk-5BA4R6Z3.js",
+      "path": "chunk-EK27QH53.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/AudioV2/webAudio/webAudioBus.js": [
     {
-      "path": "chunk-XXBQXSRF.js",
+      "path": "chunk-DW26TQXJ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/AudioV2/webAudio/webAudioMainBus.js": [
     {
-      "path": "chunk-KBOPXQAT.js",
+      "path": "chunk-HGF2AGNV.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/AudioV2/webAudio/webAudioStaticSound.js": [
     {
-      "path": "chunk-AOFI5LZG.js",
+      "path": "chunk-PUEFPEGB.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Materials/Textures/Loaders/basisTextureLoader.js": [
     {
-      "path": "chunk-5GP2EW2X.js",
+      "path": "chunk-2U2N6FBK.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/ShadersInclude/helperFunctions.js": [
     {
-      "path": "chunk-3SNKEHVL.js",
+      "path": "chunk-DHIGE64T.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/rgbdDecode.fragment.js": [
     {
-      "path": "chunk-23MZ666J.js",
+      "path": "chunk-4OMYFBTI.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/ShadersInclude/helperFunctions.js": [
     {
-      "path": "chunk-4GTLL7KO.js",
+      "path": "chunk-IXA73HF3.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/rgbdDecode.fragment.js": [
     {
-      "path": "chunk-UQDMZJ24.js",
+      "path": "chunk-B4UHPD7D.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/rgbdEncode.fragment.js": [
     {
-      "path": "chunk-IDKPR23L.js",
+      "path": "chunk-KBNTAGPJ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/rgbdEncode.fragment.js": [
     {
-      "path": "chunk-W7VYN54Q.js",
+      "path": "chunk-I7I5EU7C.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Materials/Textures/Loaders/envTextureLoader.js": [
     {
-      "path": "chunk-2DL5S262.js",
+      "path": "chunk-YG4KGKC7.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/passCube.fragment.js": [
     {
-      "path": "chunk-ETBR7M6B.js",
+      "path": "chunk-Z2W2VVPK.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/passCube.fragment.js": [
     {
-      "path": "chunk-JQQJIQJ7.js",
+      "path": "chunk-MUZREPWZ.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/lodCube.fragment.js": [
     {
-      "path": "chunk-INLUWFGD.js",
+      "path": "chunk-HNJMBZ3W.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/lod.fragment.js": [
     {
-      "path": "chunk-Z2HDB6CM.js",
+      "path": "chunk-WQQ6WL4B.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/lodCube.fragment.js": [
     {
-      "path": "chunk-AQYVVV4K.js",
+      "path": "chunk-DG3CGE3M.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/lod.fragment.js": [
     {
-      "path": "chunk-ZOM2WA7M.js",
+      "path": "chunk-AJYRY6BI.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Misc/dds.js": [
     {
-      "path": "chunk-R3BEAFMO.js",
+      "path": "chunk-CE74VENK.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Materials/Textures/Loaders/ddsTextureLoader.js": [
     {
-      "path": "chunk-VDIGHR6X.js",
+      "path": "chunk-ALX26MYC.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Materials/Textures/Loaders/iesTextureLoader.js": [
     {
-      "path": "chunk-G3A5JVKP.js",
+      "path": "chunk-BA3DBFE4.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/postprocess.vertex.js": [
     {
-      "path": "chunk-IHRHCGPE.js",
+      "path": "chunk-D53D5DTC.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/postprocess.vertex.js": [
     {
-      "path": "chunk-F6YTEY3W.js",
+      "path": "chunk-NUQM5COT.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Engines/thinEngine.js": [
     {
-      "path": "chunk-KFULZFSY.js",
+      "path": "chunk-HWH3HF7P.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Shaders/pass.fragment.js": [
     {
-      "path": "chunk-SLUH6TEB.js",
+      "path": "chunk-GSUYPEOW.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/Misc/dumpTools.js": [
     {
-      "path": "chunk-POJVTJ5Q.js",
+      "path": "chunk-KPIBKHCS.js",
       "dynamicImport": false
     }
   ],
   "node_modules/@babylonjs/core/ShadersWGSL/pass.fragment.js": [
     {
-      "path": "chunk-EVMDVGHJ.js",
+      "path": "chunk-ZNXATF35.js",
       "dynamicImport": false
     }
   ]
 },
   assets: {
-    'index.csr.html': {size: 6029, hash: 'e92b7f3f714699ab0abc62de2eeafe0bad71f0e05c1c41d04ae65831e430dc25', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
-    'index.server.html': {size: 1538, hash: '06127aa4e0177d69a726c8ae6d458967b3989fddea7aa46e944a33d627be87d0', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
+    'index.csr.html': {size: 6029, hash: '1379e21b7464f7c43fe00510cc4465d1cc509b0e1732e2d65669130d54dec099', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
+    'index.server.html': {size: 1538, hash: '6231fa67f4eb405f9d9400546738f8f8cb6462319f31a0571164f6032e91ccee', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
     'styles-GQEESHT6.css': {size: 227318, hash: 'GT+3amhz670', text: () => import('./assets-chunks/styles-GQEESHT6_css.mjs').then(m => m.default)}
   },
 };
