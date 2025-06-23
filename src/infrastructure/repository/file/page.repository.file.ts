@@ -1,17 +1,19 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { PageRepository } from '../../../domain/repository/page.repository.interface';
 import { Page } from '../../../domain/entities/page/page.entity';
 import { CacheData } from '../../../domain/data/cache.interface';
 import { CACHE_PROVIDER } from '../../providers/cache/cache.tokens';
 import { FileFetchService } from '../../services/file-fetch.service';
 import { ConfigService } from '../../services/config.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FilePageRepository implements PageRepository {
  
-  constructor(
+  constructor(   
+    @Inject(PLATFORM_ID) private platformId: Object,
     @Inject(CACHE_PROVIDER) private readonly cache: CacheData,
     private readonly configService: ConfigService,
     private readonly fileFetchService: FileFetchService
@@ -72,7 +74,15 @@ export class FilePageRepository implements PageRepository {
   private getFilePath(siteId: string, id: string): string {
     // Build the relative URL for HTTP fetch
     const dataPath = this.configService.get<string>('DATA_PATH');
-    return `presentation/assets/${dataPath}/${siteId}/pages/${id}.json`;
+
+     let baseHref = '/';
+
+    if(isPlatformBrowser(this.platformId)){
+      baseHref = document.querySelector('base')?.getAttribute('href') || '/';
+    }
+    
+    const fullDataPath = baseHref.replace(/\/$/, '') + '/' + dataPath;
+    return `${fullDataPath}/${siteId}/pages/${id}.json`;
   }
 
   private async loadPageFromFile(siteId: string, id: string): Promise<Page | null> {

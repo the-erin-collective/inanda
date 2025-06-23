@@ -20,6 +20,7 @@ export class ServerSiteRepository implements SiteRepository {
   private readonly defaultSiteId: string = 'site-001';
   
   async findById(id: string): Promise<Site | null> {
+    console.log(`ServerSiteRepository: Finding site by ID: ${id}`);
     const cacheKey = `site:${id}`;
     return this.cache.getData(cacheKey, async () => {
       try {
@@ -59,6 +60,7 @@ export class ServerSiteRepository implements SiteRepository {
   private async buildSiteContent(id: string): Promise<SiteContent | null> {
     const siteIdToFetch = id || this.defaultSiteId;
     try {
+      console.log(`ServerSiteRepository finding site: ${siteIdToFetch}`);
       const site = await this.findById(siteIdToFetch);
       
       if (!site) {

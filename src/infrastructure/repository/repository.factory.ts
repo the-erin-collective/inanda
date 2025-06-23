@@ -9,7 +9,7 @@ import { FileSiteRepository } from './file/site.repository.file';
 import { FilePageRepository } from './file/page.repository.file';
 
 import { CacheData } from '../../domain/data/cache.interface';
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { CACHE_PROVIDER } from '../providers/cache/cache.tokens';
 import { FileFetchService } from '../services/file-fetch.service';
 import { HttpClient } from '@angular/common/http';
@@ -18,6 +18,7 @@ import { ConfigService } from '../services/config.service';
 @Injectable()
 export class RepositoryFactory {
     constructor(
+          @Inject(PLATFORM_ID) private readonly platformId: Object,
         @Inject(CACHE_PROVIDER) private readonly cache: CacheData,
                 private readonly http: HttpClient,
                     private readonly configService: ConfigService
@@ -27,7 +28,7 @@ export class RepositoryFactory {
         switch (storageType) {
             case PersistentStorageType.FILE:
                 const fetchService = new FileFetchService(this.http);
-                return new FileSiteRepository(this.cache, this.configService, fetchService);
+                return new FileSiteRepository(this.platformId, this.cache, this.configService, fetchService);
             case PersistentStorageType.MONGODB:
                 const pageRepository = new ServerPageRepository(this.cache);
                 return new ServerSiteRepository(pageRepository, this.cache);
@@ -40,7 +41,7 @@ export class RepositoryFactory {
         switch (storageType) {
             case PersistentStorageType.FILE:
                  const fetchService = new FileFetchService(this.http);
-                return new FilePageRepository(this.cache, this.configService, fetchService);
+                return new FilePageRepository(this.platformId, this.cache, this.configService, fetchService);
             case PersistentStorageType.MONGODB:
                 return new ServerPageRepository(this.cache);
             default:

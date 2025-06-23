@@ -1,4 +1,4 @@
-import { FactoryProvider, Optional } from '@angular/core';
+import { FactoryProvider, Optional, PLATFORM_ID } from '@angular/core';
 import { SITE_REPOSITORY } from '../../../domain/repository/site.repository.interface';
 import { PAGE_REPOSITORY } from '../../../domain/repository/page.repository.interface';
 import { AppConfig, ConfigService } from '../../services/config.service';
@@ -19,17 +19,17 @@ import { FileSiteRepository } from '../../repository/file/site.repository.file';
 
 export const configPageRepositoryProvider: FactoryProvider = {
   provide: PAGE_REPOSITORY,
-  useFactory: (configService: ConfigService, cache: CacheData, fileFetchService :FileFetchService) => {
+  useFactory: (platformId: Object, configService: ConfigService, cache: CacheData, fileFetchService :FileFetchService) => {
     // Create the appropriate repository based on config
     if (environment.PERSISTENT_STORAGE === 'FILE') {
       console.log('[configPageRepositoryProvider] Using FilePageRepository');
-      return new FilePageRepository(cache, configService, fileFetchService);
+      return new FilePageRepository(platformId, cache, configService, fileFetchService);
     } else {
       console.log('[configPageRepositoryProvider] Using ServerPageRepository with MongoDB');
       return new ServerPageRepository(cache);
     }
   },
-  deps: [ConfigService, CACHE_PROVIDER, FileFetchService]
+  deps: [PLATFORM_ID, ConfigService, CACHE_PROVIDER, FileFetchService]
 };
 
 /**
@@ -39,6 +39,7 @@ export const configPageRepositoryProvider: FactoryProvider = {
 export const configSiteRepositoryProvider: FactoryProvider = {
   provide: SITE_REPOSITORY,
   useFactory: (
+    platformId: Object,
     configService: ConfigService, 
     cache: CacheData, 
     fileFetchService: FileFetchService,
@@ -47,14 +48,14 @@ export const configSiteRepositoryProvider: FactoryProvider = {
     // Create the appropriate repository based on config
     if (environment.PERSISTENT_STORAGE === 'FILE') {
       console.log('[configSiteRepositoryProvider] Using FileSiteRepository');
-      return new FileSiteRepository(cache, configService, fileFetchService);
+      return new FileSiteRepository(platformId, cache, configService, fileFetchService);
     } else {
       console.log('[configSiteRepositoryProvider] Using ServerSiteRepository with MongoDB');
       // The ServerSiteRepository expects a ServerPageRepository specifically
       return new ServerSiteRepository(pageRepository, cache);
     }
   },
-  deps: [ConfigService, CACHE_PROVIDER, FileFetchService, PAGE_REPOSITORY]
+  deps: [PLATFORM_ID, ConfigService, CACHE_PROVIDER, FileFetchService, PAGE_REPOSITORY]
 };
 
 /**

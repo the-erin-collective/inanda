@@ -71,8 +71,8 @@ export class ConfigService {
    */
   private async loadBrowserConfig(): Promise<AppConfig> {
     try {
-    
-      const configUrl = '/presentation/assets/config.json';
+      const baseHref = (document.querySelector('base')?.getAttribute('href') || '/').replace(/\/$/, '');
+      const configUrl = baseHref + '/presentation/assets/config.json';
       console.log(`[ConfigService] Loading browser config from ${configUrl}`);
       const apiConfig = await firstValueFrom(this.http.get<AppConfig>(configUrl));
     

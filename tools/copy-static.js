@@ -30,3 +30,14 @@ if (fs.existsSync(configFile)) {
 }
 
 console.log('Static assets copy complete.');
+
+
+// Rename index.csr.html to index.html if it exists
+const indexCsr = path.join(outputDir, 'index.csr.html');
+const indexHtml = path.join(outputDir, 'index.html');
+if (fs.existsSync(indexCsr)) {
+  fs.renameSync(indexCsr, indexHtml);
+  console.log(`Renamed ${indexCsr} to ${indexHtml}`);
+} else {
+  console.warn(`index.csr.html not found in ${outputDir}`);
+}

@@ -4,9 +4,9 @@
   "license": "AGPL-3.0-only",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node tools/copy-dev-config.js && ng serve",
     "build": "ng build -c development && node tools/copy-static.js development",
-    "build:prod": "ng build -c production && node tools/copy-static.js production",
+    "build:prod": "ng build -c production --base-href /web-home/ && node tools/copy-static.js production",
     "build:both": "npm run build && npm run build:prod",
     "test": "ng test",
     "lint": "ng lint",

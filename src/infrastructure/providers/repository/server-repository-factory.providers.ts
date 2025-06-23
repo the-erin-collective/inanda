@@ -1,4 +1,4 @@
-import { StaticProvider } from '@angular/core';
+import { PLATFORM_ID, StaticProvider } from '@angular/core';
 import { PAGE_REPOSITORY } from '../../../domain/repository/page.repository.interface';
 import { SITE_REPOSITORY } from '../../../domain/repository/site.repository.interface';
 import { PersistentStorageType } from '../../../domain/constants/storage-type.enum';
@@ -8,6 +8,8 @@ import { FileSiteRepository } from '../../repository/file/site.repository.file';
 import { FilePageRepository } from '../../repository/file/page.repository.file';
 import { ServerSiteRepository } from '../../repository/server/site.repository.server';
 import { ServerPageRepository } from '../../repository/server/page.repository.server';
+import { ConfigService } from 'src/infrastructure/services/config.service';
+import { FileFetchService } from 'src/infrastructure/services/file-fetch.service';
 
 /**
  * Factory providers for repositories that respect the PERSISTENT_STORAGE environment variable
@@ -25,31 +27,31 @@ export const repositoryFactoryProviders: StaticProvider[] = [
   // PAGE_REPOSITORY provider that uses environment variable
   {
     provide: PAGE_REPOSITORY,
-    useFactory: (cache: CacheData) => {
+    useFactory: (platformId: Object, cache: CacheData,configService: ConfigService, fileFetchService: FileFetchService) => {
       const storageType = (process.env['PERSISTENT_STORAGE'] as PersistentStorageType) || PersistentStorageType.MONGODB;
       console.log(`Creating PAGE_REPOSITORY with storage type: ${storageType}`);
       
       if (storageType === PersistentStorageType.FILE) {
-        return new FilePageRepository(cache);
+        return new FilePageRepository(platformId, cache, configService, fileFetchService);
       } else {
         return new ServerPageRepository(cache);
       }
     },
-    deps: [CACHE_PROVIDER]
+    deps: [PLATFORM_ID, CACHE_PROVIDER, ConfigService, FileFetchService]
   },
   // SITE_REPOSITORY provider that uses environment variable
   {
     provide: SITE_REPOSITORY,
-    useFactory: (cache: CacheData, serverPageRepo: ServerPageRepository) => {
+    useFactory: (platformId: Object, cache: CacheData, serverPageRepo: ServerPageRepository, configService: ConfigService, fileFetchService: FileFetchService) => {
       const storageType = (process.env['PERSISTENT_STORAGE'] as PersistentStorageType) || PersistentStorageType.MONGODB;
       console.log(`Creating SITE_REPOSITORY with storage type: ${storageType}`);
       
       if (storageType === PersistentStorageType.FILE) {
-        return new FileSiteRepository(cache);
+        return new FileSiteRepository(platformId, cache, configService, fileFetchService);
       } else {
         return new ServerSiteRepository(serverPageRepo, cache);
       }
     },
-    deps: [CACHE_PROVIDER, ServerPageRepository]
+    deps: [PLATFORM_ID, CACHE_PROVIDER, ServerPageRepository, ConfigService, FileFetchService]
   }
 ];

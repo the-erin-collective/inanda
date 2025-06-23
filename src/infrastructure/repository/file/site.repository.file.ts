@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { SiteRepository } from '../../../domain/repository/site.repository.interface';
 import { Site } from '../../../domain/entities/site/site.entity';
 import { SiteContent } from '../../../domain/aggregates/site-content.aggregate';
@@ -6,6 +6,7 @@ import { CacheData } from '../../../domain/data/cache.interface';
 import { CACHE_PROVIDER } from '../../providers/cache/cache.tokens';
 import { FileFetchService } from '../../services/file-fetch.service';
 import { ConfigService } from '../../services/config.service';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,7 @@ import { ConfigService } from '../../services/config.service';
 export class FileSiteRepository implements SiteRepository {
  
   constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
     @Inject(CACHE_PROVIDER) private readonly cache: CacheData,
     private readonly configService: ConfigService,
     private readonly fileFetchService: FileFetchService
@@ -68,26 +70,27 @@ export class FileSiteRepository implements SiteRepository {
 
   // Private helper methods
   private async loadSiteFromFile(id: string): Promise<Site | null> {
-    const dataPath = this.configService.get<string>('DATA_PATH');
-    // Path should use the correct repository structure
-    // The correct path should include /repository/sites/ before the site ID
-    const fileUrl = `presentation/assets/${dataPath}/${id}/${id}.json`;
-    console.log(`Loading site data for ID ${id} from file: ${fileUrl}`);
+     try 
+     {
+      const dataPath = this.configService.get<string>('DATA_PATH');
+      let baseHref = '/';
+
+      if(isPlatformBrowser(this.platformId)){
+        baseHref = document.querySelector('base')?.getAttribute('href') || '/';
+      }
+      
+      // Path should use the correct repository structure
+      // The correct path should include /repository/sites/ before the site ID
+      const fileUrl = `${dataPath}/${id}/${id}.json`;
+      const fullUrl = baseHref.replace(/\/$/, '') + '/' + fileUrl;
+      console.log(`Loading site data for ID ${id} from file: ${fullUrl}`);
     
-    try {
-      const siteData = await this.fileFetchService.fetchJson<Site>(fileUrl);
+      const siteData = await this.fileFetchService.fetchJson<Site>(fullUrl);
       return siteData as Site;
     } catch (error: any) {
       // File not found or invalid JSON
-      console.error(`Site file not found: ${fileUrl}`, error);
+      console.error(`Site file not found for site: ${id}`, error);
       
-      // Try the alternative path structure as a fallback
-      if (error.status === 404) {
-        console.log(`Site file not found at primary location.`);
-        throw error;
-      }
-      
-      console.error(`Error loading site from file ${fileUrl}:`, error);
       throw error;
     }
   }

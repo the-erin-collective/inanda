@@ -1,6 +1,6 @@
 {
   "production": false,
-  "DATA_PATH": "data/repository/sites",
+  "DATA_PATH": "presentation/assets/data/repository/sites",
   "SHOW_GITHUB_BANNER": true,
   "GITHUB_BANNER_URL": "https://github.com/the-erin-collective/web-home"
 }

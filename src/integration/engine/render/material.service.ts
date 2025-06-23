@@ -66,7 +66,11 @@ export class MaterialService {
    */
   public getTextureUrl(materialType: string | undefined, fileName: string): string {
     const folder = this.getMaterialFolder(materialType);
-    return `/presentation/assets/textures/${folder}/${fileName}`;
+
+    let baseHref = document.querySelector('base')?.getAttribute('href') || '';
+    baseHref =  baseHref.replace(/\/$/, '');
+    
+    return `${baseHref}/presentation/assets/textures/${folder}/${fileName}`;
   }  
   
   async getMaterial(options: MaterialOptions, scene: Scene): Promise<StandardMaterial> {
