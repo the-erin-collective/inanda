@@ -5,23 +5,18 @@ import { SiteContent } from '../../../domain/aggregates/site-content.aggregate';
 import { CacheData } from '../../../domain/data/cache.interface';
 import { CACHE_PROVIDER } from '../../providers/cache/cache.tokens';
 import { FileFetchService } from '../../services/file-fetch.service';
-import { APP_CONFIG, AppConfig } from '../../providers/config/app-config.token';
+import { ConfigService } from '../../services/config.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FileSiteRepository implements SiteRepository {
-  private readonly defaultSiteId: string = 'site-001';
-  private dataPath: string;
-  
+ 
   constructor(
     @Inject(CACHE_PROVIDER) private readonly cache: CacheData,
-    @Inject(APP_CONFIG) private readonly config: AppConfig,
+    private readonly configService: ConfigService,
     private readonly fileFetchService: FileFetchService
-  ) {
-    this.dataPath = config.DATA_PATH;
-    console.log(`FileSiteRepository initialized with dataPath: ${this.dataPath}`);
-  }
+  ) { }
 
   async findById(id: string): Promise<Site | null> {
     const cacheKey = `site:${id}`;
@@ -73,9 +68,10 @@ export class FileSiteRepository implements SiteRepository {
 
   // Private helper methods
   private async loadSiteFromFile(id: string): Promise<Site | null> {
+    const dataPath = this.configService.get<string>('DATA_PATH');
     // Path should use the correct repository structure
     // The correct path should include /repository/sites/ before the site ID
-    const fileUrl = `presentation/assets/${this.dataPath}/${id}/${id}.json`;
+    const fileUrl = `presentation/assets/${dataPath}/${id}/${id}.json`;
     console.log(`Loading site data for ID ${id} from file: ${fileUrl}`);
     
     try {

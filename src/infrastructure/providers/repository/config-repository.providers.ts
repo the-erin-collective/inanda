@@ -1,7 +1,7 @@
 import { FactoryProvider, Optional } from '@angular/core';
 import { SITE_REPOSITORY } from '../../../domain/repository/site.repository.interface';
 import { PAGE_REPOSITORY } from '../../../domain/repository/page.repository.interface';
-import { APP_CONFIG, AppConfig } from '../config/app-config.token';
+import { AppConfig, ConfigService } from '../../services/config.service';
 import { CACHE_PROVIDER } from '../cache/cache.tokens';
 import { CacheData } from '../../../domain/data/cache.interface';
 import { ServerSiteRepository } from '../../repository/server/site.repository.server';
@@ -19,17 +19,17 @@ import { FileSiteRepository } from '../../repository/file/site.repository.file';
 
 export const configPageRepositoryProvider: FactoryProvider = {
   provide: PAGE_REPOSITORY,
-  useFactory: (config: AppConfig, cache: CacheData, fileFetchService :FileFetchService) => {
+  useFactory: (configService: ConfigService, cache: CacheData, fileFetchService :FileFetchService) => {
     // Create the appropriate repository based on config
     if (environment.PERSISTENT_STORAGE === 'FILE') {
       console.log('[configPageRepositoryProvider] Using FilePageRepository');
-      return new FilePageRepository(cache, config, fileFetchService);
+      return new FilePageRepository(cache, configService, fileFetchService);
     } else {
       console.log('[configPageRepositoryProvider] Using ServerPageRepository with MongoDB');
       return new ServerPageRepository(cache);
     }
   },
-  deps: [APP_CONFIG, CACHE_PROVIDER, FileFetchService, [new Optional()]]
+  deps: [ConfigService, CACHE_PROVIDER, FileFetchService]
 };
 
 /**
@@ -39,7 +39,7 @@ export const configPageRepositoryProvider: FactoryProvider = {
 export const configSiteRepositoryProvider: FactoryProvider = {
   provide: SITE_REPOSITORY,
   useFactory: (
-    config: AppConfig, 
+    configService: ConfigService, 
     cache: CacheData, 
     fileFetchService: FileFetchService,
     pageRepository: any
@@ -47,14 +47,14 @@ export const configSiteRepositoryProvider: FactoryProvider = {
     // Create the appropriate repository based on config
     if (environment.PERSISTENT_STORAGE === 'FILE') {
       console.log('[configSiteRepositoryProvider] Using FileSiteRepository');
-      return new FileSiteRepository(cache, config, fileFetchService);
+      return new FileSiteRepository(cache, configService, fileFetchService);
     } else {
       console.log('[configSiteRepositoryProvider] Using ServerSiteRepository with MongoDB');
       // The ServerSiteRepository expects a ServerPageRepository specifically
       return new ServerSiteRepository(pageRepository, cache);
     }
   },
-  deps: [APP_CONFIG, CACHE_PROVIDER, FileFetchService, PAGE_REPOSITORY]
+  deps: [ConfigService, CACHE_PROVIDER, FileFetchService, PAGE_REPOSITORY]
 };
 
 /**
@@ -69,5 +69,5 @@ export const serverPageRepositoryProvider: FactoryProvider = {
     // The dependency injection system will only use this when needed
     return new ServerPageRepository(cache);
   },
-  deps: [APP_CONFIG, CACHE_PROVIDER]
+  deps: [ConfigService, CACHE_PROVIDER]
 };

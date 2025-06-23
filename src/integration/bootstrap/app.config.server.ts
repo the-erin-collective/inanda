@@ -7,7 +7,6 @@ import { CustomUrlSerializer } from '../../infrastructure/routing/custom-url-ser
 import { provideClientHydration } from '@angular/platform-browser';
 
 // Import config-driven providers
-import { provideAppConfig } from '../../infrastructure/providers/config/app-config.provider';
 import { provideConfig } from '../../infrastructure/providers/config/config.provider';
 import { configCacheProvider } from '../../infrastructure/providers/cache/config-cache.provider';
 import { configPageRepositoryProvider, configSiteRepositoryProvider, serverPageRepositoryProvider } from '../../infrastructure/providers/repository/config-repository.providers';
@@ -22,7 +21,6 @@ const serverConfig: ApplicationConfig = {
     provideServerRendering(), 
     // Config provider must be first since other providers depend on it
     provideConfig(),
-    provideAppConfig(),
     // Cache provider comes next
     configCacheProvider,
     // Database connection provider

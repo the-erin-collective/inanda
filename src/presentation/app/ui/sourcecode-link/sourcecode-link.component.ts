@@ -27,26 +27,15 @@ export class SourcecodeLinkComponent implements OnInit {
   public showGithubBanner = false;
   public githubBannerUrl = '';
   constructor(
-    @Optional() @Inject(GITHUB_BANNER_CONFIG) private bannerConfig: GithubBannerConfig | null,
     @Optional() private configService: ConfigService
-  ) {
-    console.debug('SourcecodeLinkComponent constructor called', bannerConfig);
-  }
+  ) { }
+  
   public async ngOnInit(): Promise<void> {
     try {
-      // Use bannerConfig if available, otherwise fallback to ConfigService
-      if (this.bannerConfig) {
-        console.debug('SourcecodeLinkComponent: Using injected banner config');
-        this.showGithubBanner = !!this.bannerConfig.SHOW_GITHUB_BANNER;
-        this.githubBannerUrl = this.bannerConfig.GITHUB_BANNER_URL || '';
-      } else if (this.configService) {
-        console.debug('SourcecodeLinkComponent: Using ConfigService');
-        
+
         this.showGithubBanner = !!this.configService.get('SHOW_GITHUB_BANNER');
         this.githubBannerUrl = this.configService.get('GITHUB_BANNER_URL');
-      } else {
-       throw new Error('no config found');
-      }
+
     } catch (err) {
       console.error('Error in SourcecodeLinkComponent.ngOnInit:', err);
     }

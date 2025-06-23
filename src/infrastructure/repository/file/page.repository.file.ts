@@ -4,26 +4,18 @@ import { Page } from '../../../domain/entities/page/page.entity';
 import { CacheData } from '../../../domain/data/cache.interface';
 import { CACHE_PROVIDER } from '../../providers/cache/cache.tokens';
 import { FileFetchService } from '../../services/file-fetch.service';
-import { APP_CONFIG, AppConfig } from '../../providers/config/app-config.token';
+import { ConfigService } from '../../services/config.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FilePageRepository implements PageRepository {
-  private dataPath: string;
-  
+ 
   constructor(
     @Inject(CACHE_PROVIDER) private readonly cache: CacheData,
-    @Inject(APP_CONFIG) private readonly config: AppConfig,
+    private readonly configService: ConfigService,
     private readonly fileFetchService: FileFetchService
   ) {
-    // Ensure we're using the proper path format without leading ./ which causes path resolution issues
-    this.dataPath = this.config.DATA_PATH ? 
-      this.config.DATA_PATH.replace(/^\.\//g, '') : 
-      'data/repository/sites';
-    
-    console.log(`FilePageRepository initialized with dataPath: ${this.dataPath}`);
-    // Pages will be loaded from the site's directory structure
   }
 
   async findById(siteId: string, id: string): Promise<Page | null> {
@@ -79,7 +71,8 @@ export class FilePageRepository implements PageRepository {
   // Private helper methods
   private getFilePath(siteId: string, id: string): string {
     // Build the relative URL for HTTP fetch
-    return `presentation/assets/${this.dataPath}/${siteId}/pages/${id}.json`;
+    const dataPath = this.configService.get<string>('DATA_PATH');
+    return `presentation/assets/${dataPath}/${siteId}/pages/${id}.json`;
   }
 
   private async loadPageFromFile(siteId: string, id: string): Promise<Page | null> {
