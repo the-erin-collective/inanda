@@ -1,0 +1,173 @@
+{
+  "_id": "page-4",
+  "title": "Page 4",
+  "root": {
+    "base": {
+      "type": "base",
+      "children": [
+        {
+          "_id": "stylesheet-stylesheet-4",
+          "type": "stylesheet",
+          "styles": [
+            {
+              "_id": "panel-preview-4",
+              "name": "Preview Panel Style",
+              "properties": {
+                "backgroundColor": "#3c5837ff",
+                "foregroundColor": "#ffffff",
+                "paddingLeft": "20px",
+                "paddingRight": "20px",
+                "paddingTop": "15px",
+                "paddingBottom": "15px",
+                "horizontalAlignment": "center",
+                "verticalAlignment": "center",
+                "fillSpace": true,
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "panel-preview-hover-4",
+              "name": "Preview Panel Hover Style",
+              "properties": {
+                "backgroundColor": "#3c5837ff",
+                "foregroundColor": "#ffffff",
+                "paddingLeft": "20px",
+                "paddingRight": "20px",
+                "paddingTop": "15px",
+                "paddingBottom": "15px",
+                "horizontalAlignment": "center",
+                "verticalAlignment": "center",
+                "fillSpace": true,
+                "borderWidth": "4",
+                "borderColor": "#FFFFFF",
+                "borderStyle": "solid",
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "h1-preview-4",
+              "name": "Preview Heading Style",
+              "properties": {
+                "fontSize": "92",
+                "fontWeight": "bold",
+                "marginTop": "30px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "p-preview-4",
+              "name": "Preview Paragraph Style",
+              "properties": {
+                "fontSize": "48",
+                "fontWeight": "bold",
+                "marginTop": "15px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "panel-core-4",
+              "name": "Core Panel Style",
+              "properties": {
+                "backgroundColor": "#caffbf",
+                "foregroundColor": "#000000",
+                "paddingLeft": "20px",
+                "paddingRight": "20px",
+                "paddingTop": "15px",
+                "paddingBottom": "15px",
+                "horizontalAlignment": "center",
+                "verticalAlignment": "center",
+                "fillSpace": true
+              }
+            },
+            {
+              "_id": "h1-4",
+              "name": "Heading Style",
+              "properties": {
+                "fontSize": "52",
+                "fontWeight": "bold",
+                "marginTop": "30px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center"
+              }
+            },
+            {
+              "_id": "p-4",
+              "name": "Paragraph Style",
+              "properties": {
+                "fontSize": "28",
+                "marginTop": "15px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center"
+              }
+            }
+          ]
+        }
+      ],
+      "styleIds": []
+    },
+    "core": {
+      "type": "core",
+      "children": [
+        {
+          "_id": "panel-core-4",
+          "type": "panel",
+          "children": [
+            {
+              "type": "h1",
+              "text": "Portfolio Showcase",
+              "_id": "h1-4"
+            },
+            {
+              "type": "p",
+              "text": "Browse through our collection of completed projects spanning various industries and technologies.",
+              "_id": "p-4"
+            },
+            {
+              "type": "p",
+              "text": "Each case study demonstrates our problem-solving approach and attention to detail.",
+              "_id": "p-4"
+            },
+            {
+              "type": "p",
+              "text": "We're proud of the diverse range of clients we've helped succeed in their digital transformation.",
+              "_id": "p-4"
+            }
+          ]
+        }
+      ]
+    },
+    "preview": {
+      "type": "preview",
+      "children": [
+        {
+          "_id": "panel-preview-4",
+          "type": "panel",
+          "children": [
+            {
+              "type": "h1",
+              "text": "Portfolio",
+              "_id": "h1-preview-4"
+            },
+            {
+              "type": "p",
+              "text": "See our work in action across different industries.",
+              "_id": "p-preview-4"
+            }
+          ]
+        }
+      ]
+    },
+    "script": {
+      "type": "script",
+      "children": []
+    },
+    "type": "root"
+  },
+  "siteId": "site-001"
+}

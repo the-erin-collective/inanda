@@ -5,8 +5,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build -c development",
-    "build:prod": "ng build -c production",
+    "build": "ng build -c development && node tools/copy-static.js development",
+    "build:prod": "ng build -c production && node tools/copy-static.js production",
     "build:both": "npm run build && npm run build:prod",
     "test": "ng test",
     "lint": "ng lint",
@@ -33,6 +33,7 @@
     "@babylonjs/materials": "^8.4.0",
     "@types/express": "^5.0.3",
     "bootstrap": "^5.3.3",
+    "chalk": "^5.4.1",
     "core-js": "^3.41.0",
     "dotenv": "^16.5.0",
     "earcut": "^3.0.1",

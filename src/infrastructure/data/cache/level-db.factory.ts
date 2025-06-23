@@ -1,6 +1,7 @@
 import { Level } from 'level';
 import { join } from 'path';
-import { mkdir, access, rm } from 'fs/promises';
+import { mkdir, access, rm, readFile } from 'fs/promises';
+import { environment } from '../../environments/environment.server';
 
 // This is a singleton that holds the LevelDB instance
 let db: Level<string, any> | null = null;
@@ -20,6 +21,13 @@ export async function createLevelDB(): Promise<Level<string, any>> {
   if (db) {
     console.log('LevelDB already initialized, reusing existing instance');
     return db;
+  }
+  
+  // Check configuration before initializing
+
+  if (environment.USE_LEVEL_DB === false) {
+    console.log('LevelDB initialization skipped - USE_LEVEL_DB=false in config');
+    throw new Error('LevelDB is disabled in configuration (USE_LEVEL_DB=false)');
   }
 
   // Use process.cwd() which is reliable in Node.js environments

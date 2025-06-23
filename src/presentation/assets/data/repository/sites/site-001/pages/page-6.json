@@ -1,0 +1,173 @@
+{
+  "_id": "page-6",
+  "title": "Page 6",
+  "root": {
+    "base": {
+      "type": "base",
+      "children": [
+        {
+          "_id": "stylesheet-stylesheet-6",
+          "type": "stylesheet",
+          "styles": [
+            {
+              "_id": "panel-preview-6",
+              "name": "Preview Panel Style",
+              "properties": {
+                "backgroundColor": "#304361ff",
+                "foregroundColor": "#ffffff",
+                "paddingLeft": "20px",
+                "paddingRight": "20px",
+                "paddingTop": "15px",
+                "paddingBottom": "15px",
+                "horizontalAlignment": "center",
+                "verticalAlignment": "center",
+                "fillSpace": true,
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "panel-preview-hover-6",
+              "name": "Preview Panel Hover Style",
+              "properties": {
+                "backgroundColor": "#304361ff",
+                "foregroundColor": "#ffffff",
+                "paddingLeft": "20px",
+                "paddingRight": "20px",
+                "paddingTop": "15px",
+                "paddingBottom": "15px",
+                "horizontalAlignment": "center",
+                "verticalAlignment": "center",
+                "fillSpace": true,
+                "borderWidth": "4",
+                "borderColor": "#FFFFFF",
+                "borderStyle": "solid",
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "h1-preview-6",
+              "name": "Preview Heading Style",
+              "properties": {
+                "fontSize": "92",
+                "fontWeight": "bold",
+                "marginTop": "30px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "p-preview-6",
+              "name": "Preview Paragraph Style",
+              "properties": {
+                "fontSize": "48",
+                "fontWeight": "bold",
+                "marginTop": "15px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "panel-core-6",
+              "name": "Core Panel Style",
+              "properties": {
+                "backgroundColor": "#a0c4ff",
+                "foregroundColor": "#000000",
+                "paddingLeft": "20px",
+                "paddingRight": "20px",
+                "paddingTop": "15px",
+                "paddingBottom": "15px",
+                "horizontalAlignment": "center",
+                "verticalAlignment": "center",
+                "fillSpace": true
+              }
+            },
+            {
+              "_id": "h1-6",
+              "name": "Heading Style",
+              "properties": {
+                "fontSize": "52",
+                "fontWeight": "bold",
+                "marginTop": "30px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center"
+              }
+            },
+            {
+              "_id": "p-6",
+              "name": "Paragraph Style",
+              "properties": {
+                "fontSize": "28",
+                "marginTop": "15px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center"
+              }
+            }
+          ]
+        }
+      ],
+      "styleIds": []
+    },
+    "core": {
+      "type": "core",
+      "children": [
+        {
+          "_id": "panel-core-6",
+          "type": "panel",
+          "children": [
+            {
+              "type": "h1",
+              "text": "Latest News & Updates",
+              "_id": "h1-6"
+            },
+            {
+              "type": "p",
+              "text": "Stay informed about our newest projects, technology insights, and company announcements.",
+              "_id": "p-6"
+            },
+            {
+              "type": "p",
+              "text": "We regularly share our knowledge through blog posts, tutorials, and case studies.",
+              "_id": "p-6"
+            },
+            {
+              "type": "p",
+              "text": "Follow our journey as we continue to push the boundaries of web technology.",
+              "_id": "p-6"
+            }
+          ]
+        }
+      ]
+    },
+    "preview": {
+      "type": "preview",
+      "children": [
+        {
+          "_id": "panel-preview-6",
+          "type": "panel",
+          "children": [
+            {
+              "type": "h1",
+              "text": "News",
+              "_id": "h1-preview-6"
+            },
+            {
+              "type": "p",
+              "text": "Catch up on our latest developments and insights.",
+              "_id": "p-preview-6"
+            }
+          ]
+        }
+      ]
+    },
+    "script": {
+      "type": "script",
+      "children": []
+    },
+    "type": "root"
+  },
+  "siteId": "site-001"
+}

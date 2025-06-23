@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose';
-import * as dotenv from 'dotenv';
+import * as fs from 'fs';
+import * as path from 'path';
 import { createLevelDB, getLevelDB, closeLevelDB, resetCache } from '../src/infrastructure/data/cache/level-db.factory';
 
 import { Site } from '../src/domain/entities/site/site.entity';
@@ -12,17 +13,34 @@ import { PanelNode } from '../src/domain/entities/page/content/items/panel.entit
 import { H1Node } from '../src/domain/entities/page/content/items/text/h1.entity';
 import { PNode } from '../src/domain/entities/page/content/items/text/p.entity';
 import { PreviewNode } from '../src/domain/entities/page/containers/preview.entity';
-import { Style } from '../src/domain/entities/style/style.entity';
+import { Stylesheet } from '../src/domain/entities/style/stylesheet.entity';
 import { StylesheetNode } from '../src/domain/entities/page/content/items/stylesheet.entity';
 import { SitemapType } from '../src/domain/entities/site/sitemap-type.enum';
+import { AppConfig } from '../src/infrastructure/providers/config/app-config.token';
+import { environment } from 'src/infrastructure/environments/environment.server';
 
-// Load .env if present
-dotenv.config();
+// Load server runtime configuration
+const isProd = process.env['NODE_ENV'] === 'production';
+const cfgFile = isProd ? 'config.prod.json' : 'config.dev.json';
+let serverConfig: AppConfig;
+try {
+  serverConfig = JSON.parse(
+    fs.readFileSync(path.join(process.cwd(), cfgFile), 'utf-8')
+  );
+  console.log(`Loaded server config for seed from ${cfgFile}`);
+} catch (err) {
+  console.error(`Failed to load server config (${cfgFile}):`, err);
+}
 
-const MONGODB_URI = process.env['MONGO_URI'];
+if(!serverConfig){
+  console.error('❌ Unable to read config.json file.');
+  process.exit(1);
+}
+
+const MONGODB_URI = environment.MONGO_URI;
 
 if (!MONGODB_URI) {
-  console.error('❌ MONGO_URI is not set in .env file.');
+  console.error('❌ MONGO_URI is not set in config.json file.');
   process.exit(1);
 }
 
@@ -43,8 +61,6 @@ const pageSchema = new mongoose.Schema({
   siteId: String,
   root: mongoose.Schema.Types.Mixed,
 });
-
-
 
 const SiteModel = mongoose.model('Site', siteSchema);
 const PageModel = mongoose.model('Page', pageSchema);
@@ -273,10 +289,12 @@ function createPage(index: number, siteId: string): Page {
 
 async function seed() {
   try {
+    if(environment.USE_LEVEL_DB){
     // Initialize LevelDB and clear cache
-    await createLevelDB();
-    await resetCache();
-    console.log('Cache cleared successfully');
+      await createLevelDB();
+      await resetCache();
+      console.log('Cache cleared successfully');
+    }
 
     await mongoose.connect(MONGODB_URI);
     console.log('Connected to MongoDB');    // Clear database
@@ -291,9 +309,10 @@ async function seed() {
       SitemapType.HEX_FLOWER,
       'page-1',
       'PAINT'
-    );    const pages: Page[] = [];
-
-    for (let i = 1; i <= 7; i++) {      
+    );
+    const pages: Page[] = [];
+    
+    for (let i = 1; i <= 7; i++) {
       const page = createPage(i, siteId);
       pages.push(page);
       site.pageOrder.push(page.id);
@@ -308,12 +327,14 @@ async function seed() {
     await PageModel.insertMany(pageDocs);
     console.log('✅ Pages created');
 
-    console.log('✅ Seeded site with 7 pages.');
+    console.log('✅ Seeded site and 7 pages.');
   } catch (err) {
     console.error('❌ Error seeding:', err);
   } finally {
     await mongoose.disconnect();
-    await closeLevelDB();
+    if(environment.USE_LEVEL_DB){
+      await closeLevelDB();
+    }
     console.log('Disconnected from MongoDB and closed cache');
   }
 }

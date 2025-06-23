@@ -2,77 +2,111 @@ import { Injectable, Inject } from '@angular/core';
 import { SiteRepository } from '../../../domain/repository/site.repository.interface';
 import { Site } from '../../../domain/entities/site/site.entity';
 import { SiteContent } from '../../../domain/aggregates/site-content.aggregate';
-import { FileRepositoryBase } from './file-repository.base';
-import { FilePageRepository } from './page.repository.file';
 import { CacheData } from '../../../domain/data/cache.interface';
 import { CACHE_PROVIDER } from '../../providers/cache/cache.tokens';
-import * as path from 'path';
-import * as fs from 'fs';
+import { FileFetchService } from '../../services/file-fetch.service';
+import { APP_CONFIG, AppConfig } from '../../providers/config/app-config.token';
 
-@Injectable()
-export class FileSiteRepository extends FileRepositoryBase<Site> implements SiteRepository {
-  private readonly pageRepository: FilePageRepository;  constructor(
-    @Inject(CACHE_PROVIDER) private readonly cache: CacheData
+@Injectable({
+  providedIn: 'root',
+})
+export class FileSiteRepository implements SiteRepository {
+  private readonly defaultSiteId: string = 'site-001';
+  private dataPath: string;
+  
+  constructor(
+    @Inject(CACHE_PROVIDER) private readonly cache: CacheData,
+    @Inject(APP_CONFIG) private readonly config: AppConfig,
+    private readonly fileFetchService: FileFetchService
   ) {
-    // Use 'sites' entityType, but we'll override the file access method
-    super({ siteId: 'site-001', entityType: 'sites' });
-    this.pageRepository = new FilePageRepository(this.cache);
-  }async findById(id: string): Promise<Site | null> {
-    // Use the site ID directly as the filename, no special cases
-    console.log(`FileSiteRepository: Looking for site with ID ${id}, using filename ${id}.json`);
+    this.dataPath = config.DATA_PATH;
+    console.log(`FileSiteRepository initialized with dataPath: ${this.dataPath}`);
+  }
+
+  async findById(id: string): Promise<Site | null> {
+    const cacheKey = `site:${id}`;
+    const hasCachedData = await this.cache.exists(cacheKey);
     
-    const data = await this.readJson(id);
-    if (data) {
-      console.log(`FileSiteRepository: Found site data for ${id}`);
-    } else {
-      console.log(`FileSiteRepository: No site data found for ${id}`);
+    // If we have cached data, use it
+    if (hasCachedData) {
+      console.log(`Site data for ID ${id} found in cache`);
+      return this.cache.getData(cacheKey, () => this.loadSiteFromFile(id));
     }
     
-    return data ? Site.fromJSON(data as any) : null;
-  }
-
-  async findByIdWithPages(id: string): Promise<SiteContent | null> {
-    const site = await this.findById(id);
-    if (!site) return null;
-
-    const pages = await this.pageRepository.findByIds(site.pageOrder);
-    return new SiteContent(site, pages);
-  }
-
-  async save(site: Site): Promise<Site> {
-    await this.writeJson(site.id, site.toJSON());
+    // Otherwise load from file and cache it
+    console.log(`Loading site data for ID ${id} from file`);
+    const site = await this.loadSiteFromFile(id);
+    if (site) {
+      await this.cache.put(cacheKey, site);
+    }
+    
     return site;
   }
 
-  async delete(id: string): Promise<void> {
-    await this.deleteJson(id);
+  async findByIdWithPages(id: string): Promise<SiteContent | null> {
+    const cacheKey = `site-content:${id}`;
+    const hasCachedData = await this.cache.exists(cacheKey);
+    
+    // If we have cached data, use it
+    if (hasCachedData) {
+      console.log(`Site content for ID ${id} found in cache`);
+      return this.cache.getData(cacheKey, () => this.loadSiteContentFromFile(id));
+    }
+    
+    // Otherwise load from file and cache it
+    console.log(`Loading site content for ID ${id} from file`);
+    const siteContent = await this.loadSiteContentFromFile(id);
+    if (siteContent) {
+      await this.cache.put(cacheKey, siteContent);
+    }
+    
+    return siteContent;
   }
-  // Override the readJson method to look for site data in the parent directory
-  protected override async readJson<TData = Record<string, unknown>>(id: string): Promise<TData | null> {
+
+  async save(site: Site): Promise<Site> {
+    throw new Error('FileSiteRepository.save is not implemented in read-only mode.');
+  }
+
+  async delete(id: string): Promise<void> {
+    throw new Error('FileSiteRepository.delete is not implemented in read-only mode.');
+  }
+
+  // Private helper methods
+  private async loadSiteFromFile(id: string): Promise<Site | null> {
+    // Path should use the correct repository structure
+    // The correct path should include /repository/sites/ before the site ID
+    const fileUrl = `presentation/assets/${this.dataPath}/${id}/${id}.json`;
+    console.log(`Loading site data for ID ${id} from file: ${fileUrl}`);
+    
     try {
-      // For site data, look in the parent directory (directly in /site-001/)
-      const parentDir = path.dirname(this.basePath);
-      const filePath = path.join(parentDir, `${id}.json`);
-      console.log(`FileSiteRepository: Looking for site file at path: ${filePath}`);
+      const siteData = await this.fileFetchService.fetchJson<Site>(fileUrl);
+      return siteData as Site;
+    } catch (error: any) {
+      // File not found or invalid JSON
+      console.error(`Site file not found: ${fileUrl}`, error);
       
-      const content = await fs.promises.readFile(filePath, 'utf-8');
-      console.log(`FileSiteRepository: Successfully read site file: ${filePath}`);
-      return JSON.parse(content) as TData;
-    } catch (err) {
-      console.log(`FileSiteRepository: Error reading site file: ${err.code || err.message}`);
-      if (err.code === 'ENOENT') return null;
-      throw err;
+      // Try the alternative path structure as a fallback
+      if (error.status === 404) {
+        console.log(`Site file not found at primary location.`);
+        throw error;
+      }
+      
+      console.error(`Error loading site from file ${fileUrl}:`, error);
+      throw error;
     }
   }
-  // Override writeJson to save site data in the parent directory
-  protected override async writeJson(id: string, data: Record<string, unknown>): Promise<void> {
-    const parentDir = path.dirname(this.basePath);
-    const filePath = path.join(parentDir, `${id}.json`);
-    console.log(`FileSiteRepository: Saving site data to: ${filePath}`);
-    await fs.promises.writeFile(
-      filePath, 
-      JSON.stringify(data, null, 2), 
-      'utf-8'
-    );
+
+  private async loadSiteContentFromFile(id: string): Promise<SiteContent | null> {
+    // This is a simplified implementation. In a real scenario, you'd load pages from separate files
+    // or implement logic to extract pages from the site file
+    const site = await this.loadSiteFromFile(id);
+    if (!site) {
+      return null;
+    }
+    
+    return {
+      site: site,
+      pages: [] // In a real implementation, load the associated pages
+    };
   }
 }

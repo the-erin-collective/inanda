@@ -5,13 +5,15 @@ import { SITE_REPOSITORY } from '../../../domain/repository/site.repository.inte
 import { ClientSiteRepository } from '../../repository/client/site.repository.client';
 import { TransferState } from '@angular/core';
 
-export const repositoryProviders: StaticProvider[] = [
+export const clientRepositoryProviders: StaticProvider[] = [
   {
     provide: PAGE_REPOSITORY,
-    useValue: new ClientPageRepository(new TransferState()),
+    useFactory: (transferState: TransferState) => new ClientPageRepository(transferState),
+    deps: [TransferState]
   },
   {
     provide: SITE_REPOSITORY,
-    useValue: new ClientSiteRepository(new TransferState()),
+    useFactory: (transferState: TransferState) => new ClientSiteRepository(transferState),
+    deps: [TransferState]
   }
 ];

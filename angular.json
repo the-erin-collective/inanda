@@ -47,7 +47,7 @@
             "scripts": [],
             "browser": "src/presentation/app/main.ts",
             "server": "src/integration/bootstrap/main.server.ts",
-            "prerender": false,
+            "prerender": true,
             "ssr": {
               "entry": "src/integration/bootstrap/server.ts"
             }
@@ -57,12 +57,6 @@
               "outputPath": {
                 "base": "dist/prod"
               },
-              "fileReplacements": [
-                {
-                  "replace": "src/infrastructure/environments/environment.ts",
-                  "with": "src/infrastructure/environments/environment.prod.ts"
-                }
-              ],
               "outputHashing": "all",
               "budgets": [
                 {
@@ -80,6 +74,12 @@
               "assets": [
                 "src/presentation/assets",
                 "src/presentation/assets/favicon.ico"
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/presentation/assets/config.json",
+                  "with": "config.prod.json"
+                }
               ]
             },
             "development": {
@@ -93,6 +93,12 @@
               "assets": [
                 "src/presentation/assets",
                 "src/presentation/assets/favicon.ico"
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/presentation/assets/config.json",
+                  "with": "config.dev.json"
+                }
               ]
             }
           },
@@ -130,7 +136,12 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/presentation/assets/favicon.ico",
-              "src/presentation/assets"
+              "src/presentation/assets",
+                {
+                  "glob": "config*.json",
+                  "input": "config",        
+                  "output": "presentation/assets" 
+                }
             ],
             "styles": [
               "src/presentation/styles/main.scss"

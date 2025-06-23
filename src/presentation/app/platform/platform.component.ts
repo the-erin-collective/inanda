@@ -36,7 +36,8 @@ export class PlatformComponent implements OnChanges {
   constructor(
     private engServ: EngineService,
     @Inject(PLATFORM_ID) private platformId: object,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {

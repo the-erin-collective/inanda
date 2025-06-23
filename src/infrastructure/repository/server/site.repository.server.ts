@@ -69,7 +69,7 @@ export class ServerSiteRepository implements SiteRepository {
       console.log(`Found site: ${JSON.stringify(site)}`);
 
       // Fetch pages based on the pageOrder array from the Site
-      const pages = await this.pageRepository.findByIds(site.pageOrder);
+      const pages = await this.pageRepository.findByIds(site.id, site.pageOrder);
       console.log(`Fetched ${pages.length} of ${site.pageOrder.length} pages for site ${siteIdToFetch}`);
 
       if (pages.length !== site.pageOrder.length) {

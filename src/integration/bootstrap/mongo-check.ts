@@ -1,15 +1,25 @@
 import * as net from 'net';
+import { environment } from '../../infrastructure/environments/environment.server';
 
 /**
  * Simple TCP port checker that tests if MongoDB port is open
  * This runs before the actual app bootstrap to detect basic connectivity issues
  */
 export async function checkMongoDBConnectivity(): Promise<boolean> {
-  // Get MongoDB URI from environment variables
-  const MONGO_URI = process.env['MONGO_URI'];
+  // Load config directly from file
+
+  console.log(`[MongoDB Check] Using environment:`, environment);
+  // Check if we're using MongoDB storage
+  if (environment.PERSISTENT_STORAGE !== 'MONGODB') {
+    console.log(`MongoDB connectivity check skipped - using ${environment.PERSISTENT_STORAGE} storage`);
+    return false;
+  }
+  
+  // Get MongoDB URI from config
+  const MONGO_URI = environment.MONGO_URI || process.env['MONGO_URI'];
   
   if (!MONGO_URI) {
-    console.log('No MONGO_URI environment variable set, skipping connectivity check');
+    console.log('No MONGO_URI found in config or environment, skipping connectivity check');
     return false;
   }
   

@@ -44,9 +44,8 @@ Thumbs.db
 # Project specific
 package-lock.json
 .env
-tools/**/*.js
+tools/seed.js
+tools/migrate.js
 src/**/*.js
 package-lock.json
 /cache
-/tools/dist
-/data/repository

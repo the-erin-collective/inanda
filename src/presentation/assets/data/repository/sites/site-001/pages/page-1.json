@@ -1,0 +1,173 @@
+{
+  "_id": "page-1",
+  "title": "Page 1",
+  "root": {
+    "base": {
+      "type": "base",
+      "children": [
+        {
+          "_id": "stylesheet-stylesheet-1",
+          "type": "stylesheet",
+          "styles": [
+            {
+              "_id": "panel-preview-1",
+              "name": "Preview Panel Style",
+              "properties": {
+                "backgroundColor": "#535332ff",
+                "foregroundColor": "#ffffff",
+                "paddingLeft": "20px",
+                "paddingRight": "20px",
+                "paddingTop": "15px",
+                "paddingBottom": "15px",
+                "horizontalAlignment": "center",
+                "verticalAlignment": "center",
+                "fillSpace": true,
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "panel-preview-hover-1",
+              "name": "Preview Panel Hover Style",
+              "properties": {
+                "backgroundColor": "#535332ff",
+                "foregroundColor": "#ffffff",
+                "paddingLeft": "20px",
+                "paddingRight": "20px",
+                "paddingTop": "15px",
+                "paddingBottom": "15px",
+                "horizontalAlignment": "center",
+                "verticalAlignment": "center",
+                "fillSpace": true,
+                "borderWidth": "4",
+                "borderColor": "#FFFFFF",
+                "borderStyle": "solid",
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "h1-preview-1",
+              "name": "Preview Heading Style",
+              "properties": {
+                "fontSize": "92",
+                "fontWeight": "bold",
+                "marginTop": "30px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "p-preview-1",
+              "name": "Preview Paragraph Style",
+              "properties": {
+                "fontSize": "48",
+                "fontWeight": "bold",
+                "marginTop": "15px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "panel-core-1",
+              "name": "Core Panel Style",
+              "properties": {
+                "backgroundColor": "#fdffb6",
+                "foregroundColor": "#000000",
+                "paddingLeft": "20px",
+                "paddingRight": "20px",
+                "paddingTop": "15px",
+                "paddingBottom": "15px",
+                "horizontalAlignment": "center",
+                "verticalAlignment": "center",
+                "fillSpace": true
+              }
+            },
+            {
+              "_id": "h1-1",
+              "name": "Heading Style",
+              "properties": {
+                "fontSize": "52",
+                "fontWeight": "bold",
+                "marginTop": "30px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center"
+              }
+            },
+            {
+              "_id": "p-1",
+              "name": "Paragraph Style",
+              "properties": {
+                "fontSize": "28",
+                "marginTop": "15px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center"
+              }
+            }
+          ]
+        }
+      ],
+      "styleIds": []
+    },
+    "core": {
+      "type": "core",
+      "children": [
+        {
+          "_id": "panel-core-1",
+          "type": "panel",
+          "children": [
+            {
+              "type": "h1",
+              "text": "Welcome to Our Home",
+              "_id": "h1-1"
+            },
+            {
+              "type": "p",
+              "text": "Our digital home showcases the latest in web technology and interactive design. Explore our unique approach to digital experiences.",
+              "_id": "p-1"
+            },
+            {
+              "type": "p",
+              "text": "We believe in creating memorable, engaging digital spaces that tell your story in innovative ways.",
+              "_id": "p-1"
+            },
+            {
+              "type": "p",
+              "text": "Click through our hexagonal navigation to discover more about our services and approach.",
+              "_id": "p-1"
+            }
+          ]
+        }
+      ]
+    },
+    "preview": {
+      "type": "preview",
+      "children": [
+        {
+          "_id": "panel-preview-1",
+          "type": "panel",
+          "children": [
+            {
+              "type": "h1",
+              "text": "Home",
+              "_id": "h1-preview-1"
+            },
+            {
+              "type": "p",
+              "text": "Your journey starts here. Click to enter our digital space.",
+              "_id": "p-preview-1"
+            }
+          ]
+        }
+      ]
+    },
+    "script": {
+      "type": "script",
+      "children": []
+    },
+    "type": "root"
+  },
+  "siteId": "site-001"
+}

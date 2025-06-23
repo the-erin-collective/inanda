@@ -5,6 +5,7 @@ import { SITE_REPOSITORY } from '../../../domain/repository/site.repository.inte
 import { ServerSiteRepository } from '../../repository/server/site.repository.server';
 import { CACHE_PROVIDER } from '../cache/cache.tokens';
 import { CacheData } from '../../../domain/data/cache.interface';
+import { MONGO_CONNECTION_FACTORY, MongoConnectionFactory } from '../../data/db/mongo.factory';
 
 export const repositoryProviders: StaticProvider[] = [
   {
@@ -24,9 +25,9 @@ export const repositoryProviders: StaticProvider[] = [
   // Provide the ServerPageRepository as a standalone provider
   {
     provide: ServerPageRepository,
-    useFactory: (cache: CacheData) => {
-      return new ServerPageRepository(cache);
+    useFactory: (cache: CacheData, mongoConnectionFactory?: MongoConnectionFactory) => {
+      return new ServerPageRepository(cache, mongoConnectionFactory);
     },
-    deps: [CACHE_PROVIDER]
+    deps: [CACHE_PROVIDER, [new Optional(), MONGO_CONNECTION_FACTORY]]
   }
 ];

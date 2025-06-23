@@ -1,23 +1,29 @@
-import { Injectable, Inject } from '@angular/core';
-import { makeStateKey } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { TransferState } from '@angular/core';
 import { Site } from '../../../domain/entities/site/site.entity';
 import { SiteRepository } from 'src/domain/repository/site.repository.interface';
 import { SiteContent } from 'src/domain/aggregates/site-content.aggregate';
-
-const SITE_CONTENT_KEY = makeStateKey<SiteContent>('siteContent');
+import { SITE_CONTENT_KEY } from '../../../common/tokens/transfer-state.tokens';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClientSiteRepository implements SiteRepository {
-  constructor(@Inject(TransferState) private transferState: TransferState) {}
-
+  constructor(private transferState: TransferState) {
+    console.log('ClientSiteRepository constructor - SITE_CONTENT_KEY:', SITE_CONTENT_KEY);
+  }
   async findById(id: string): Promise<Site | null> {
+    console.log(`ClientSiteRepository: Finding site by ID: ${id}`);
+    
+    if (!this.transferState.hasKey(SITE_CONTENT_KEY)) {
+      console.warn('ClientSiteRepository: No preloaded site content found. Key not present:', SITE_CONTENT_KEY);
+      return null;
+    }
+    
     const siteContent = this.transferState.get(SITE_CONTENT_KEY, null);
     
     if (!siteContent) {
-      console.warn('ClientSiteRepository: No preloaded site content found.');
+      console.warn('ClientSiteRepository: Preloaded site content is null');
       return null;
     }
 

@@ -13,7 +13,7 @@ export class ServerPageRepository implements PageRepository {
     @Inject(CACHE_PROVIDER) private readonly cache: CacheData
   ) {}
 
-  async findById(id: string): Promise<Page | null> {
+  async findById(siteId: string, id: string): Promise<Page | null> {
     const cacheKey = `page:${id}`;
     return this.cache.getData(cacheKey, async () => {
       try {
@@ -36,7 +36,29 @@ export class ServerPageRepository implements PageRepository {
     });
   }
 
-  async save(page: Page): Promise<Page> {
+  async save(siteId: string, page: Page): Promise<Page> {
+    const pageData = {
+      _id: page.id, // Use the string ID directly
+      title: page.title,
+      root: {
+        base: { children: page.root.base.children ?? [] },
+        core: { children: page.root.core.children ?? [] },
+        preview: { children: page.root.preview.children ?? [] },
+        script: { children: page.root.script.children ?? [] },
+        type: page.root.type,
+      },
+      siteId: page.siteId,
+    };
+
+    const pageModel = page.id
+      ? await PageModel.findByIdAndUpdate(page.id, pageData, { new: true, upsert: true }).exec()
+      : await new PageModel(pageData).save();
+
+    // Invalidate cache
+    await this.cache.invalidate(`page:${page.id}`);
+    
+    // Explicitly store in cache with a put operation to ensure it's cached
+    const cacheKey = `page:${page.id}`;
     try {
       // Save to MongoDB
       await PageModel.findByIdAndUpdate(
@@ -58,19 +80,11 @@ export class ServerPageRepository implements PageRepository {
     }
   }
 
-  async delete(id: string): Promise<void> {
-    try {
-      // Delete from MongoDB
-      await PageModel.findByIdAndDelete(id);
-      // Remove from cache
-      await this.cache.invalidate(`page:${id}`);
-    } catch (err) {
-      console.error(`Error deleting page: ${err.message}`);
-      throw err;
-    }
+  async delete(siteId: string, id: string): Promise<void> {
+
   }
 
-  async findByIds(ids: string[]): Promise<Page[]> {
+  async findByIds(siteId: string, ids: string[]): Promise<Page[]> {
     // An early return if there are no IDs to avoid expensive operations
     if (!ids || ids.length === 0) {
       return [];
@@ -83,7 +97,7 @@ export class ServerPageRepository implements PageRepository {
     // Process each ID
     for (const id of ids) {
       // Try to get the page from cache/MongoDB
-      const page = await this.findById(id);
+      const page = await this.findById(siteId, id);
       if (page) {
         pages.push(page);
       }

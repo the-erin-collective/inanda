@@ -1,0 +1,6 @@
+{
+  "production": true,
+  "DATA_PATH": "/assets/data/repository/sites",
+  "SHOW_GITHUB_BANNER": true,
+  "GITHUB_BANNER_URL": "https://github.com/the-erin-collective/web-home"
+}

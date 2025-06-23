@@ -1,0 +1,173 @@
+{
+  "_id": "page-7",
+  "title": "Page 7",
+  "root": {
+    "base": {
+      "type": "base",
+      "children": [
+        {
+          "_id": "stylesheet-stylesheet-7",
+          "type": "stylesheet",
+          "styles": [
+            {
+              "_id": "panel-preview-7",
+              "name": "Preview Panel Style",
+              "properties": {
+                "backgroundColor": "#573657ff",
+                "foregroundColor": "#ffffff",
+                "paddingLeft": "20px",
+                "paddingRight": "20px",
+                "paddingTop": "15px",
+                "paddingBottom": "15px",
+                "horizontalAlignment": "center",
+                "verticalAlignment": "center",
+                "fillSpace": true,
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "panel-preview-hover-7",
+              "name": "Preview Panel Hover Style",
+              "properties": {
+                "backgroundColor": "#573657ff",
+                "foregroundColor": "#ffffff",
+                "paddingLeft": "20px",
+                "paddingRight": "20px",
+                "paddingTop": "15px",
+                "paddingBottom": "15px",
+                "horizontalAlignment": "center",
+                "verticalAlignment": "center",
+                "fillSpace": true,
+                "borderWidth": "4",
+                "borderColor": "#FFFFFF",
+                "borderStyle": "solid",
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "h1-preview-7",
+              "name": "Preview Heading Style",
+              "properties": {
+                "fontSize": "92",
+                "fontWeight": "bold",
+                "marginTop": "30px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "p-preview-7",
+              "name": "Preview Paragraph Style",
+              "properties": {
+                "fontSize": "48",
+                "fontWeight": "bold",
+                "marginTop": "15px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center",
+                "textVerticalAlignment": "center"
+              }
+            },
+            {
+              "_id": "panel-core-7",
+              "name": "Core Panel Style",
+              "properties": {
+                "backgroundColor": "#FF9BFF",
+                "foregroundColor": "#000000",
+                "paddingLeft": "20px",
+                "paddingRight": "20px",
+                "paddingTop": "15px",
+                "paddingBottom": "15px",
+                "horizontalAlignment": "center",
+                "verticalAlignment": "center",
+                "fillSpace": true
+              }
+            },
+            {
+              "_id": "h1-7",
+              "name": "Heading Style",
+              "properties": {
+                "fontSize": "52",
+                "fontWeight": "bold",
+                "marginTop": "30px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center"
+              }
+            },
+            {
+              "_id": "p-7",
+              "name": "Paragraph Style",
+              "properties": {
+                "fontSize": "28",
+                "marginTop": "15px",
+                "foregroundColor": "inherit",
+                "textHorizontalAlignment": "center"
+              }
+            }
+          ]
+        }
+      ],
+      "styleIds": []
+    },
+    "core": {
+      "type": "core",
+      "children": [
+        {
+          "_id": "panel-core-7",
+          "type": "panel",
+          "children": [
+            {
+              "type": "h1",
+              "text": "Get in Touch",
+              "_id": "h1-7"
+            },
+            {
+              "type": "p",
+              "text": "Ready to start your project? We'd love to hear from you and discuss how we can help bring your vision to life.",
+              "_id": "p-7"
+            },
+            {
+              "type": "p",
+              "text": "Our consultation process is designed to thoroughly understand your goals and requirements.",
+              "_id": "p-7"
+            },
+            {
+              "type": "p",
+              "text": "Reach out today to schedule a conversation with our team of experts.",
+              "_id": "p-7"
+            }
+          ]
+        }
+      ]
+    },
+    "preview": {
+      "type": "preview",
+      "children": [
+        {
+          "_id": "panel-preview-7",
+          "type": "panel",
+          "children": [
+            {
+              "type": "h1",
+              "text": "Contact",
+              "_id": "h1-preview-7"
+            },
+            {
+              "type": "p",
+              "text": "Let's start a conversation about your project.",
+              "_id": "p-preview-7"
+            }
+          ]
+        }
+      ]
+    },
+    "script": {
+      "type": "script",
+      "children": []
+    },
+    "type": "root"
+  },
+  "siteId": "site-001"
+}

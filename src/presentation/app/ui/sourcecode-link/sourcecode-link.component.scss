@@ -1,0 +1,34 @@
+.github-banner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.github-banner-link {
+  position: absolute;
+  top: 25px;
+  right: -37px;
+  transform: rotate(45deg);
+  width: 150px;
+  padding: 8px 0;
+  background: #2e394e;
+  color: #a7b6cf;
+  text-decoration: none;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  pointer-events: auto;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+}
+
+.github-banner-link:hover {
+  background: #3d4b66;
+  color: #e6edf3;
+}
