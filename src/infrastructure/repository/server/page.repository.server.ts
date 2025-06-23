@@ -13,23 +13,6 @@ export class ServerPageRepository implements PageRepository {
     @Inject(CACHE_PROVIDER) private readonly cache: CacheData
   ) {}
 
-  private async ensureMongoConnection(): Promise<boolean> {
-    // If we've already checked the connection status, return it
-    if (this.mongoConnected !== null) {
-      return this.mongoConnected;
-    }
-    
-    // If no connection factory is provided, assume no connection
-    if (!this.mongoConnectionFactory) {
-      this.mongoConnected = false;
-      return false;
-    }
-    
-    // Get connection status from the factory (which should now return the already determined status)
-    this.mongoConnected = await this.mongoConnectionFactory();
-    return this.mongoConnected;
-  }
-
   async findById(siteId: string, id: string): Promise<Page | null> {
     const cacheKey = `page:${id}`;
     return this.cache.getData(cacheKey, async () => {
@@ -54,12 +37,6 @@ export class ServerPageRepository implements PageRepository {
   }
 
   async save(siteId: string, page: Page): Promise<Page> {
-    // Check MongoDB connection
-    const dbAvailable = await this.ensureMongoConnection();
-    if (!dbAvailable) {
-      throw new Error('Cannot save page: MongoDB is not available');
-    }
-    
     const pageData = {
       _id: page.id, // Use the string ID directly
       title: page.title,
@@ -104,11 +81,7 @@ export class ServerPageRepository implements PageRepository {
   }
 
   async delete(siteId: string, id: string): Promise<void> {
-    // Check MongoDB connection
-    const dbAvailable = await this.ensureMongoConnection();
-    if (!dbAvailable) {
-      throw new Error('Cannot delete page: MongoDB is not available');
-    }
+
   }
 
   async findByIds(siteId: string, ids: string[]): Promise<Page[]> {
@@ -124,7 +97,7 @@ export class ServerPageRepository implements PageRepository {
     // Process each ID
     for (const id of ids) {
       // Try to get the page from cache/MongoDB
-      const page = await this.findById(id);
+      const page = await this.findById(siteId, id);
       if (page) {
         pages.push(page);
       }

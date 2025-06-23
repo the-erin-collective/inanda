@@ -19,24 +19,17 @@ import { FileSiteRepository } from '../../repository/file/site.repository.file';
 
 export const configPageRepositoryProvider: FactoryProvider = {
   provide: PAGE_REPOSITORY,
-  useFactory: (config: AppConfig, cache: CacheData, fileFetchService :FileFetchService, mongoConnectionFactory?: MongoConnectionFactory) => {
-    console.log('[configPageRepositoryProvider] Factory called');
-    console.log('[configPageRepositoryProvider] config:', config);
-    console.log('[configPageRepositoryProvider] cache:', cache);
-    console.log('[configPageRepositoryProvider] fileFetchService:', fileFetchService);
-    console.log('[configPageRepositoryProvider] mongoConnectionFactory:', mongoConnectionFactory);
-    console.log(`[configPageRepositoryProvider] Creating page repository with PERSISTENT_STORAGE=${environment.PERSISTENT_STORAGE}`);
-    
+  useFactory: (config: AppConfig, cache: CacheData, fileFetchService :FileFetchService) => {
     // Create the appropriate repository based on config
     if (environment.PERSISTENT_STORAGE === 'FILE') {
       console.log('[configPageRepositoryProvider] Using FilePageRepository');
       return new FilePageRepository(cache, config, fileFetchService);
     } else {
       console.log('[configPageRepositoryProvider] Using ServerPageRepository with MongoDB');
-      return new ServerPageRepository(cache, mongoConnectionFactory);
+      return new ServerPageRepository(cache);
     }
   },
-  deps: [APP_CONFIG, CACHE_PROVIDER, FileFetchService, [new Optional(), MONGO_CONNECTION_FACTORY]]
+  deps: [APP_CONFIG, CACHE_PROVIDER, FileFetchService, [new Optional()]]
 };
 
 /**
@@ -49,17 +42,8 @@ export const configSiteRepositoryProvider: FactoryProvider = {
     config: AppConfig, 
     cache: CacheData, 
     fileFetchService: FileFetchService,
-    pageRepository: any,  // Use any type to support both repo types
-    mongoConnectionFactory?: MongoConnectionFactory
+    pageRepository: any
   ) => {
-    console.log('[configSiteRepositoryProvider] Factory called');
-    console.log('[configSiteRepositoryProvider] config:', config);
-    console.log('[configSiteRepositoryProvider] cache:', cache);
-    console.log('[configSiteRepositoryProvider] fileFetchService:', fileFetchService);
-    console.log('[configSiteRepositoryProvider] pageRepository:', pageRepository);
-    console.log('[configSiteRepositoryProvider] mongoConnectionFactory:', mongoConnectionFactory);
-    console.log(`[configSiteRepositoryProvider] Creating site repository with PERSISTENT_STORAGE=${environment.PERSISTENT_STORAGE}`);
-    
     // Create the appropriate repository based on config
     if (environment.PERSISTENT_STORAGE === 'FILE') {
       console.log('[configSiteRepositoryProvider] Using FileSiteRepository');
@@ -67,10 +51,10 @@ export const configSiteRepositoryProvider: FactoryProvider = {
     } else {
       console.log('[configSiteRepositoryProvider] Using ServerSiteRepository with MongoDB');
       // The ServerSiteRepository expects a ServerPageRepository specifically
-      return new ServerSiteRepository(pageRepository, cache, mongoConnectionFactory);
+      return new ServerSiteRepository(pageRepository, cache);
     }
   },
-  deps: [APP_CONFIG, CACHE_PROVIDER, FileFetchService, PAGE_REPOSITORY, [new Optional(), MONGO_CONNECTION_FACTORY]]
+  deps: [APP_CONFIG, CACHE_PROVIDER, FileFetchService, PAGE_REPOSITORY]
 };
 
 /**
@@ -78,12 +62,12 @@ export const configSiteRepositoryProvider: FactoryProvider = {
  */
 export const serverPageRepositoryProvider: FactoryProvider = {
   provide: ServerPageRepository,
-  useFactory: (config: AppConfig, cache: CacheData, mongoConnectionFactory?: MongoConnectionFactory) => {
+  useFactory: (config: AppConfig, cache: CacheData) => {
     console.log(`Creating standalone ServerPageRepository with PERSISTENT_STORAGE=${environment.PERSISTENT_STORAGE}`);
     
     // Still create this regardless of config for compatibility
     // The dependency injection system will only use this when needed
-    return new ServerPageRepository(cache, mongoConnectionFactory);
+    return new ServerPageRepository(cache);
   },
-  deps: [APP_CONFIG, CACHE_PROVIDER, [new Optional(), MONGO_CONNECTION_FACTORY]]
+  deps: [APP_CONFIG, CACHE_PROVIDER]
 };
