@@ -1,0 +1,2 @@
+import './polyfills.server.mjs';
+import{a as t,d as r,o,u as p}from"./chunk-KTHBQP3E.mjs";import{a}from"./chunk-JBXNSZOT.mjs";var s=class extends p{constructor(e){super(e),this.config=e,this.object=this.registerDataInput("object",r),this.array=this.registerDataInput("array",r),this.index=this.registerDataOutput("index",o,new t(-1))}_updateOutputs(e){let h=this.object.getValue(e),i=this.array.getValue(e);i&&this.index.setValue(new t(i.indexOf(h)),e)}serialize(e){super.serialize(e)}getClassName(){return"FlowGraphIndexOfBlock"}};a("FlowGraphIndexOfBlock",s);export{s as a};

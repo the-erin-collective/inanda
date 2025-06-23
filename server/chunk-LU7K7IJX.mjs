@@ -1,0 +1,2 @@
+import './polyfills.server.mjs';
+import{b as r,d as s,e as t,f as u}from"./chunk-P42TKGEM.mjs";var i=class extends r{constructor(o,e){super(o,e,3),this._analyzer=null}get analyzer(){return this._analyzer??(this._analyzer=new u(this._subGraph))}get volume(){return t(this._subGraph,"volume")}set volume(o){let e=s(this._subGraph);if(!e)throw new Error("No volume subnode");e.volume=o}dispose(){super.dispose(),this._analyzer?.dispose(),this._analyzer=null,this._subGraph.dispose()}};export{i as a};
