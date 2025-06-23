@@ -26,7 +26,7 @@ jobs:
         run: npm ci
 
       - name: Build static site
-        run: npm run build
+        run: npm run build:prod
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
