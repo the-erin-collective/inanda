@@ -17,7 +17,13 @@ export class RootNode implements ElementNode {
     this.type = 'root';
   }
   
-  static fromJSON(root: { base: { children?: ContentNode[] }, core: { children?: ContentNode[] }, preview: { children?: ContentNode[] }, script: { children?: ContentNode[] }, type: string }): RootNode {
+  static fromJSON(root: { 
+    base: { children?: ContentNode[]; type?: string }, 
+    core: { children?: ContentNode[]; type?: string }, 
+    preview: { children?: ContentNode[]; type?: string }, 
+    script: { children?: ContentNode[]; type?: string }, 
+    type: string 
+  }): RootNode {
     const base = new BaseNode(root.base.children);
     const core = new CoreNode(root.core.children);
     const script = new ScriptNode(root.script.children);
@@ -25,13 +31,13 @@ export class RootNode implements ElementNode {
 
     return new RootNode(base, core, preview, script);
   }
-
-  toJSON(): { base: { children?: ContentNode[] }, core: { children?: ContentNode[] }, preview: { children?: ContentNode[] }, script: { children?: ContentNode[]  }, type: string}{
+  toJSON(): Record<string, unknown> {
+    // Simply call toJSON on each property, with null checking
     return {
-      base: this.base.toJSON(),
-      core: this.core.toJSON(),
-      preview: this.preview.toJSON(),
-      script: this.script.toJSON(),
+      base: this.base?.toJSON() ?? null,
+      core: this.core?.toJSON() ?? null,
+      preview: this.preview?.toJSON() ?? null,
+      script: this.script?.toJSON() ?? null,
       type: this.type,
     };
   }

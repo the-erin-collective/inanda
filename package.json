@@ -13,7 +13,8 @@
     "e2e": "ng e2e",
     "serve:ssr:web-home": "node dist/dev/server/server.mjs",
     "postinstall": "patch-package",
-    "seed": "tsc tools/seed.ts && node tools/seed.js"
+    "seed": "tsc tools/seed.ts && node tools/seed.js",
+    "migrate": "tsc tools/migrate.ts && node tools/migrate.js"
   },
   "private": true,
   "dependencies": {
@@ -46,7 +47,9 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
+    "@angular-devkit/architect": "^0.2000.3",
     "@angular-devkit/build-angular": "^20.0.0",
+    "@angular-devkit/core": "^20.0.3",
     "@angular/build": "20.0.0",
     "@angular/cli": "20.0.0",
     "@angular/compiler-cli": "20.0.0",

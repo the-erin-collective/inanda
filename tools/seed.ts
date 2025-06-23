@@ -65,6 +65,7 @@ const pageSchema = new mongoose.Schema({
 const SiteModel = mongoose.model('Site', siteSchema);
 const PageModel = mongoose.model('Page', pageSchema);
 
+
 // 2. Generate seed data
 function getPageContent(index: number) {
   const pageContents = [
@@ -136,7 +137,7 @@ function getPageContent(index: number) {
   };
 }
 
-function createStylesheet(index: number): Stylesheet {
+function createStylesheet(index: number): Style[] {
   // Define different color schemes for each page
   const colorSchemes = [
     { preview: '#535332ff', core: '#fdffb6', previewText: '#ffffff', coreText: '#000000' }, // Page 1
@@ -149,116 +150,113 @@ function createStylesheet(index: number): Stylesheet {
   ];
 
   const colors = colorSchemes[index - 1];
-  return {
-    _id: `stylesheet-${index}`,
-    name: `Page ${index} Styles`,
-    styles: [
-      {
-        _id: `panel-preview-${index}`,
-        name: 'Preview Panel Style',
-        properties: {
-          backgroundColor: colors.preview,
-          foregroundColor: colors.previewText,
-          paddingLeft: '20px',
-          paddingRight: '20px',
-          paddingTop: '15px',
-          paddingBottom: '15px',
-          horizontalAlignment: 'center',
-          verticalAlignment: 'center',
-          fillSpace: true,  // This will make it cover the hex
-          textHorizontalAlignment: 'center',
-          textVerticalAlignment: 'center'
-        }
-      },      {
-        _id: `panel-preview-hover-${index}`,
-        name: 'Preview Panel Hover Style',
-        properties: {
-          backgroundColor: colors.preview,
-          foregroundColor: colors.previewText,
-          paddingLeft: '20px',
-          paddingRight: '20px',
-          paddingTop: '15px',
-          paddingBottom: '15px',
-          horizontalAlignment: 'center',
-          verticalAlignment: 'center',          fillSpace: true,
-          borderWidth: '4',  // Border width as a string that will be parsed to integer
-          borderColor: '#FFFFFF', 
-          borderStyle: 'solid',
-          textHorizontalAlignment: 'center',
-          textVerticalAlignment: 'center'
-        }
-      },
-      {
-        _id: `h1-preview-${index}`,
-        name: 'Preview Heading Style',
-        properties: {
-          fontSize: '92',  // Increased font size
-          fontWeight: 'bold',
-          marginTop: '30px',
-          foregroundColor: 'inherit',
-          textHorizontalAlignment: 'center',
-          textVerticalAlignment: 'center'
-        }
-      },
-      {
-        _id: `p-preview-${index}`,
-        name: 'Preview Paragraph Style',
-        properties: {
-          fontSize: '48',  // Increased font size
-          fontWeight: 'bold',
-          marginTop: '15px',
-          foregroundColor: 'inherit',
-          textHorizontalAlignment: 'center',
-          textVerticalAlignment: 'center'
-        }
-      },
-      {
-        _id: `panel-core-${index}`,
-        name: 'Core Panel Style',
-        properties: {
-          backgroundColor: colors.core,
-          foregroundColor: colors.coreText,
-          paddingLeft: '20px',
-          paddingRight: '20px',
-          paddingTop: '15px',
-          paddingBottom: '15px',
-          horizontalAlignment: 'center',
-          verticalAlignment: 'center',
-          fillSpace: true  // This will make it cover the hex
-        }
-      },
-      {
-        _id: `h1-${index}`,
-        name: 'Heading Style',
-        properties: {
-          fontSize: '52',  // Increased font size
-          fontWeight: 'bold',
-          marginTop: '30px',
-          foregroundColor: 'inherit',
-          textHorizontalAlignment: 'center'  // Changed to center
-        }
-      },
-      {
-        _id: `p-${index}`,
-        name: 'Paragraph Style',
-        properties: {
-          fontSize: '28',  // Increased font size
-          marginTop: '15px',
-          foregroundColor: 'inherit',
-          textHorizontalAlignment: 'center'  // Changed to center
-        }
+  return [
+    {
+      _id: `panel-preview-${index}`,
+      name: 'Preview Panel Style',
+      properties: {
+        backgroundColor: colors.preview,
+        foregroundColor: colors.previewText,
+        paddingLeft: '20px',
+        paddingRight: '20px',
+        paddingTop: '15px',
+        paddingBottom: '15px',
+        horizontalAlignment: 'center',
+        verticalAlignment: 'center',
+        fillSpace: true,  // This will make it cover the hex
+        textHorizontalAlignment: 'center',
+        textVerticalAlignment: 'center'
       }
-    ],
-    importedStylesheetIds: []
-  };
+    },
+    {
+      _id: `panel-preview-hover-${index}`,
+      name: 'Preview Panel Hover Style',
+      properties: {
+        backgroundColor: colors.preview,
+        foregroundColor: colors.previewText,
+        paddingLeft: '20px',
+        paddingRight: '20px',
+        paddingTop: '15px',
+        paddingBottom: '15px',
+        horizontalAlignment: 'center',
+        verticalAlignment: 'center',
+        fillSpace: true,
+        borderWidth: '4',  // Border width as a string that will be parsed to integer
+        borderColor: '#FFFFFF', 
+        borderStyle: 'solid',
+        textHorizontalAlignment: 'center',
+        textVerticalAlignment: 'center'
+      }
+    },
+    {
+      _id: `h1-preview-${index}`,
+      name: 'Preview Heading Style',
+      properties: {
+        fontSize: '92',  // Increased font size
+        fontWeight: 'bold',
+        marginTop: '30px',
+        foregroundColor: 'inherit',
+        textHorizontalAlignment: 'center',
+        textVerticalAlignment: 'center'
+      }
+    },
+    {
+      _id: `p-preview-${index}`,
+      name: 'Preview Paragraph Style',
+      properties: {
+        fontSize: '48',  // Increased font size
+        fontWeight: 'bold',
+        marginTop: '15px',
+        foregroundColor: 'inherit',
+        textHorizontalAlignment: 'center',
+        textVerticalAlignment: 'center'
+      }
+    },
+    {
+      _id: `panel-core-${index}`,
+      name: 'Core Panel Style',
+      properties: {
+        backgroundColor: colors.core,
+        foregroundColor: colors.coreText,
+        paddingLeft: '20px',
+        paddingRight: '20px',
+        paddingTop: '15px',
+        paddingBottom: '15px',
+        horizontalAlignment: 'center',
+        verticalAlignment: 'center',
+        fillSpace: true  // This will make it cover the hex
+      }
+    },
+    {
+      _id: `h1-${index}`,
+      name: 'Heading Style',
+      properties: {
+        fontSize: '52',  // Increased font size
+        fontWeight: 'bold',
+        marginTop: '30px',
+        foregroundColor: 'inherit',
+        textHorizontalAlignment: 'center'  // Changed to center
+      }
+    },
+    {
+      _id: `p-${index}`,
+      name: 'Paragraph Style',
+      properties: {
+        fontSize: '28',  // Increased font size
+        marginTop: '15px',
+        foregroundColor: 'inherit',
+        textHorizontalAlignment: 'center'  // Changed to center
+      }
+    }
+  ];
 }
 
 function createPage(index: number, siteId: string): Page {
-  const stylesheet = createStylesheet(index);
+  const styles = createStylesheet(index);
   
   // Create base node with stylesheet
   const base = new BaseNode();
-  base.children = [new StylesheetNode(stylesheet._id, stylesheet.styles)];
+  base.children = [new StylesheetNode(`stylesheet-${index}`, styles)];
 
   // Prepare unique content for each page
   const pageContent = getPageContent(index);
@@ -299,9 +297,7 @@ async function seed() {
     }
 
     await mongoose.connect(MONGODB_URI);
-    console.log('Connected to MongoDB');
-
-    // Clear database
+    console.log('Connected to MongoDB');    // Clear database
     await SiteModel.deleteMany({});
     await PageModel.deleteMany({});
 

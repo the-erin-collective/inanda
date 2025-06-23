@@ -1,5 +1,5 @@
 import { Schema, model, models, Document } from 'mongoose';
-import { ContentNode } from 'src/domain/entities/page/content.entity.interface';
+import { ContentNode } from '../../../domain/entities/page/content.entity.interface';
 
 export interface PageDocument extends Document {
   _id: string; // Explicitly define _id as a string

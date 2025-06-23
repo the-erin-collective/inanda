@@ -1,4 +1,4 @@
-import { StaticProvider, Optional } from '@angular/core';
+import { StaticProvider } from '@angular/core';
 import { PAGE_REPOSITORY } from '../../../domain/repository/page.repository.interface';
 import { ServerPageRepository } from '../../repository/server/page.repository.server';
 import { SITE_REPOSITORY } from '../../../domain/repository/site.repository.interface';
@@ -10,21 +10,17 @@ import { MONGO_CONNECTION_FACTORY, MongoConnectionFactory } from '../../data/db/
 export const repositoryProviders: StaticProvider[] = [
   {
     provide: PAGE_REPOSITORY,
-    useFactory: (cache: CacheData, mongoConnectionFactory?: MongoConnectionFactory) => {
-      return new ServerPageRepository(cache, mongoConnectionFactory);
+    useFactory: (cache: CacheData) => {
+      return new ServerPageRepository(cache);
     },
-    deps: [CACHE_PROVIDER, [new Optional(), MONGO_CONNECTION_FACTORY]]
+    deps: [CACHE_PROVIDER]
   },
   {
     provide: SITE_REPOSITORY,
-    useFactory: (cache: CacheData, pageRepo: ServerPageRepository, mongoConnectionFactory?: MongoConnectionFactory) => {
-      return new ServerSiteRepository(
-        pageRepo,
-        cache,
-        mongoConnectionFactory
-      );
+    useFactory: (cache: CacheData, pageRepo: ServerPageRepository) => {
+      return new ServerSiteRepository(pageRepo, cache);
     },
-    deps: [CACHE_PROVIDER, ServerPageRepository, [new Optional(), MONGO_CONNECTION_FACTORY]]
+    deps: [CACHE_PROVIDER, ServerPageRepository]
   },
   // Provide the ServerPageRepository as a standalone provider
   {

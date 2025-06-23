@@ -5,11 +5,10 @@ export abstract class ContainerNode extends ElementNode {
   constructor(public type: string, public children: ItemNode[] = []) {
     super(type);
   }
-
   toJSON(): Record<string, unknown> {
     return {
       type: this.type,
-      children: this.children,
+      children: this.children?.map(child => child?.toJSON?.() ?? child) ?? [],
     };
   }
 }

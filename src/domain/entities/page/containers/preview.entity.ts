@@ -9,11 +9,10 @@ export class PreviewNode implements ContainerNode {
     this.type = 'preview';
     this.children = children;
   }
-
   toJSON(): Record<string, unknown> {
     return {
       type: this.type,
-      children: this.children,
+      children: this.children?.map(child => child?.toJSON?.() ?? child) ?? [],
     };
   }
 }

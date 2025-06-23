@@ -9,13 +9,11 @@ export class StylesheetNode implements ContentNode {
   constructor(stylesheetId: string, styles: Style[]) {
     this._id = `stylesheet-${stylesheetId}`;
     this.styles = styles;
-  }
-
-  toJSON(): Record<string, unknown> {
+  }  toJSON(): Record<string, unknown> {
     return {
-      _id: this._id,
+      _id: this._id ?? undefined,
       type: this.type,
-      styles: this.styles
+      styles: this.styles ?? []
     };
   }
 } 

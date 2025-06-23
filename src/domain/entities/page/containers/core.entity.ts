@@ -8,12 +8,10 @@ export class CoreNode implements ContainerNode {
   constructor(children: ContentNode[] = []) {
     this.type = 'core';
     this.children = children;
-  }
-
-  toJSON(): Record<string, unknown> {
+  }  toJSON(): Record<string, unknown> {
     return {
       type: this.type,
-      children: this.children
+      children: this.children?.map(child => child?.toJSON?.() ?? child) ?? []
     };
   }
 }
