@@ -10,7 +10,6 @@ import { SourcecodeLinkComponent } from 'src/presentation/app/ui/sourcecode-link
 import { PlatformComponent } from 'src/presentation/app/platform/platform.component';
 import { CustomUrlSerializer } from '../../infrastructure/routing/custom-url-serializer';
 import { provideConfig } from '../../infrastructure/providers/config/config.provider';
-import { provideAppConfig } from '../../infrastructure/providers/config/app-config.provider';
 import { provideGithubBannerConfig } from '../../infrastructure/providers/config/github-banner-config.provider';
 
 export const appConfig: ApplicationConfig = {
@@ -21,7 +20,6 @@ export const appConfig: ApplicationConfig = {
     ...clientRepositoryProviders,
     clientCacheProvider,
     provideConfig(),
-    provideAppConfig(),
     provideGithubBannerConfig(),
     { provide: 'UiZoneToken', useClass: SourcecodeLinkComponent },
     { provide: 'EngineZoneToken', useClass: PlatformComponent },

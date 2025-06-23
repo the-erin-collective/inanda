@@ -3,7 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { StateKey, TransferState, makeStateKey } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { AppConfig } from '../providers/config/app-config.token';
+import { existsSync, readFileSync } from 'fs';
+import { join } from 'path';
+
+// Inline AppConfig type since the token file is removed
+export interface AppConfig {
+  DATA_PATH?: string;
+  SHOW_GITHUB_BANNER: boolean;
+  GITHUB_BANNER_URL: string;
+}
 
 const CONFIG_STATE_KEY = makeStateKey<any>('app-config');
 
@@ -20,29 +28,43 @@ export class ConfigService {
         await this.loadConfig();
     }
 
-    private async loadConfig(){
-try 
-        {
-            if(isPlatformServer(this.platformId)){
-              return;
-            }
-            if (this.transferState && this.transferState.hasKey(CONFIG_STATE_KEY)) {
-               return;
-            } 
-            let config: AppConfig;
-             
-            config = await this.loadBrowserConfig();
+  private async loadConfig() {
+    try {
+      let config: AppConfig | null = null;
 
-            if(!config){
-                throw new Error(`Config failed to load.`);
-            }
-
-            this.transferState.set(CONFIG_STATE_KEY, config);
-        } catch (err) {
-            console.error('[ConfigService] Error loading config:', err);
-            // Keep using default config in case of errors
+      if (isPlatformServer(this.platformId)) {
+        // Dynamically require Node.js modules only on the server
+        const fs = require('fs');
+        const path = require('path');
+        const configPath = path.join(
+          process.cwd(),
+          process.env['NODE_ENV'] === 'production' ? 'config.prod.json' : 'config.dev.json'
+        );
+        if (fs.existsSync(configPath)) {
+          config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+          this.transferState?.set(CONFIG_STATE_KEY, config);
+        } else {
+          throw new Error(`Config file not found: ${configPath}`);
         }
+        return;
+      }
+
+      if (this.transferState && this.transferState.hasKey(CONFIG_STATE_KEY)) {
+        return;
+      }
+
+      config = await this.loadBrowserConfig();
+
+      if (!config) {
+        throw new Error(`Config failed to load.`);
+      }
+
+      this.transferState.set(CONFIG_STATE_KEY, config);
+    } catch (err) {
+      console.error('[ConfigService] Error loading config:', err);
+      // Keep using default config in case of errors
     }
+  }
 
   /**
    * Browser-side config loading via HTTP
