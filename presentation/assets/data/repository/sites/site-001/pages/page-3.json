@@ -120,22 +120,22 @@
           "children": [
             {
               "type": "h1",
-              "text": "Our Services",
+              "text": "Key Features",
               "_id": "h1-3"
             },
             {
               "type": "p",
-              "text": "We offer a wide range of digital services including web development, 3D modeling, and interactive design.",
+              "text": "Content can be rendered with materials that respond to lighting, adding visual depth that isn't available in standard web pages.",
               "_id": "p-3"
             },
             {
               "type": "p",
-              "text": "Each project is custom tailored to meet your specific needs and vision, ensuring a result that stands out.",
+              "text": "Custom shaders can be applied to create visual effects that go beyond what CSS can typically handle.",
               "_id": "p-3"
             },
             {
               "type": "p",
-              "text": "Our team combines technical expertise with creative insight to deliver exceptional results.",
+              "text": "Elements can be positioned in 3D space, enabling different types of transitions and spatial relationships between content.",
               "_id": "p-3"
             }
           ]
@@ -151,12 +151,12 @@
           "children": [
             {
               "type": "h1",
-              "text": "Services",
+              "text": "Capabilities",
               "_id": "h1-preview-3"
             },
             {
               "type": "p",
-              "text": "Explore our range of digital offerings and expertise.",
+              "text": "See what becomes possible when web content exists within a 3D rendering engine.",
               "_id": "p-preview-3"
             }
           ]

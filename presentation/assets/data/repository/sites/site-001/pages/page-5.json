@@ -120,22 +120,22 @@
           "children": [
             {
               "type": "h1",
-              "text": "The Team Behind It",
+              "text": "Configuration Settings",
               "_id": "h1-5"
             },
             {
               "type": "p",
-              "text": "Get to know the passionate developers, designers, and strategists who make our projects come to life.",
+              "text": "Set PERSISTENT_STORAGE to FILE or DB to determine storage method, with DATA_PATH indicating where file content is located.",
               "_id": "p-5"
             },
             {
               "type": "p",
-              "text": "Our team brings together diverse backgrounds and specialties, united by a commitment to excellence.",
+              "text": "The USE_LEVEL_DB setting toggles between database caching and simpler in-memory options for development.",
               "_id": "p-5"
             },
             {
               "type": "p",
-              "text": "We continuously explore new technologies and approaches to stay at the cutting edge.",
+              "text": "For production, the npm run build:prod command generates optimized files with appropriate paths for your hosting environment.",
               "_id": "p-5"
             }
           ]
@@ -151,12 +151,12 @@
           "children": [
             {
               "type": "h1",
-              "text": "Team",
+              "text": "Options",
               "_id": "h1-preview-5"
             },
             {
               "type": "p",
-              "text": "Meet the creators, developers, and visionaries.",
+              "text": "Adjust how inanda works through environment variables and configuration settings.",
               "_id": "p-preview-5"
             }
           ]
