@@ -1,7 +1,7 @@
 {
   "_id": "site-001",
-  "name": "Example Site",
-  "description": "A modern web experience with 3D navigation",
+  "name": "inanda - a pleasant place",
+  "description": " rendering json as a website in a 3d game engine",
   "pageOrder": [
     "page-1",
     "page-2",
@@ -12,6 +12,6 @@
     "page-7"
   ],
   "sitemapType": "HEX_FLOWER",
-  "defaultPage": "page-1",
+  "defaultPage": "",
   "backdrop": "PAINT"
 }

@@ -120,22 +120,22 @@
           "children": [
             {
               "type": "h1",
-              "text": "Latest News & Updates",
+              "text": "Development Guide",
               "_id": "h1-6"
             },
             {
               "type": "p",
-              "text": "Stay informed about our newest projects, technology insights, and company announcements.",
+              "text": "Start the development server with npm start and explore how the application translates JSON content into 3D rendered elements.",
               "_id": "p-6"
             },
             {
               "type": "p",
-              "text": "We regularly share our knowledge through blog posts, tutorials, and case studies.",
+              "text": "The project includes patches for dependencies to work with Angular Universal SSR, which are applied during installation.",
               "_id": "p-6"
             },
             {
               "type": "p",
-              "text": "Follow our journey as we continue to push the boundaries of web technology.",
+              "text": "Example site content is available in src/presentation/assets/data/repository/sites if you want to see how content is structured.",
               "_id": "p-6"
             }
           ]
@@ -151,12 +151,12 @@
           "children": [
             {
               "type": "h1",
-              "text": "News",
+              "text": "Contribute",
               "_id": "h1-preview-6"
             },
             {
               "type": "p",
-              "text": "Catch up on our latest developments and insights.",
+              "text": "Ways to experiment with and extend this 3D web rendering project.",
               "_id": "p-preview-6"
             }
           ]

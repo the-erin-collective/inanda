@@ -120,22 +120,22 @@
           "children": [
             {
               "type": "h1",
-              "text": "Get in Touch",
+              "text": "Next Steps",
               "_id": "h1-7"
             },
             {
               "type": "p",
-              "text": "Ready to start your project? We'd love to hear from you and discuss how we can help bring your vision to life.",
+              "text": "Future work includes adding more material types beyond wood, additional backdrop options, and support for more content elements.",
               "_id": "p-7"
             },
             {
               "type": "p",
-              "text": "Our consultation process is designed to thoroughly understand your goals and requirements.",
+              "text": "Improvements to content positioning and adding a loading screen would help make the experience smoother for users.",
               "_id": "p-7"
             },
             {
               "type": "p",
-              "text": "Reach out today to schedule a conversation with our team of experts.",
+              "text": "Longer-term ideas include a visual editor, component library, animation capabilities, and expanded WebXR functionality.",
               "_id": "p-7"
             }
           ]
@@ -151,12 +151,12 @@
           "children": [
             {
               "type": "h1",
-              "text": "Contact",
+              "text": "Future",
               "_id": "h1-preview-7"
             },
             {
               "type": "p",
-              "text": "Let's start a conversation about your project.",
+              "text": "Ideas and planned enhancements for evolving this experimental project.",
               "_id": "p-preview-7"
             }
           ]

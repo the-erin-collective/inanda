@@ -120,22 +120,22 @@
           "children": [
             {
               "type": "h1",
-              "text": "Welcome to Our Home",
+              "text": "a pleasant place",
               "_id": "h1-1"
             },
             {
               "type": "p",
-              "text": "Our digital home showcases the latest in web technology and interactive design. Explore our unique approach to digital experiences.",
+              "text": "inanda uses Babylon.js to render web content in 3D space rather than with HTML and CSS, allowing for different visual possibilities.",
               "_id": "p-1"
             },
             {
               "type": "p",
-              "text": "We believe in creating memorable, engaging digital spaces that tell your story in innovative ways.",
+              "text": "The content and styling are stored as JSON structures that get translated into 3D rendered elements with materials, lighting and depth.",
               "_id": "p-1"
             },
             {
               "type": "p",
-              "text": "Click through our hexagonal navigation to discover more about our services and approach.",
+              "text": "The name 'inanda' means 'a pleasant place' in Zulu. Create more enjoyable web spaces with open source code (AGPL-3.0).",
               "_id": "p-1"
             }
           ]
@@ -151,12 +151,12 @@
           "children": [
             {
               "type": "h1",
-              "text": "Home",
+              "text": "inanda",
               "_id": "h1-preview-1"
             },
             {
               "type": "p",
-              "text": "Your journey starts here. Click to enter our digital space.",
+              "text": "rendering json as a website in a 3d game engine",
               "_id": "p-preview-1"
             }
           ]
