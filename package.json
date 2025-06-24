@@ -1,17 +1,22 @@
 {
-  "name": "web-home",
+  "name": "inanda",
+  "description": "a pleasant place - rendering json as a website in a 3d game engine",
   "version": "1.0.0",
   "license": "AGPL-3.0-only",
+  "author": {
+    "name": "alizzycraft",
+    "url": "https://github.com/the-erin-collective"
+  },
   "scripts": {
     "ng": "ng",
     "start": "node tools/copy-dev-config.js && ng serve",
     "build": "ng build -c development && node tools/copy-static.js development",
-    "build:prod": "ng build -c production --base-href /web-home/ && node tools/copy-static.js production",
+    "build:prod": "ng build -c production --base-href /inanda/ && node tools/copy-static.js production",
     "build:both": "npm run build && npm run build:prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "serve:ssr:web-home": "node dist/dev/server/server.mjs",
+    "serve:ssr:inanda": "node dist/dev/server/server.mjs",
     "postinstall": "patch-package",
     "seed": "tsc tools/seed.ts && node tools/seed.js",
     "migrate": "tsc tools/migrate.ts && node tools/migrate.js"

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "web-home": {
+    "inanda": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -107,14 +107,14 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "options": {
-            "buildTarget": "web-home:build"
+            "buildTarget": "inanda:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "web-home:build:production"
+              "buildTarget": "inanda:build:production"
             },
             "development": {
-              "buildTarget": "web-home:build:development"
+              "buildTarget": "inanda:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -122,7 +122,7 @@
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n",
           "options": {
-            "buildTarget": "web-home:build"
+            "buildTarget": "inanda:build"
           }
         },
         "test": {
