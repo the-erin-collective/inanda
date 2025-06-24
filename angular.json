@@ -29,6 +29,7 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
+              "src/presentation/404.html",
               "src/presentation/assets",
               "src/presentation/assets/favicon.ico"
             ],
@@ -72,6 +73,7 @@
               ],
               "scripts": [],
               "assets": [
+                "src/presentation/404.html",
                 "src/presentation/assets",
                 "src/presentation/assets/favicon.ico"
               ],
@@ -91,6 +93,7 @@
               "scripts": [
               ],
               "assets": [
+                "src/presentation/404.html",
                 "src/presentation/assets",
                 "src/presentation/assets/favicon.ico"
               ],
@@ -134,7 +137,8 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
+            "assets": [ 
+              "src/presentation/404.html",
               "src/presentation/assets/favicon.ico",
               "src/presentation/assets",
                 {
