@@ -43,6 +43,7 @@ export class PlatformService {
       new Vector3(0.0, 0.0, 0),
       this.scene
     );
+    this.light.intensity = 0.5;
 
     return this.scene;
   }
