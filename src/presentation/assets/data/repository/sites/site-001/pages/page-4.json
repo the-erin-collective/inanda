@@ -120,22 +120,22 @@
           "children": [
             {
               "type": "h1",
-              "text": "Portfolio Showcase",
+              "text": "Deployment Options",
               "_id": "h1-4"
             },
             {
               "type": "p",
-              "text": "Browse through our collection of completed projects spanning various industries and technologies.",
+              "text": "Choose file-based storage for simpler setups or MongoDB for handling multiple sites and more complex content structures.",
               "_id": "p-4"
             },
             {
               "type": "p",
-              "text": "Each case study demonstrates our problem-solving approach and attention to detail.",
+              "text": "LevelDB can be enabled for better caching performance or disabled for simpler development and testing environments.",
               "_id": "p-4"
             },
             {
               "type": "p",
-              "text": "We're proud of the diverse range of clients we've helped succeed in their digital transformation.",
+              "text": "Static builds with no database dependencies work well for single sites, while dynamic setups support more complex scenarios with server-side rendering.",
               "_id": "p-4"
             }
           ]
@@ -151,12 +151,12 @@
           "children": [
             {
               "type": "h1",
-              "text": "Portfolio",
+              "text": "Setup",
               "_id": "h1-preview-4"
             },
             {
               "type": "p",
-              "text": "See our work in action across different industries.",
+              "text": "Different ways to run inanda depending on your needs and hosting situation.",
               "_id": "p-preview-4"
             }
           ]

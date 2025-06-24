@@ -13,7 +13,7 @@
               "_id": "panel-preview-1",
               "name": "Preview Panel Style",
               "properties": {
-                "backgroundColor": "#535332ff",
+                "backgroundColor": "#3c3c23ff",
                 "foregroundColor": "#ffffff",
                 "paddingLeft": "20px",
                 "paddingRight": "20px",
@@ -30,7 +30,7 @@
               "_id": "panel-preview-hover-1",
               "name": "Preview Panel Hover Style",
               "properties": {
-                "backgroundColor": "#535332ff",
+                "backgroundColor": "#3c3c23ff",
                 "foregroundColor": "#ffffff",
                 "paddingLeft": "20px",
                 "paddingRight": "20px",
@@ -50,7 +50,7 @@
               "_id": "h1-preview-1",
               "name": "Preview Heading Style",
               "properties": {
-                "fontSize": "92",
+                "fontSize": "100",
                 "fontWeight": "bold",
                 "marginTop": "30px",
                 "foregroundColor": "inherit",
@@ -62,7 +62,7 @@
               "_id": "p-preview-1",
               "name": "Preview Paragraph Style",
               "properties": {
-                "fontSize": "48",
+                "fontSize": "54",
                 "fontWeight": "bold",
                 "marginTop": "15px",
                 "foregroundColor": "inherit",
@@ -120,22 +120,22 @@
           "children": [
             {
               "type": "h1",
-              "text": "Welcome to Our Home",
+              "text": "a pleasant place",
               "_id": "h1-1"
             },
             {
               "type": "p",
-              "text": "Our digital home showcases the latest in web technology and interactive design. Explore our unique approach to digital experiences.",
+              "text": "inanda uses Babylon.js to render web content in 3D space rather than with HTML and CSS, allowing for different visual possibilities.",
               "_id": "p-1"
             },
             {
               "type": "p",
-              "text": "We believe in creating memorable, engaging digital spaces that tell your story in innovative ways.",
+              "text": "The content and styling are stored as JSON structures that get translated into 3D rendered elements with materials, lighting and depth.",
               "_id": "p-1"
             },
             {
               "type": "p",
-              "text": "Click through our hexagonal navigation to discover more about our services and approach.",
+              "text": "The name 'inanda' means 'a pleasant place' in Zulu. Create more enjoyable web spaces with open source code (AGPL-3.0).",
               "_id": "p-1"
             }
           ]
@@ -151,12 +151,12 @@
           "children": [
             {
               "type": "h1",
-              "text": "Home",
+              "text": "inanda",
               "_id": "h1-preview-1"
             },
             {
               "type": "p",
-              "text": "Your journey starts here. Click to enter our digital space.",
+              "text": "rendering json as a website in a 3d game engine",
               "_id": "p-preview-1"
             }
           ]

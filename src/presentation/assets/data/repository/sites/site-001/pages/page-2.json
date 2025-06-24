@@ -120,22 +120,22 @@
           "children": [
             {
               "type": "h1",
-              "text": "About Our Platform",
+              "text": "Technical Foundation",
               "_id": "h1-2"
             },
             {
               "type": "p",
-              "text": "Our platform combines cutting-edge 3D navigation with seamless content delivery for a truly unique web experience.",
+              "text": "This project combines Angular 20 with Babylon.js 8 to create a framework for rendering web content in three dimensions.",
               "_id": "p-2"
             },
             {
               "type": "p",
-              "text": "Built using Angular and Babylon.js, we've created an immersive environment that breaks the mold of traditional websites.",
+              "text": "The code follows clean architecture principles to keep the various concerns separated and make it easier to modify and extend.",
               "_id": "p-2"
             },
             {
               "type": "p",
-              "text": "The hexagonal design represents our interconnected approach to digital solutions.",
+              "text": "The hexagonal navigation reflects the experimental nature of rethinking how users might move through interconnected content.",
               "_id": "p-2"
             }
           ]
@@ -151,12 +151,12 @@
           "children": [
             {
               "type": "h1",
-              "text": "Platform",
+              "text": "Engine",
               "_id": "h1-preview-2"
             },
             {
               "type": "p",
-              "text": "Discover the technology behind our unique approach.",
+              "text": "Built with Angular and Babylon.js to explore what web content might look like in 3D.",
               "_id": "p-preview-2"
             }
           ]
