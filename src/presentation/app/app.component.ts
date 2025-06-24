@@ -3,6 +3,7 @@ import { SiteContentResolver } from '../../enactment/resolvers/site-content.reso
 import { SiteContent } from '../../integration/models/site-content.aggregate.model';
 import { PlatformComponent } from './platform/platform.component';
 import { SourcecodeLinkComponent } from './ui/sourcecode-link/sourcecode-link.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +20,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private siteContentResolver: SiteContentResolver, 
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private titleService: Title
   ) {}
 
   ngOnInit(): void {
@@ -38,6 +40,7 @@ export class AppComponent implements OnInit {
   // Method to handle logic after site content is fetched
   private onSiteContentFetched(): void {
     console.log('Performing logic after site content is fetched:', this.site);
+    this.titleService.setTitle(this.site.site.name);
     this.siteDataReady = true;
     this.cdr.markForCheck(); // Trigger change detection
   }
