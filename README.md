@@ -30,7 +30,7 @@ The project aims to bring modern 3D capabilities to web experiences while provid
 
 ## Configuration
 
-Web Home can be configured for different deployment scenarios using environment variables.
+inanda can be configured for different deployment scenarios using environment variables.
 
 ### Storage Options
 
@@ -51,7 +51,7 @@ File storage mode writes data to JSON files, making it suitable for static site 
 
 ```
 PERSISTENT_STORAGE=DB
-MONGO_URI=mongodb://localhost:27017/webhomedb
+MONGO_URI=mongodb://localhost:27017/inanda
 ```
 
 This configuration uses MongoDB for persistent storage and LevelDB for caching, ideal for multi-site deployments.
@@ -133,7 +133,7 @@ npm run build:prod
 
 ## Roadmap
 
-Web Home is under active development with the following planned enhancements:
+inanda is under active development with the following planned enhancements:
 
 ### Near-term Goals
 
@@ -164,4 +164,4 @@ This project is licensed under the AGPL-3.0 License - see the LICENSE file for d
 
 ---
 
-*Web Home: Web experiences with depth.*
+*inanda: a pleasant place - rendering json as a website in a 3d game engine.*
