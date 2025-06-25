@@ -50,7 +50,7 @@ File storage mode writes data to JSON files, making it suitable for static site 
 #### 2. Database Storage 
 
 ```
-PERSISTENT_STORAGE=DB
+PERSISTENT_STORAGE=MONGODB
 MONGO_URI=mongodb://localhost:27017/inanda
 ```
 

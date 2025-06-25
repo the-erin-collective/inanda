@@ -125,7 +125,7 @@
             },
             {
               "type": "p",
-              "text": "Set PERSISTENT_STORAGE to FILE or DB to determine storage method, with DATA_PATH indicating where file content is located.",
+              "text": "Set PERSISTENT_STORAGE to FILE or MONGODB to determine storage method, with DATA_PATH indicating where file content is located.",
               "_id": "p-5"
             },
             {
