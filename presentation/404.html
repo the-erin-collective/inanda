@@ -5,11 +5,11 @@
   <title>inanda</title>
   <base href="/">
   <script>
-     const baseHref = document.querySelector('base')?.getAttribute('href') || '/';
-    const pathSegment = window.location.pathname.split('/').pop();
+    // Get the base href and redirect only to the app root
+    const baseHref = document.querySelector('base')?.getAttribute('href') || '/';
     
-    // Redirect to the correct URL using the base href
-    window.location.href = baseHref + pathSegment;
+    // Redirect to the application root
+    window.location.href = baseHref;
   </script>
 </head>
 <body>
