@@ -42,11 +42,27 @@ if (fs.existsSync(indexCsr)) {
 const source404 = path.join(outputDir, 'presentation', '404.html');
 const dest404 = path.join(outputDir, '404.html');
 
-if (fs.existsSync(source404)) {
-  fs.copyFileSync(source404, dest404);
-  console.log(`Copied 404.html to the root of build output: ${dest404}`);
+
+// Only proceed if both source 404.html and index.html exist
+if (fs.existsSync(source404) && fs.existsSync(indexHtml)) {
+  // Extract base href from index.html
+  const indexContent = fs.readFileSync(indexHtml, 'utf8');
+  const baseHrefMatch = indexContent.match(/<base href="([^"]*)">/);
+  const baseHref = baseHrefMatch ? baseHrefMatch[1] : '/';
+  
+  // Read 404.html content
+  let html404 = fs.readFileSync(source404, 'utf8');
+  
+  // Replace any existing base tag or add a new one after the title
+  if (html404.includes('<base href=')) {
+    html404 = html404.replace(/<base href="[^"]*">/g, `<base href="${baseHref}">`);
+  }
+  
+  // Write the modified content to the destination file
+  fs.writeFileSync(dest404, html404);
+  console.log(`Created 404.html with base href "${baseHref}" at ${dest404}`);
 } else {
-  console.warn(`404.html not found at ${source404}`);
+  console.warn(`Required files missing: index.html or 404.html`);
 }
 
 console.log('Static assets copy complete.');

@@ -3,9 +3,13 @@
 <head>
   <meta charset="utf-8">
   <title>inanda</title>
+  <base href="/">
   <script>
-    // Single line redirect to the root with the original path in the hash
-    window.location.href = '/' + window.location.pathname.split('/').pop();
+     const baseHref = document.querySelector('base')?.getAttribute('href') || '/';
+    const pathSegment = window.location.pathname.split('/').pop();
+    
+    // Redirect to the correct URL using the base href
+    window.location.href = baseHref + pathSegment;
   </script>
 </head>
 <body>
