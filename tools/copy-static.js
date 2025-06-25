@@ -29,9 +29,6 @@ if (fs.existsSync(configFile)) {
   console.warn(`Config file not found: ${configFile}`);
 }
 
-console.log('Static assets copy complete.');
-
-
 // Rename index.csr.html to index.html if it exists
 const indexCsr = path.join(outputDir, 'index.csr.html');
 const indexHtml = path.join(outputDir, 'index.html');
@@ -41,3 +38,15 @@ if (fs.existsSync(indexCsr)) {
 } else {
   console.warn(`index.csr.html not found in ${outputDir}`);
 }
+
+const source404 = path.join(outputDir, 'presentation', '404.html');
+const dest404 = path.join(outputDir, '404.html');
+
+if (fs.existsSync(source404)) {
+  fs.copyFileSync(source404, dest404);
+  console.log(`Copied 404.html to the root of build output: ${dest404}`);
+} else {
+  console.warn(`404.html not found at ${source404}`);
+}
+
+console.log('Static assets copy complete.');
