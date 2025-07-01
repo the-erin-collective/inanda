@@ -1,0 +1,1 @@
+import{a as e}from"./chunk-QG7TSJPJ.js";var i=class extends e{constructor(){super(...arguments),this.initPriority=0,this.type="NoTrigger"}_execute(t){t._notifyExecuteNode(this),this.done._activateSignal(t)}};export{i as a};
