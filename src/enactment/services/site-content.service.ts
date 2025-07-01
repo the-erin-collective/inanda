@@ -13,7 +13,6 @@ export class SiteContentService {
   ) {}
 
   async getSiteContent(id: string): Promise<SiteContent | null> {
-    console.log(`SiteContentService Fetching site content for ID: ${id}`);
     const site = await this.siteRepository.findById(id);
 
     if (!site) {
@@ -21,7 +20,6 @@ export class SiteContentService {
       return null;
     }
 
-    console.log(`Found site:`, site);
     const pages = await this.pageRepository.findByIds(id, site.pageOrder);
     console.log(`Fetched pages for site:`, pages);
 

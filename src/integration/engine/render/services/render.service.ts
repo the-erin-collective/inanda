@@ -1,6 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Engine, Scene } from '@babylonjs/core';
-import { WindowRefService } from '../../../common/services/window-ref.service';
+import { WindowRefService } from '../../../../common/services/window-ref.service';
 
 @Injectable({ providedIn: 'root' })
 export class RenderService {

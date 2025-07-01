@@ -19,10 +19,10 @@ export class ServerPageRepository implements PageRepository {
       try {
         const doc = await PageModel.findById(id).lean();
         if (!doc) {
-          console.log(`No page found in MongoDB for ID: ${id}`);
+          console.warn(`No page found in MongoDB for ID: ${id}`);
           return null;
         }
-        console.log(`Found page in MongoDB: ${id}`);
+
         return new Page(
           doc._id,
           doc.title || '',

@@ -42,9 +42,7 @@ export async function createLevelDB(): Promise<Level<string, any>> {
   } catch {
     try {
       await mkdir(cachePath, { recursive: true });
-      console.log(`Created cache directory at: ${cachePath}`);
     } catch (err) {
-      console.error(`Failed to create cache directory at: ${cachePath}`, err);
       throw new Error(`Cache directory could not be created at: ${cachePath}`);
     }
   }
@@ -66,7 +64,6 @@ export async function createLevelDB(): Promise<Level<string, any>> {
     // Test the database by putting and getting a value
     await db.put('__test__', { test: 'test', timestamp: Date.now() });
     const testValue = await db.get('__test__');
-    console.log('LevelDB test successful:', testValue ? 'passed' : 'failed');
     
     console.log('LevelDB initialized successfully');
   } catch (err) {
@@ -99,7 +96,6 @@ export function getLevelDB(): Level<string, any> {
  */
 export async function closeLevelDB(): Promise<void> {
   if (db) {
-    console.log('Closing LevelDB...');
     try {
       await db.close();
       db = null;

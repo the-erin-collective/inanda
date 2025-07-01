@@ -20,13 +20,12 @@ export class ServerSiteRepository implements SiteRepository {
   private readonly defaultSiteId: string = 'site-001';
   
   async findById(id: string): Promise<Site | null> {
-    console.log(`ServerSiteRepository: Finding site by ID: ${id}`);
     const cacheKey = `site:${id}`;
     return this.cache.getData(cacheKey, async () => {
       try {
         const doc = await SiteModel.findById(id).lean();
         if (!doc) {
-          console.log(`No site found in MongoDB for ID: ${id}`);
+          console.warn(`No site found in MongoDB for ID: ${id}`);
           return null;
         }
         console.log(`Found site in MongoDB: ${id}`);
@@ -60,19 +59,15 @@ export class ServerSiteRepository implements SiteRepository {
   private async buildSiteContent(id: string): Promise<SiteContent | null> {
     const siteIdToFetch = id || this.defaultSiteId;
     try {
-      console.log(`ServerSiteRepository finding site: ${siteIdToFetch}`);
       const site = await this.findById(siteIdToFetch);
       
       if (!site) {
         console.log(`Site not found for ID: ${siteIdToFetch}`);
         return null;
       }
-      
-      console.log(`Found site: ${JSON.stringify(site)}`);
 
       // Fetch pages based on the pageOrder array from the Site
       const pages = await this.pageRepository.findByIds(site.id, site.pageOrder);
-      console.log(`Fetched ${pages.length} of ${site.pageOrder.length} pages for site ${siteIdToFetch}`);
 
       if (pages.length !== site.pageOrder.length) {
         console.warn(`Some pages could not be found: requested ${site.pageOrder.length}, got ${pages.length}`);

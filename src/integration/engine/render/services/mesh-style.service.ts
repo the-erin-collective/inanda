@@ -1,6 +1,6 @@
 import { Mesh } from '@babylonjs/core';
-import { Style } from '../../../domain/entities/style/style.entity';
-import { WorldSpaceUtils } from '../utils/world-space.utils';
+import { Style } from '../../../../domain/entities/style/style.entity';
+import { WorldSpaceUtils } from '../../utils/world-space.utils';
 
 export class MeshStyleService {
     public applyStyles(mesh: Mesh, styles: Style[]): void {

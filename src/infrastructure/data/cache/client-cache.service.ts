@@ -29,6 +29,5 @@ export class ClientCacheService implements CacheData {
   
   async put<T>(key: string, data: T): Promise<void> {
     // No-op on client side
-    console.log(`Client cache put for key ${key} (no-op)`);
   }
 }

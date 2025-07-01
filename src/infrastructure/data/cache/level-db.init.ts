@@ -26,8 +26,6 @@ export async function initializeLevelDB(): Promise<void> {
   const rootDir = process.cwd();
   const cachePath = join(rootDir, 'data', 'cache');
 
-  console.log('Initializing LevelDB at:', cachePath);
-
   try {
     await ensureCacheDirectory(cachePath);
     

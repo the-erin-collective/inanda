@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Scene, Color4 } from '@babylonjs/core';
 import { SiteBackdrop } from 'src/domain/entities/site/backdrop.enum';
-import { createSpaceBackdrop } from './backdrops/space.backdrop';
-import { createPaintBackdrop } from './backdrops/paint.backdrop';
+import { createSpaceBackdrop } from '../backdrops/space.backdrop';
+import { createPaintBackdrop } from '../backdrops/paint.backdrop';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +13,6 @@ export class BackdropService {
   constructor() {}
 
   applyBackdrop(scene: Scene, backdropValue?: string): void {
-    console.log('BackdropService.applyBackdrop called with backdropValue:', backdropValue);
-    console.log('SiteBackdrop enum values:', Object.values(SiteBackdrop));
-    
     if (!backdropValue) {
       console.log('No backdrop value provided, using default');
       this.setBackgroundColor(scene, this.DEFAULT_BACKDROP_COLOR);
@@ -29,10 +26,6 @@ export class BackdropService {
       return;
     }
 
-    // Check if the backdrop value matches any of our predefined backdrops
-    console.log('Checking if backdrop value matches predefined backdrops...');
-    console.log('Does backdrop value match enum?', Object.values(SiteBackdrop).includes(backdropValue as SiteBackdrop));
-    
     if (Object.values(SiteBackdrop).includes(backdropValue as SiteBackdrop)) {
       console.log('Applying predefined backdrop:', backdropValue);
       this.applyPredefinedBackdrop(scene, backdropValue as SiteBackdrop);
@@ -55,10 +48,9 @@ export class BackdropService {
     const b = parseInt(hexColor.slice(5, 7), 16) / 255;
     
     scene.clearColor = new Color4(r, g, b, 1);
-  }  private applyPredefinedBackdrop(scene: Scene, backdrop: SiteBackdrop): void {
-    console.log('BackdropService.applyPredefinedBackdrop called with backdrop:', backdrop);
-    console.log('Backdrop type:', typeof backdrop);
-    
+  }  
+  
+  private applyPredefinedBackdrop(scene: Scene, backdrop: SiteBackdrop): void {
     switch (backdrop) {
       case SiteBackdrop.SPACE:
         console.log('Applying SPACE backdrop');

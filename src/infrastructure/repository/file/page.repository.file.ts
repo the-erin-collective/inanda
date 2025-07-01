@@ -26,12 +26,9 @@ export class FilePageRepository implements PageRepository {
     
     // If we have cached data, use it
     if (hasCachedData) {
-      console.log(`Page data for ID ${id} found in cache`);
       return this.cache.getData(cacheKey, () => this.loadPageFromFile(siteId, id));
     }
     
-    // Otherwise load from file and cache it
-    console.log(`Loading page data for ID ${id} from file`);
     const page = await this.loadPageFromFile(siteId, id);
     if (page) {
       await this.cache.put(cacheKey, page);
@@ -50,12 +47,9 @@ export class FilePageRepository implements PageRepository {
     
     // If we have cached data, use it
     if (hasCachedData) {
-      console.log(`Page data for IDs ${ids.join(',')} found in cache`);
       return this.cache.getData(cacheKey, () => this.loadPagesFromFile(siteId, ids));
     }
     
-    // Otherwise load from file and cache it
-    console.log(`Loading page data for IDs ${ids.join(',')} from file`);
     const pages = await this.loadPagesFromFile(siteId, ids);
     if (pages && pages.length > 0) {
       await this.cache.put(cacheKey, pages);
@@ -93,7 +87,7 @@ export class FilePageRepository implements PageRepository {
     } catch (error: any) {
       // File not found or invalid JSON
       if (error.status === 404) {
-        console.log(`Page file not found: ${fileUrl}`);
+        console.error(`Page file not found: ${fileUrl}`);
         return null;
       }
       console.error(`Error loading page from file ${fileUrl}:`, error);

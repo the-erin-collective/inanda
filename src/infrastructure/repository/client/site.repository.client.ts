@@ -22,18 +22,14 @@ export class ClientSiteRepository implements SiteRepository {
     private readonly fileFetchService: FileFetchService,
     @Inject(CACHE_PROVIDER) private readonly cache: CacheData
   ) {
-    console.log('ClientSiteRepository constructor - SITE_CONTENT_KEY:', SITE_CONTENT_KEY);
   }
 
   async findById(id: string): Promise<Site | null> {
-    console.log(`ClientSiteRepository: Finding site by ID: ${id}`);
-    
     // First try from TransferState
     if (this.transferState.hasKey(SITE_CONTENT_KEY)) {
       const siteContent = this.transferState.get(SITE_CONTENT_KEY, null);
       
       if (siteContent && siteContent.site && siteContent.site.id === id) {
-        console.log('ClientSiteRepository: Returning preloaded site content:', siteContent);
         return siteContent.site;
       }
     }
@@ -111,8 +107,7 @@ export class ClientSiteRepository implements SiteRepository {
           try {
             const fileUrl = `${dataPath}/${id}/pages/${pageId}.json`;
             const fullUrl = baseHref.replace(/\/$/, '') + '/' + fileUrl;
-            console.log(`Loading page data for ID ${pageId} from file: ${fullUrl}`);
-            
+
             const pageData = await this.fileFetchService.fetchJson<any>(fullUrl);
             pages.push(Page.fromJSON(pageData));
           } catch (pageError) {
@@ -129,13 +124,11 @@ export class ClientSiteRepository implements SiteRepository {
   }
 
   async save(site: Site): Promise<Site> {
-    console.debug('ClientPageRepository save called for site: ', site);
     console.warn('ClientSiteRepository: Save operation is not supported on the client.');
     throw new Error('Save operation is not supported on the client.');
   }
 
   async delete(id: string): Promise<void> {
-    console.debug('ClientPageRepository delete called for site id: ', id);
     console.warn('ClientSiteRepository: Delete operation is not supported on the client.');
     throw new Error('Delete operation is not supported on the client.');
   }

@@ -32,11 +32,9 @@ export class TextureService {
 
     // Prepare the full URL with appropriate base for SSR
     const fullUrl = this.getFullUrl(url);
-    console.log(`[TextureService] Loading texture: ${fullUrl} (original: ${url})`);
 
     // If we're in server-side rendering, return a placeholder texture
     if (isPlatformServer(this.platformId)) {
-      console.log(`[TextureService] Server-side rendering detected, using placeholder texture for: ${url}`);
       // Create a dummy texture that won't try to load
       const placeholderTexture = new Texture(null, scene);
       this.textureCache.set(url, placeholderTexture);
@@ -46,7 +44,6 @@ export class TextureService {
     return new Promise<Texture>((resolve, reject) => {     
       const texture = new Texture(fullUrl, scene, false, false, Constants.TEXTURE_BILINEAR_SAMPLINGMODE,
         () => {
-          console.log(`[TextureService] Successfully loaded texture: ${fullUrl}`);
           this.textureCache.set(url, texture);
           resolve(texture);
         },
@@ -101,13 +98,11 @@ export class TextureService {
       
       const blob = await response.blob();
       const blobUrl = URL.createObjectURL(blob);
-      console.log(`[TextureService] Created blob URL: ${blobUrl} for texture: ${url}`);
       
       // Create texture from blob URL
       return new Promise<Texture | null>((resolve) => {
         const texture = new Texture(blobUrl, scene, false, false, Texture.LINEAR_LINEAR, 
           () => {
-            console.log(`[TextureService] Successfully created fallback texture from blob: ${url}`);
             // We don't release the blob URL here because the texture needs it
             resolve(texture);
           },

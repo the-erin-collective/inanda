@@ -1,7 +1,7 @@
 import { Injectable, ElementRef } from '@angular/core';
 import { PlatformService } from '../engine/platform/platform.service';
-import { PageLayoutService } from '../engine/render/page-layout.service';
-import { RenderService } from '../engine/render/render.service';
+import { PageLayoutService } from '../engine/render/services/page-layout.service';
+import { RenderService } from './render/services/render.service';
 import { SiteContent } from '../models/site-content.aggregate.model';
 
 @Injectable({ providedIn: 'root' })
