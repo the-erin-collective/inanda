@@ -13,11 +13,10 @@ import { PanelNode } from '../src/domain/entities/page/content/items/panel.entit
 import { H1Node } from '../src/domain/entities/page/content/items/text/h1.entity';
 import { PNode } from '../src/domain/entities/page/content/items/text/p.entity';
 import { PreviewNode } from '../src/domain/entities/page/containers/preview.entity';
-import { Stylesheet } from '../src/domain/entities/style/stylesheet.entity';
 import { StylesheetNode } from '../src/domain/entities/page/content/items/stylesheet.entity';
 import { SitemapType } from '../src/domain/entities/site/sitemap-type.enum';
-import { AppConfig } from '../src/infrastructure/providers/config/app-config.token';
 import { environment } from 'src/infrastructure/environments/environment.server';
+import { AppConfig } from 'src/infrastructure/services/config.service';
 
 // Load server runtime configuration
 const isProd = process.env['NODE_ENV'] === 'production';
@@ -248,6 +247,32 @@ function createStylesheet(index: number): Style[] {
         textHorizontalAlignment: 'center'  // Changed to center
       }
     }
+    ,
+    // Anchor styles
+    {
+      _id: `anchor-${index}`,
+      name: 'Anchor Style',
+      properties: {
+        foregroundColor: '#0074d9',
+        textDecoration: 'underline',
+        fontSize: '20',
+        fontWeight: 'bold',
+        textHorizontalAlignment: 'center',
+        cursor: 'pointer'
+      }
+    },
+    {
+      _id: `anchor-hover-${index}`,
+      name: 'Anchor Hover Style',
+      properties: {
+        foregroundColor: '#005fa3',
+        textDecoration: 'underline',
+        fontSize: '20',
+        fontWeight: 'bold',
+        textHorizontalAlignment: 'center',
+        cursor: 'pointer'
+      }
+    }
   ];
 }
 
@@ -261,19 +286,33 @@ function createPage(index: number, siteId: string): Page {
   // Prepare unique content for each page
   const pageContent = getPageContent(index);
   
-  // Create core content
+
+  // Create core content with anchor node example
   const corePanel = new PanelNode([
     new H1Node(pageContent.coreHeading, `h1-${index}`),
     new PNode(pageContent.coreParagraph1, `p-${index}`),
     new PNode(pageContent.coreParagraph2, `p-${index}`),
-    new PNode(pageContent.coreParagraph3, `p-${index}`)
+    new PNode(pageContent.coreParagraph3, `p-${index}`),
+    // Anchor node example
+    new (require('../src/domain/entities/page/content/items/text/anchor.entity').AnchorNode)(
+      'Visit our site',
+      'https://example.com',
+      '_blank',
+      `anchor-${index}`
+    )
   ]);
   corePanel._id = `panel-core-${index}`;
 
-  // Create preview content (shorter version)
+  // Create preview content (shorter version) with anchor node example
   const previewPanel = new PanelNode([
     new H1Node(pageContent.previewHeading, `h1-preview-${index}`),
-    new PNode(pageContent.previewParagraph, `p-preview-${index}`)
+    new PNode(pageContent.previewParagraph, `p-preview-${index}`),
+    new (require('../src/domain/entities/page/content/items/text/anchor.entity').AnchorNode)(
+      'Preview link',
+      'https://example.com',
+      '_blank',
+      `anchor-preview-${index}`
+    )
   ]);
   previewPanel._id = `panel-preview-${index}`;
 

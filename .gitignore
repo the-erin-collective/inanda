@@ -50,3 +50,4 @@ src/**/*.js
 package-lock.json
 /cache
 src/presentation/assets/config.json
+/.vscode

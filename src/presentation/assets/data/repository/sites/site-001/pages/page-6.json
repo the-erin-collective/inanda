@@ -52,7 +52,7 @@
               "properties": {
                 "fontSize": "92",
                 "fontWeight": "bold",
-                "marginTop": "30px",
+                "marginTop": "0px",
                 "foregroundColor": "inherit",
                 "textHorizontalAlignment": "center",
                 "textVerticalAlignment": "center"
@@ -64,7 +64,7 @@
               "properties": {
                 "fontSize": "48",
                 "fontWeight": "bold",
-                "marginTop": "15px",
+                "marginTop": "0px",
                 "foregroundColor": "inherit",
                 "textHorizontalAlignment": "center",
                 "textVerticalAlignment": "center"
@@ -91,7 +91,7 @@
               "properties": {
                 "fontSize": "52",
                 "fontWeight": "bold",
-                "marginTop": "30px",
+                "marginTop": "0px",
                 "foregroundColor": "inherit",
                 "textHorizontalAlignment": "center"
               }
@@ -101,7 +101,7 @@
               "name": "Paragraph Style",
               "properties": {
                 "fontSize": "28",
-                "marginTop": "15px",
+                "marginTop": "0px",
                 "foregroundColor": "inherit",
                 "textHorizontalAlignment": "center"
               }
