@@ -73,11 +73,8 @@ export class ConfigService {
     try {
       const baseHref = (document.querySelector('base')?.getAttribute('href') || '/').replace(/\/$/, '');
       const configUrl = baseHref + '/presentation/assets/config.json';
-      console.log(`[ConfigService] Loading browser config from ${configUrl}`);
       const apiConfig = await firstValueFrom(this.http.get<AppConfig>(configUrl));
     
-      console.log('[ConfigService] Browser config loaded via API');
-
       return apiConfig;
     } catch (err) {
       console.error(`[ConfigService] Error loading browser config:`, err);

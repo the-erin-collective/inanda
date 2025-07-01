@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MeshStyleService } from '../render/mesh-style.service';
+import { MeshStyleService } from '../render/services/mesh-style.service';
 
 @Injectable({
   providedIn: 'root',

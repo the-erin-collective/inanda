@@ -94,9 +94,7 @@ export class MaterialService {
     const aoUrl = ambientOcclusionMapUrl || this.getTextureUrl(materialType, 'AmbientOcclusionMap.png');
     const specularUrl = specularMapUrl || this.getTextureUrl(materialType, 'SpecularMap.png');    // Create StandardMaterial
     const material = new StandardMaterial(materialType || 'defaultMaterial', scene);
-    console.log(`[MaterialService] Creating StandardMaterial: ${material.name}`);
-        // Configure material properties for better appearance
-    
+
     // Set diffuse color - white by default but can be tinted if tintColor is specified
     if (tintColor) {
       // Convert the hex color string to Color3
@@ -109,7 +107,6 @@ export class MaterialService {
       const b = 1 - tintIntensity + (color.b * tintIntensity);
       
       material.diffuseColor = new Color3(r, g, b);
-      console.log(`[MaterialService] Applied tint color: ${tintColor} with intensity ${tintIntensity}`);
     } else {
       material.diffuseColor = new Color3(1, 1, 1); // White (no tint)
     }
@@ -122,7 +119,6 @@ export class MaterialService {
     material.roughness = 0.6;    // Load diffuse texture (ColorMap) if available
     if (diffuseUrl) {
       try {
-        console.log(`[MaterialService] Loading diffuse texture (ColorMap): ${diffuseUrl}`);
         const texture = await this.textureService.getTexture(diffuseUrl, scene);
         
         // Apply the diffuse texture
@@ -138,7 +134,6 @@ export class MaterialService {
           (diffuseTexture as Texture).vScale = 4;          // Load normal map if available - adds 3D-like detail to the surface
           if (normalUrl) {
             try {
-              console.log(`[MaterialService] Loading normal map: ${normalUrl}`);
               const normalTexture = await this.textureService.getTexture(normalUrl, scene);
               
               // StandardMaterial uses bumpTexture for normal maps
@@ -151,7 +146,6 @@ export class MaterialService {
                 (bumpTexture as Texture).vScale = (diffuseTexture as Texture).vScale;
                 material.invertNormalMapX = false;
                 material.invertNormalMapY = false;
-                console.log(`[MaterialService] Normal map applied to StandardMaterial with strength: ${bumpStrength}`);
               }
             } catch (e) {
               console.warn(`[MaterialService] Failed to load normal map: ${normalMapUrl}`, e);
@@ -159,7 +153,6 @@ export class MaterialService {
           }          // Load ambient occlusion map if available - adds shadowing in crevices
           if (aoUrl) {
             try {
-              console.log(`[MaterialService] Loading ambient occlusion map: ${aoUrl}`);
               const aoTexture = await this.textureService.getTexture(aoUrl, scene);
               
               // Standard material uses ambientTexture
@@ -170,7 +163,6 @@ export class MaterialService {
                 (ambientTexture as Texture).vScale = (diffuseTexture as Texture).vScale;
                 // Set AO strength - higher values make shadows darker
                 ambientTexture.level = aoStrength;
-                console.log(`[MaterialService] Ambient occlusion map applied to StandardMaterial with strength: ${aoStrength}`);
               }
             } catch (e) {
               console.warn(`[MaterialService] Failed to load ambient occlusion map: ${ambientOcclusionMapUrl}`, e);
@@ -178,7 +170,6 @@ export class MaterialService {
           }          // Load specular map if available - controls shininess variation
           if (specularUrl) {
             try {
-              console.log(`[MaterialService] Loading specular map: ${specularUrl}`);
               const specularTexture = await this.textureService.getTexture(specularUrl, scene);
 
               // Standard material uses specularTexture
@@ -187,7 +178,6 @@ export class MaterialService {
                 const specTexture = material.specularTexture as Texture;
                 (specTexture as Texture).uScale = (diffuseTexture as Texture).uScale;
                 (specTexture as Texture).vScale = (diffuseTexture as Texture).vScale;
-                console.log(`[MaterialService] Specular map applied for StandardMaterial`);
               }
             } catch (e) {
               console.warn(`[MaterialService] Failed to load specular map: ${specularMapUrl}`, e);

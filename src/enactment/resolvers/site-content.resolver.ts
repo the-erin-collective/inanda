@@ -29,7 +29,6 @@ export class SiteContentResolver implements Resolve<Promise<SiteContent>> {
 
     // Check if data is available in TransferState
     if (this.transferState.hasKey(SITE_CONTENT_KEY)) {
-      console.log('FOUND site content in TransferState with key:', SITE_CONTENT_KEY);
       const siteContent = this.transferState.get(SITE_CONTENT_KEY, null);
       console.log('Using preloaded site content:', siteContent);
       if (siteContent) {
@@ -42,29 +41,21 @@ export class SiteContentResolver implements Resolve<Promise<SiteContent>> {
 
     // Fetch data from the service
     const siteId = route.paramMap.get('siteId') ?? DEFAULT_SITE_ID;
-    console.log('Fetching site content for siteId:', siteId);
 
     // Explicitly handle 'assets' or other static paths being incorrectly routed as site IDs
     if (siteId === 'assets' || siteId === 'css' || siteId === 'js') {
       console.warn(`SiteContentResolver: Ignoring request for static asset path: ${siteId}`);
-      // Depending on the expected return type, return null or a minimal valid object
-      // Assuming SiteContentResolver expects a SiteContent object, we'll return a dummy one.
-      // If the consumer of this resolver handles null, then 'return null;' would be simpler.
-      // For now, returning a dummy object to ensure the promise resolves without crashing.
       return Promise.resolve(null); 
     }    try {
       const siteContent = await this.siteContentService.getSiteContent(siteId);
       console.log('Resolved site content:', siteContent);
         // Store data in TransferState for server-side rendering
       if (isPlatformServer(this.platformId) && siteContent) {
-        console.log('Setting site content in TransferState for hydration');
-        
         // Create a fully serializable version by removing any methods or circular references
         const serializableSiteContent = JSON.parse(JSON.stringify({
           site: siteContent.site,
           pages: siteContent.pages
         }));
-          console.log('Serialized site content for TransferState, using key:', SITE_CONTENT_KEY);
         
         // Set the content in TransferState
         this.transferState.set(SITE_CONTENT_KEY, serializableSiteContent);

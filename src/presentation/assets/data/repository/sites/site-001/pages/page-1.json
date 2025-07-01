@@ -52,7 +52,7 @@
               "properties": {
                 "fontSize": "100",
                 "fontWeight": "bold",
-                "marginTop": "30px",
+                "marginTop": "0px",
                 "foregroundColor": "inherit",
                 "textHorizontalAlignment": "center",
                 "textVerticalAlignment": "center"
@@ -64,7 +64,7 @@
               "properties": {
                 "fontSize": "54",
                 "fontWeight": "bold",
-                "marginTop": "15px",
+                "marginTop": "0px",
                 "foregroundColor": "inherit",
                 "textHorizontalAlignment": "center",
                 "textVerticalAlignment": "center"
@@ -80,6 +80,7 @@
                 "paddingRight": "20px",
                 "paddingTop": "15px",
                 "paddingBottom": "15px",
+                "fontSize": "28",
                 "horizontalAlignment": "center",
                 "verticalAlignment": "center",
                 "fillSpace": true
@@ -91,7 +92,7 @@
               "properties": {
                 "fontSize": "52",
                 "fontWeight": "bold",
-                "marginTop": "30px",
+                "marginTop": "0px",
                 "foregroundColor": "inherit",
                 "textHorizontalAlignment": "center"
               }
@@ -101,11 +102,34 @@
               "name": "Paragraph Style",
               "properties": {
                 "fontSize": "28",
-                "marginTop": "15px",
+                "marginTop": "0px",
                 "foregroundColor": "inherit",
                 "textHorizontalAlignment": "center"
               }
+            },
+          {
+            "_id": "a-1",
+            "name": "Anchor Style",
+            "properties": {
+              "foregroundColor": "#0074d9",
+              "textDecoration": "underline",
+              "fontSize": "20",
+              "fontWeight": "normal",
+              "textHorizontalAlignment": "center",
+              "cursor": "pointer"
             }
+          },
+          {
+            "_id": "a-1-hover",
+            "name": "Anchor Hover Style",
+            "properties": {
+              "foregroundColor": "#ff0000",
+              "textDecoration": "underline",
+              "fontSize": "20",
+              "textHorizontalAlignment": "center",
+              "cursor": "pointer"
+            }
+          }
           ]
         }
       ],
@@ -137,6 +161,13 @@
               "type": "p",
               "text": "The name 'inanda' means 'a pleasant place' in Zulu. Create more enjoyable web spaces with open source code (AGPL-3.0).",
               "_id": "p-1"
+            },
+            {
+              "type": "anchor",
+              "text": "https://github.com/the-erin-collective/inanda",
+              "url": "https://github.com/the-erin-collective/inanda",
+              "target": "_blank",
+              "_id": "a-1"
             }
           ]
         }

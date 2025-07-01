@@ -27,9 +27,6 @@ export class ServerCacheService implements CacheData {
     if (!isPlatformServer(platformId)) {
       throw new Error('ServerCacheService can only be used on the server side');
     }
-    
-    // We'll initialize LevelDB lazily when methods are called to ensure config is respected
-    console.log('ServerCacheService constructor called');
   }
   
   /**
@@ -52,7 +49,6 @@ export class ServerCacheService implements CacheData {
       // Try to get existing LevelDB instance first
       try {
         this.db = getLevelDB();
-        console.log('ServerCacheService using existing LevelDB instance');
       } catch (err) {
         // If no instance exists, create a new one
         console.log('No existing LevelDB instance, creating new one');
@@ -94,7 +90,6 @@ export class ServerCacheService implements CacheData {
       await this.ensureInitialized();
       
       // Try to get cached data
-      console.log(`Attempting to get data for key: ${key} from LevelDB cache`);
       const cached = await this.db.get(key);
       
       // Ensure the cached value exists and has the correct structure with data
@@ -158,7 +153,6 @@ export class ServerCacheService implements CacheData {
       
       console.log(`Storing data in LevelDB cache for key: ${key}, version: ${currentVersion}`);
       await this.db.put(key, cacheEntry);
-      console.log(`Successfully stored data in LevelDB cache for key: ${key}`);
     } catch (err) {
       // If error is due to initialization issues, rethrow
       if (err.message?.includes('configured not to use LevelDB')) {
@@ -173,7 +167,6 @@ export class ServerCacheService implements CacheData {
       await this.ensureInitialized();
       
       const versionKey = `version:${key}`;
-      console.log(`Getting version for key: ${key}`);
       
       try {
         const versionData = await this.db.get(versionKey);
@@ -208,7 +201,6 @@ export class ServerCacheService implements CacheData {
     }
   }
   async invalidate(key: string): Promise<void> {
-    console.log(`Invalidating LevelDB cache for key: ${key}`);
     try {
       await this.ensureInitialized();
       

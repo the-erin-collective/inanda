@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Scene, Vector3, Animation, ArcRotateCamera, PointerInfo, PointerEventTypes, EasingFunction, CubicEase, AnimationGroup, Mesh, AbstractMesh } from '@babylonjs/core';
 import { Page } from 'src/domain/entities/page/page.entity';
 import { DEFAULT_SITE_ID } from 'src/domain/constants/site.constants';
-import { GuiService } from '../render/gui.service';
+import { GuiService } from '../render/services/gui.service';
 
 export enum ViewMode {
   SITEMAP = 'sitemap',
@@ -67,7 +67,9 @@ export class NavigationService {
 
     // Disable camera controls
     this.camera.inputs.clear();
-  }  private setupEventHandlers(): void {
+  }  
+  
+  private setupEventHandlers(): void {
     // Set up all pointer events
     this.scene.onPointerObservable.add((pointerInfo: PointerInfo) => {
       // Handle pointer down for clicking
@@ -79,14 +81,12 @@ export class NavigationService {
         if (!pickResult.hit) {
           // If we're in page view and clicked empty space, zoom out to sitemap
           if (this.currentViewMode === ViewMode.PAGE) {
-            console.log('Clicked empty space while in page view, zooming out to sitemap');
             this.navigateToSitemap();
           }
           return;
         }
 
         const pickedMesh = pickResult.pickedMesh;
-        console.log('Picked mesh:', pickedMesh.name, 'metadata:', pickedMesh.metadata);
 
         if (!pickedMesh) {
           return;
@@ -94,7 +94,6 @@ export class NavigationService {
 
         // Get the page ID from the mesh metadata
         const pageId = pickedMesh.metadata?.pageId;
-        console.log('Page ID from metadata:', pageId);
 
         if (!pageId) {
           console.warn('No page ID found in mesh metadata:', pickedMesh.name);
@@ -108,18 +107,14 @@ export class NavigationService {
           return;
         }
 
-        console.log('Found page:', page);
-
         // If we're in page view and clicked a different page, zoom out to sitemap first
         if (this.currentViewMode === ViewMode.PAGE && pageId !== this.currentPageId) {
-          console.log('Clicked different page while in page view, zooming out to sitemap');
           this.navigateToSitemap();
           return;
         }
 
         // If we're in page view and clicked the same page, do nothing
         if (this.currentViewMode === ViewMode.PAGE && pageId === this.currentPageId) {
-          console.log('Already viewing this page, no action needed');
           return;
         }
 
@@ -144,50 +139,39 @@ export class NavigationService {
 
         // If it's a quick click (less than CLICK_THRESHOLD milliseconds)
         if (holdDuration < this.CLICK_THRESHOLD && this.currentPickedMesh && this.currentPickedPage) {
-          console.log('Quick click detected, navigating to page');
           this.navigateToPage(this.currentPickedPage, this.currentPickedMesh);
         } else if (holdDuration >= this.CLICK_THRESHOLD) {
-          console.log('Long press detected, duration:', holdDuration);
           // Handle long press here if needed
         }
 
         // Clear the stored mesh and page
         this.currentPickedMesh = null;
-        this.currentPickedPage = null;      } else if (pointerInfo.type === PointerEventTypes.POINTERMOVE) {
-        // Handle hover effects
-        const pickResult = this.scene.pick(this.scene.pointerX, this.scene.pointerY);
-        
-        if (pickResult.hit && pickResult.pickedMesh) {
-          const hoveredMesh = pickResult.pickedMesh;
-          const pageId = hoveredMesh.metadata?.pageId;
-          // Only process meshes with pageId metadata (hexagonal panels)
-          if (pageId) {
-            // Only update if the hovered mesh is different
-            if (this.currentPickedMesh !== hoveredMesh) {
-              // Remove border from previous mesh
-              if (this.currentPickedMesh && this.currentPickedMesh instanceof Mesh) {
-                this.guiService.applyNormalStyle(this.currentPickedMesh);
-              }
-              // Apply hover style to new mesh
-              if (this.currentViewMode !== ViewMode.PAGE || pageId !== this.currentPageId) {
-                console.log(`Hover on mesh: ${hoveredMesh.name}, applying hover style`);
-                if (hoveredMesh instanceof Mesh) {
-                  this.guiService.applyHoverStyle(hoveredMesh);
-                  this.currentPickedMesh = hoveredMesh;
-                }
-              }
+        this.currentPickedPage = null;
+      } else if (pointerInfo.type === PointerEventTypes.POINTERMOVE) {
+        // Handle hover effects for sitemap view. This logic should not run in page view
+        // to avoid interfering with GUI control hover effects (e.g., on an anchor).
+        if (this.currentViewMode === ViewMode.SITEMAP) {
+          console.log(this.currentViewMode);
+
+          const pickResult = this.scene.pick(this.scene.pointerX, this.scene.pointerY);
+
+          const newHoveredMesh = (pickResult.hit && pickResult.pickedMesh?.metadata?.pageId) ? pickResult.pickedMesh : null;
+
+          // If hover state has changed
+          if (this.hoveredMesh !== newHoveredMesh) {
+            // Restore old hovered mesh to normal style
+            if (this.hoveredMesh && this.hoveredMesh instanceof Mesh) {
+              this.guiService.applyNormalStyle(this.hoveredMesh);
             }
-          } else if (this.currentPickedMesh && this.currentPickedMesh instanceof Mesh) {
-            // We've moved off a page mesh, reapply normal style
-            console.log('Moved off page mesh, restoring normal style');
-            this.guiService.applyNormalStyle(this.currentPickedMesh);
-            this.currentPickedMesh = null;
+
+            // Apply hover style to the new mesh
+            if (newHoveredMesh && newHoveredMesh instanceof Mesh) {
+              this.guiService.applyHoverStyle(newHoveredMesh);
+            }
+
+            // Update the currently hovered mesh
+            this.hoveredMesh = newHoveredMesh;
           }
-        } else if (this.currentPickedMesh && this.currentPickedMesh instanceof Mesh) {
-          // We're not hovering over any mesh, reapply normal style
-          console.log('No mesh under pointer, restoring normal style');
-          this.guiService.applyNormalStyle(this.currentPickedMesh);
-          this.currentPickedMesh = null;
         }
       }
     });
@@ -267,7 +251,6 @@ export class NavigationService {
       if (pageMesh) {
         // Store the mapping using the mesh name
         this.hexToPageMap.set(pageMesh.name, page);
-        console.log(`Mapped ${pageMesh.name} to page ${page._id || page.id}`);
       }
     });
   }
@@ -283,16 +266,6 @@ export class NavigationService {
     if (this.currentViewMode === ViewMode.PAGE && this.currentPageId === page._id) {
       return; // Already viewing this page
     }
-
-    console.log('Starting navigation to page:', page._id);
-    console.log('Current camera state:', {
-      position: this.camera.position,
-      target: this.camera.target,
-      alpha: this.camera.alpha,
-      beta: this.camera.beta,
-      radius: this.camera.radius
-    });
-
     this.currentViewMode = ViewMode.PAGE;
     this.currentPageId = page._id;
 
@@ -303,15 +276,16 @@ export class NavigationService {
     
     // Update browser history with both site ID and page ID
     const newUrl = `/${siteId}/${page._id}`;
-    console.log('Updating URL to:', newUrl);
+
     window.history.pushState({ siteId, pageId: page._id }, '', newUrl);
 
     // Switch to core content
     this.guiService.showCoreContent(mesh);
 
-    // Remove border from any hovered hex before switching to page view
-    if (this.currentPickedMesh && this.currentPickedMesh instanceof Mesh) {
-      this.currentPickedMesh = null;
+    // When switching to page view, clear any sitemap hover effects.
+    if (this.hoveredMesh && this.hoveredMesh instanceof Mesh) {
+      this.guiService.applyNormalStyle(this.hoveredMesh);
+      this.hoveredMesh = null;
     }
 
     // Calculate target position and rotation based on the mesh
@@ -325,14 +299,6 @@ export class NavigationService {
     const targetBeta = 0; // Match sitemap vertical orientation
     const targetRadius = this.PAGE_RADIUS;
 
-    console.log('Target camera state:', {
-      position: targetPosition,
-      target: mesh.position,
-      alpha: targetAlpha,
-      beta: targetBeta,
-      radius: targetRadius
-    });
-
     await this.animateCamera(targetPosition, mesh.position, targetAlpha, targetBeta, targetRadius);
   }
 
@@ -341,10 +307,10 @@ export class NavigationService {
       return; // Already in sitemap view
     }
 
-    // Remove border from any hovered hex before switching view modes
-    if (this.currentPickedMesh && this.currentPickedMesh instanceof Mesh) {
-      this.guiService.applyNormalStyle(this.currentPickedMesh);
-      this.currentPickedMesh = null;
+    // When switching to sitemap view, clear any hover effects.
+    if (this.hoveredMesh && this.hoveredMesh instanceof Mesh) {
+      this.guiService.applyNormalStyle(this.hoveredMesh);
+      this.hoveredMesh = null;
     }
 
     // Store the current page ID before clearing it
@@ -360,7 +326,7 @@ export class NavigationService {
     
     // Update browser history to keep site ID but remove page ID
     const newUrl = `/${siteId}`;
-    console.log('Updating URL to sitemap view:', newUrl);
+
     window.history.pushState({ siteId }, '', newUrl);
 
     // Find the previous page's mesh and transition it back to preview
@@ -374,14 +340,6 @@ export class NavigationService {
         this.guiService.showPreviewContent(currentMesh);
       }
     }
-
-    console.log('Animating camera to sitemap view:', {
-      position: this.SITEMAP_POSITION,
-      target: this.SITEMAP_TARGET,
-      alpha: this.SITEMAP_ALPHA,
-      beta: this.SITEMAP_BETA,
-      radius: this.SITEMAP_RADIUS
-    });
 
     await this.animateCamera(
       this.SITEMAP_POSITION,
@@ -399,7 +357,6 @@ export class NavigationService {
     targetBeta: number,
     targetRadius: number
   ): Promise<void> {
-    console.log('Starting camera animation');
     
     // Create easing function
     const easingFunction = new CubicEase();
@@ -412,14 +369,6 @@ export class NavigationService {
     const currentBeta = this.camera.beta;
     const currentRadius = this.camera.radius;
 
-    console.log('Animation start state:', {
-      position: currentPosition,
-      target: currentTarget,
-      alpha: currentAlpha,
-      beta: currentBeta,
-      radius: currentRadius
-    });
-
     // Create animations
     const animations = [
       this.createAnimation('position', currentPosition, targetPosition, easingFunction),
@@ -429,8 +378,6 @@ export class NavigationService {
       this.createAnimation('radius', currentRadius, targetRadius, easingFunction)
     ];
 
-    // Run animations
-    console.log('Running camera animations');
     this.scene.beginDirectAnimation(
       this.camera,
       animations,
@@ -442,7 +389,6 @@ export class NavigationService {
 
     // Wait for animation to complete
     return new Promise<void>((resolve) => {
-      console.log('Waiting for animation to complete');
       setTimeout(() => {
         // Ensure final camera state is exactly as intended
         this.camera.position = targetPosition;

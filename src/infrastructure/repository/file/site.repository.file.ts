@@ -26,12 +26,9 @@ export class FileSiteRepository implements SiteRepository {
     
     // If we have cached data, use it
     if (hasCachedData) {
-      console.log(`Site data for ID ${id} found in cache`);
       return this.cache.getData(cacheKey, () => this.loadSiteFromFile(id));
     }
     
-    // Otherwise load from file and cache it
-    console.log(`Loading site data for ID ${id} from file`);
     const site = await this.loadSiteFromFile(id);
     if (site) {
       await this.cache.put(cacheKey, site);
@@ -46,12 +43,9 @@ export class FileSiteRepository implements SiteRepository {
     
     // If we have cached data, use it
     if (hasCachedData) {
-      console.log(`Site content for ID ${id} found in cache`);
       return this.cache.getData(cacheKey, () => this.loadSiteContentFromFile(id));
     }
     
-    // Otherwise load from file and cache it
-    console.log(`Loading site content for ID ${id} from file`);
     const siteContent = await this.loadSiteContentFromFile(id);
     if (siteContent) {
       await this.cache.put(cacheKey, siteContent);
@@ -83,7 +77,6 @@ export class FileSiteRepository implements SiteRepository {
       // The correct path should include /repository/sites/ before the site ID
       const fileUrl = `${dataPath}/${id}/${id}.json`;
       const fullUrl = baseHref.replace(/\/$/, '') + '/' + fileUrl;
-      console.log(`Loading site data for ID ${id} from file: ${fullUrl}`);
     
       const siteData = await this.fileFetchService.fetchJson<Site>(fullUrl);
       return siteData as Site;

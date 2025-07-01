@@ -25,7 +25,5 @@ const PageSchema = new Schema<PageDocument>({
   },
 });
 
-console.log('Mongoose models:', models);
-
 // Check if the model already exists before defining it
 export const PageModel = models['Page'] || model<PageDocument>('Page', PageSchema);

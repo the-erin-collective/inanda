@@ -6,12 +6,8 @@ import { environment } from '../../infrastructure/environments/environment.serve
  * This runs before the actual app bootstrap to detect basic connectivity issues
  */
 export async function checkMongoDBConnectivity(): Promise<boolean> {
-  // Load config directly from file
-
-  console.log(`[MongoDB Check] Using environment:`, environment);
   // Check if we're using MongoDB storage
   if (environment.PERSISTENT_STORAGE !== 'MONGODB') {
-    console.log(`MongoDB connectivity check skipped - using ${environment.PERSISTENT_STORAGE} storage`);
     return false;
   }
   
@@ -19,7 +15,7 @@ export async function checkMongoDBConnectivity(): Promise<boolean> {
   const MONGO_URI = environment.MONGO_URI || process.env['MONGO_URI'];
   
   if (!MONGO_URI) {
-    console.log('No MONGO_URI found in config or environment, skipping connectivity check');
+    console.warn('No MONGO_URI found in config or environment, skipping connectivity check');
     return false;
   }
   
@@ -28,9 +24,7 @@ export async function checkMongoDBConnectivity(): Promise<boolean> {
     const url = new URL(MONGO_URI);
     const host = url.hostname;
     const port = parseInt(url.port, 10) || 27017; // Default MongoDB port is 27017
-    
-    console.log(`Testing MongoDB connectivity at ${host}:${port}...`);
-    
+      
     // Promise-based TCP connection test
     return new Promise<boolean>((resolve) => {
       const socket = new net.Socket();

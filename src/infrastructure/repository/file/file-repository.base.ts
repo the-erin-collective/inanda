@@ -22,7 +22,6 @@ export abstract class FileRepositoryBase<T> {
       options.entityType
     );
     
-    console.log(`FileRepositoryBase: Initialized with basePath: ${this.basePath}`);
     this.ensureDirectoryExists();
   }
 
@@ -38,13 +37,12 @@ export abstract class FileRepositoryBase<T> {
   protected async readJson<TData = Record<string, unknown>>(id: string): Promise<TData | null> {
     try {
       const filePath = path.join(this.basePath, `${id}.json`);
-      console.log(`FileRepositoryBase: Attempting to read file at path: ${filePath}`);
       
       const content = await fs.promises.readFile(filePath, 'utf-8');
-      console.log(`FileRepositoryBase: Successfully read file: ${filePath}`);
+
       return JSON.parse(content) as TData;
     } catch (err) {
-      console.log(`FileRepositoryBase: Error reading file ${path.join(this.basePath, `${id}.json`)}: ${err.code || err.message}`);
+      console.error(`FileRepositoryBase: Error reading file ${path.join(this.basePath, `${id}.json`)}: ${err.code || err.message}`);
       if (err.code === 'ENOENT') return null;
       throw err;
     }

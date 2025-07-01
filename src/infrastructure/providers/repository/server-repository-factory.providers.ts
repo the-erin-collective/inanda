@@ -29,8 +29,7 @@ export const repositoryFactoryProviders: StaticProvider[] = [
     provide: PAGE_REPOSITORY,
     useFactory: (platformId: Object, cache: CacheData,configService: ConfigService, fileFetchService: FileFetchService) => {
       const storageType = (process.env['PERSISTENT_STORAGE'] as PersistentStorageType) || PersistentStorageType.MONGODB;
-      console.log(`Creating PAGE_REPOSITORY with storage type: ${storageType}`);
-      
+     
       if (storageType === PersistentStorageType.FILE) {
         return new FilePageRepository(platformId, cache, configService, fileFetchService);
       } else {
@@ -44,8 +43,7 @@ export const repositoryFactoryProviders: StaticProvider[] = [
     provide: SITE_REPOSITORY,
     useFactory: (platformId: Object, cache: CacheData, serverPageRepo: ServerPageRepository, configService: ConfigService, fileFetchService: FileFetchService) => {
       const storageType = (process.env['PERSISTENT_STORAGE'] as PersistentStorageType) || PersistentStorageType.MONGODB;
-      console.log(`Creating SITE_REPOSITORY with storage type: ${storageType}`);
-      
+
       if (storageType === PersistentStorageType.FILE) {
         return new FileSiteRepository(platformId, cache, configService, fileFetchService);
       } else {

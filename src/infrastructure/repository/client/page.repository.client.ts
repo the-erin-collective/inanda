@@ -20,7 +20,6 @@ export class ClientPageRepository implements PageRepository {
     private readonly fileFetchService: FileFetchService,
     @Inject(CACHE_PROVIDER) private readonly cache: CacheData
   ) {
-    console.log('ClientPageRepository constructor - SITE_CONTENT_KEY:', SITE_CONTENT_KEY);
   }
 
   async findById(siteId: string, id: string): Promise<Page | null> {
@@ -48,19 +47,14 @@ export class ClientPageRepository implements PageRepository {
   }
 
   async findByIds(siteId: string, ids: string[]): Promise<Page[]> {
-    console.log(`ClientPageRepository: Finding pages by IDs: ${ids.join(', ')}`);
-    
     // First try from TransferState
     if (this.transferState.hasKey(SITE_CONTENT_KEY)) {
       const siteContent = this.transferState.get(SITE_CONTENT_KEY, null);
       if (siteContent && siteContent.pages) {
-        console.log('ClientPageRepository: Returning preloaded pages from TransferState');
         return siteContent.pages;
       }
     }
-    
-    console.log('ClientPageRepository: No preloaded pages found in TransferState');
-    
+
     // Fallback to file loading
     try {
       const cacheKey = `pages:${siteId}:${ids.join(',')}`;
@@ -97,7 +91,6 @@ export class ClientPageRepository implements PageRepository {
       
       const fileUrl = `${dataPath}/${siteId}/pages/${pageId}.json`;
       const fullUrl = baseHref.replace(/\/$/, '') + '/' + fileUrl;
-      console.log(`Loading page data for ID ${pageId} from file: ${fullUrl}`);
       
       const pageData = await this.fileFetchService.fetchJson<any>(fullUrl);
       return Page.fromJSON(pageData);
